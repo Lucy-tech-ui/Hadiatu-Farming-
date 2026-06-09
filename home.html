@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Marketplace</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 400px; margin: auto; background: white; min-height: 100vh; padding: 20px; position: relative; padding-bottom: 80px; }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .location { font-weight: bold; color: #2d5a27; }
+        .lang-toggle { border: 1px solid #ccc; padding: 5px; border-radius: 5px; font-size: 12px; }
+
+        /* Search */
+        .search-bar { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; box-sizing: border-box; }
+
+        /* Categories Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .card { background: #f9f9f0; padding: 10px; border-radius: 10px; text-align: center; font-size: 12px; }
+        .icon { width: 40px; height: 40px; background: #ddd; border-radius: 50%; margin-bottom: 5px; }
+
+        /* Listings */
+        .section-title { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; }
+        .listing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .item { border: 1px solid #eee; border-radius: 8px; overflow: hidden; font-size: 10px; }
+        .item img { width: 100%; height: 60px; object-fit: cover; }
+        .item-info { padding: 5px; }
+        .price { color: #2d5a27; font-weight: bold; }
+        
+        /* Nav Buttons */
+        .nav { 
+            position: fixed; bottom: 0; width: 100%; max-width: 400px; 
+            background: white; display: flex; justify-content: space-around; 
+            padding: 10px 0; border-top: 1px solid #eee; z-index: 100;
+        }
+        .nav-btn { 
+            background: none; border: none; cursor: pointer; 
+            display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #555;
+        }
+        .nav-btn:hover { color: #2d5a27; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="location">Good Morning – Bo District</div>
+        <div class="lang-toggle">English | Krio</div>
+    </header>
+
+    <input type="text" class="search-bar" placeholder="Search crops or filter by district...">
+
+    <h3>Browse by Category</h3>
+    <div class="grid">
+        <div class="card"><div class="icon"></div>Root Crops</div>
+        <div class="card"><div class="icon"></div>Vegetables</div>
+        <div class="card"><div class="icon"></div>Grain & Cereals</div>
+        <div class="card"><div class="icon"></div>Fruits</div>
+        <div class="card"><div class="icon"></div>Livestock</div>
+        <div class="card"><div class="icon"></div>Palm Products</div>
+    </div>
+
+    <div class="section-title"><span>Top Listings Near You</span> <span>View All</span></div>
+    <div class="listing-grid">
+        <div class="item"><img src="https://via.placeholder.com/100" alt="Tomatoes"><div class="item-info">Fresh Tomatoes<br><span class="price">SLL 85 / crate</span></div></div>
+        <div class="item"><img src="https://via.placeholder.com/100" alt="Cassava"><div class="item-info">Cassava (Fresh)<br><span class="price">SLL 55 / bag</span></div></div>
+        <div class="item"><img src="https://via.placeholder.com/100" alt="Rice"><div class="item-info">Local Rice<br><span class="price">SLL 70 / bag</span></div></div>
+    </div>
+
+    <nav class="nav">
+        <button class="nav-btn" onclick="alert('Home clicked')">🏠 Home</button>
+        <button class="nav-btn" onclick="alert('Search clicked')">🔍 Search</button>
+        <button class="nav-btn" onclick="alert('Cart clicked')">🛒 Cart</button>
+        <button class="nav-btn" onclick="alert('Orders clicked')">📋 Orders</button>
+        <button class="nav-btn" onclick="alert('Profile clicked')">👤 Profile</button>
+    </nav>
+</div>
+
+</body>
+</html>
