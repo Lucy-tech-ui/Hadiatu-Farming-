@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Marketplace – Buyer Portal</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+body {
+  background: #f0f4f0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px 10px;
+}
+
+.mobile {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── SCREEN SYSTEM ── */
+.screen { display: none; flex-direction: column; min-height: 85vh; }
+.screen.active { display: flex; }
+
+/* ── HEADER ── */
+.header {
+  background: #156b1d;
+  padding: 36px 25px 30px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+}
+.header h1 { font-size: 22px; margin-bottom: 6px; }
+.header p  { font-size: 13px; opacity: 0.88; }
+
+.back-btn {
+  position: absolute; top: 18px; left: 18px;
+  color: #fff; font-size: 18px; cursor: pointer;
+  background: rgba(255,255,255,.18); border: none;
+  border-radius: 50%; width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.back-btn:hover { background: rgba(255,255,255,.32); }
+
+/* ── LOGO ── */
+.logo {
+  width: 90px; height: 90px;
+  margin: -45px auto 10px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  border: 4px solid #fff;
+  flex-shrink: 0;
+}
+
+/* ── PAGE TITLE ── */
+.page-title { text-align: center; padding: 4px 20px 16px; flex-shrink: 0; }
+.page-title h2 { color: #156b1d; font-size: 20px; margin-bottom: 4px; }
+.page-title p  { color: #888; font-size: 13px; }
+
+/* ── DASHBOARD GRID ── */
+.dashboard-grid {
+  padding: 0 20px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  flex: 1;
+}
+.grid-btn {
+  background: #fff;
+  border: 1.5px solid #e9ecef;
+  border-radius: 16px;
+  padding: 26px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.03);
+}
+.grid-btn:hover {
+  background: #edf8ed; border-color: #156b1d;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(21,107,29,.12);
+}
+.grid-btn .icon-circle {
+  width: 54px; height: 54px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px; font-size: 24px;
+  transition: transform .25s;
+}
+.grid-btn:hover .icon-circle { transform: scale(1.1); }
+.grid-btn.browse  .icon-circle { background: #e8f5e9; color: #2e7d32; }
+.grid-btn.search  .icon-circle { background: #e3f2fd; color: #1565c0; }
+.grid-btn.cart    .icon-circle { background: #fff3e0; color: #e65100; }
+.grid-btn.order   .icon-circle { background: #fce4ec; color: #c62828; }
+.grid-btn span { font-size: 11px; font-weight: 700; color: #444; line-height: 1.3; text-transform: uppercase; letter-spacing: .5px; }
+
+/* ── CART BADGE ── */
+.cart-badge-wrap { position: relative; display: inline-block; }
+.cart-badge {
+  position: absolute; top: -6px; right: -8px;
+  background: #e53935; color: #fff;
+  font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+
+/* ── FORM BODY ── */
+.form-body { padding: 0 20px 24px; flex: 1; overflow-y: auto; }
+
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: #156b1d;
+  margin: 18px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid #e6f4e6;
+}
+
+.form-group { margin-bottom: 13px; }
+label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
+
+input[type=text], input[type=email], input[type=tel],
+input[type=number], input[type=date], select, textarea {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid #e0e0e0; border-radius: 12px;
+  font-size: 14px; background: #fafafa; color: #333;
+  transition: border-color .2s; outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #156b1d; background: #fff;
+}
+textarea { resize: vertical; min-height: 70px; }
+.input-hint { font-size: 11px; color: #aaa; margin-top: 3px; }
+
+/* ── PRICE RANGE ROW ── */
+.price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; gap: 10px; margin-top: 20px; }
+.btn-primary {
+  flex: 1; padding: 13px; background: #156b1d;
+  color: #fff; border: none; border-radius: 14px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background .2s; display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.btn-primary:hover { background: #0f4f15; }
+.btn-secondary {
+  flex: 1; padding: 13px; background: #fff;
+  color: #156b1d; border: 1.5px solid #156b1d;
+  border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.btn-secondary:hover { background: #edf8ed; }
+
+/* ── PRODUCT CARDS (Browse) ── */
+.product-card {
+  border: 1.5px solid #e9ecef; border-radius: 16px;
+  margin-bottom: 14px; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  transition: box-shadow .2s;
+}
+.product-card:hover { box-shadow: 0 6px 16px rgba(21,107,29,.1); }
+.product-img {
+  width: 100%; height: 130px;
+  object-fit: cover; background: #e8f5e9;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px;
+}
+.product-info { padding: 14px 16px; }
+.product-name { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 2px; }
+.product-farmer { font-size: 12px; color: #888; margin-bottom: 6px; }
+.product-desc { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 10px; }
+.product-meta { display: flex; justify-content: space-between; align-items: center; }
+.product-price { font-size: 16px; font-weight: 800; color: #156b1d; }
+.product-qty   { font-size: 11px; color: #999; }
+.add-cart-btn {
+  background: #156b1d; color: #fff;
+  border: none; border-radius: 10px;
+  padding: 8px 14px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: background .2s;
+}
+.add-cart-btn:hover { background: #0f4f15; }
+.tag-chip {
+  display: inline-block; padding: 2px 8px;
+  background: #e8f5e9; color: #156b1d;
+  border-radius: 20px; font-size: 10px; font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* ── SEARCH BAR ── */
+.search-bar {
+  display: flex; align-items: center;
+  background: #fafafa; border: 1.5px solid #e0e0e0;
+  border-radius: 14px; padding: 0 14px;
+  margin-bottom: 14px; gap: 10px;
+}
+.search-bar i { color: #aaa; font-size: 15px; }
+.search-bar input {
+  border: none; background: transparent;
+  padding: 11px 0; font-size: 14px; flex: 1;
+}
+.search-bar input:focus { outline: none; }
+
+/* ── FILTER CHIP ROW ── */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid #e0e0e0; background: #fff; color: #555;
+  transition: all .2s;
+}
+.chip.active { background: #156b1d; color: #fff; border-color: #156b1d; }
+
+/* ── CART ITEMS ── */
+.cart-item {
+  border: 1.5px solid #e9ecef; border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 12px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.cart-item-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: #e8f5e9; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 14px; font-weight: 700; color: #222; }
+.cart-item-unit { font-size: 12px; color: #888; margin-bottom: 6px; }
+.cart-item-row  { display: flex; justify-content: space-between; align-items: center; }
+.cart-item-price { font-size: 15px; font-weight: 800; color: #156b1d; }
+.qty-ctrl {
+  display: flex; align-items: center; gap: 10px;
+}
+.qty-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: 1.5px solid #e0e0e0; background: #fff;
+  font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.qty-btn:hover { border-color: #156b1d; color: #156b1d; }
+.qty-num { font-size: 14px; font-weight: 700; min-width: 20px; text-align: center; }
+.remove-btn {
+  background: none; border: none; color: #ccc; font-size: 16px; cursor: pointer;
+}
+.remove-btn:hover { color: #e53935; }
+.cart-date { font-size: 11px; color: #bbb; margin-top: 4px; }
+
+/* ── CART SUMMARY ── */
+.cart-summary {
+  background: #f4fbf4; border: 1.5px solid #b2d8b3;
+  border-radius: 14px; padding: 14px 16px; margin-top: 6px;
+}
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; color: #555; padding: 4px 0; }
+.summary-row.total { font-size: 15px; font-weight: 800; color: #156b1d; border-top: 1.5px dashed #b2d8b3; margin-top: 6px; padding-top: 10px; }
+
+/* ── ORDER CONFIRMATION ── */
+.success-banner {
+  background: #e8f5e9; border: 1.5px solid #a5d6a7;
+  border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;
+}
+.success-banner i { font-size: 40px; color: #2e7d32; margin-bottom: 8px; }
+.success-banner h3 { color: #2e7d32; font-size: 16px; }
+.success-banner p  { font-size: 13px; color: #555; margin-top: 4px; }
+
+/* ── ORDER SUMMARY TABLE ── */
+.order-summary-table { width: 100%; border-collapse: collapse; }
+.order-summary-table td { padding: 8px 0; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+.order-summary-table td:first-child { color: #999; width: 45%; }
+.order-summary-table td:last-child  { font-weight: 600; color: #333; }
+
+/* ── CHECKBOX STYLED ── */
+.check-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+.check-group input[type=checkbox] { width: 18px; height: 18px; accent-color: #156b1d; margin-top: 2px; flex-shrink: 0; }
+.check-group label { font-size: 13px; color: #555; line-height: 1.5; font-weight: 400; }
+.check-group label a { color: #156b1d; font-weight: 600; text-decoration: none; }
+
+/* ── FIELD ERROR ── */
+.field-error {
+  font-size: 11px; color: #e53935; margin-top: 4px;
+  min-height: 16px; font-weight: 600;
+}
+input.input-invalid, select.input-invalid {
+  border-color: #e53935 !important;
+  background: #fff5f5 !important;
+}
+input.input-valid, select.input-valid {
+  border-color: #43a047 !important;
+  background: #f4fbf4 !important;
+}
+
+/* ── SYS FIELD ── */
+.sys-field {
+  width: 100%; padding: 10px 14px;
+  background: #f0f4f0; border: 1.5px solid #dce8dc;
+  border-radius: 12px; font-size: 13px; color: #888; font-style: italic;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #156b1d; color: #fff;
+  padding: 12px 24px; border-radius: 30px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,.2);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center; padding: 14px 20px; margin: 20px 20px 20px;
+  color: #fff; font-weight: 600; font-size: 12px;
+  background: #156b1d; border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(21,107,29,.25);
+  flex-shrink: 0;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 40px 20px; color: #bbb; }
+.empty-state i { font-size: 50px; margin-bottom: 12px; display: block; }
+.empty-state p { font-size: 14px; }
+
+/* ── PAYMENT METHODS ── */
+.payment-options { display: flex; flex-direction: column; gap: 10px; }
+.payment-option {
+  border: 1.5px solid #e0e0e0; border-radius: 12px;
+  padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+  cursor: pointer; transition: border-color .2s;
+}
+.payment-option:has(input:checked) { border-color: #156b1d; background: #f4fbf4; }
+.payment-option input[type=radio] { accent-color: #156b1d; width: 16px; height: 16px; }
+.payment-option-label { font-size: 13px; font-weight: 600; color: #333; }
+.payment-option-sub   { font-size: 11px; color: #999; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<div class="screen active" id="screen-dashboard">
+  <div class="mobile">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🛒</div>
+    <div class="page-title">
+      <h2>Buyer Portal</h2>
+      <p>Shop fresh farm products</p>
+    </div>
+    <div class="dashboard-grid">
+
+      <button class="grid-btn browse" onclick="goTo('browse')">
+        <div class="icon-circle"><i class="fa-solid fa-basket-shopping"></i></div>
+        <span>Browse Products</span>
+      </button>
+
+      <button class="grid-btn search" onclick="goTo('search')">
+        <div class="icon-circle"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+        <span>Search &amp; Filter Items</span>
+      </button>
+
+      <button class="grid-btn cart" onclick="goTo('cart')">
+        <div class="icon-circle" style="position:relative;">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="dash-badge">0</span>
+        </div>
+        <span>Add to Cart</span>
+      </button>
+
+      <button class="grid-btn order" onclick="goTo('checkout')">
+        <div class="icon-circle"><i class="fa-solid fa-truck-fast"></i></div>
+        <span>Place Order</span>
+      </button>
+
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 1. BROWSE PRODUCTS ══════════════ -->
+<div class="screen" id="screen-browse">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🏪</div>
+    <div class="page-title"><h2>Browse Products</h2><p>Fresh from the farm, straight to you</p></div>
+
+    <div class="form-body">
+      <div class="chip-row" id="browse-chips">
+        <span class="chip active" onclick="filterCategory(this,'all')">All</span>
+        <span class="chip" onclick="filterCategory(this,'vegetables')">Vegetables</span>
+        <span class="chip" onclick="filterCategory(this,'grains')">Grains</span>
+        <span class="chip" onclick="filterCategory(this,'fruits')">Fruits</span>
+        <span class="chip" onclick="filterCategory(this,'livestock')">Livestock</span>
+      </div>
+
+      <div id="product-list">
+        <!-- Products rendered by JS -->
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 2. SEARCH & FILTER ══════════════ -->
+<div class="screen" id="screen-search">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🔍</div>
+    <div class="page-title"><h2>Search &amp; Filter</h2><p>Find exactly what you need</p></div>
+
+    <div class="form-body">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-keyword" placeholder="Search products…" oninput="runSearch()">
+      </div>
+
+      <div class="section-label">Filters</div>
+
+      <div class="form-group">
+        <label>Product Category</label>
+        <select id="filter-category" onchange="runSearch()">
+          <option value="">All Categories</option>
+          <option>Vegetables</option>
+          <option>Fruits</option>
+          <option>Grains</option>
+          <option>Livestock</option>
+          <option>Fisheries</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Location (District)</label>
+        <select id="filter-location" onchange="runSearch()">
+          <option value="">All Districts</option>
+          <option>Bo</option>
+          <option>Bombali</option>
+          <option>Bonthe</option>
+          <option>Falaba</option>
+          <option>Kailahun</option>
+          <option>Kambia</option>
+          <option>Karene</option>
+          <option>Kenema</option>
+          <option>Koinadugu</option>
+          <option>Kono</option>
+          <option>Moyamba</option>
+          <option>Port Loko</option>
+          <option>Pujehun</option>
+          <option>Tonkolili</option>
+          <option>Western Area Rural</option>
+          <option>Western Area Urban (Freetown)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Price Range (Le)</label>
+        <div class="price-row">
+          <div>
+            <input type="number" id="filter-min" placeholder="Min" min="0" oninput="runSearch()">
+          </div>
+          <div>
+            <input type="number" id="filter-max" placeholder="Max" min="0" oninput="runSearch()">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Availability Status</label>
+        <select id="filter-status" onchange="runSearch()">
+          <option value="">Any</option>
+          <option value="available">Available</option>
+          <option value="limited">Limited Stock</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Seller / Farmer Name <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="text" id="filter-seller" placeholder="e.g. Kamara Farms" oninput="runSearch()">
+      </div>
+
+      <div class="form-group">
+        <label>Sort By</label>
+        <select id="filter-sort" onchange="runSearch()">
+          <option value="">Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest</option>
+          <option value="popular">Popularity</option>
+        </select>
+      </div>
+
+      <div class="section-label">Results</div>
+      <div id="search-results"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 3. CART ══════════════ -->
+<div class="screen" id="screen-cart">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🛒</div>
+    <div class="page-title"><h2>Your Cart</h2><p>Review items before checkout</p></div>
+
+    <div class="form-body">
+      <div id="cart-items-container"></div>
+
+      <div id="cart-summary-section" style="display:none">
+        <div class="cart-summary" id="cart-summary"></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn-primary" onclick="goTo('checkout')">
+            <i class="fa-solid fa-bag-shopping"></i> Checkout
+          </button>
+          <button class="btn-secondary" onclick="goTo('browse')">Add More</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 4. PLACE ORDER / CHECKOUT ══════════════ -->
+<div class="screen" id="screen-checkout">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('cart')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">📦</div>
+    <div class="page-title"><h2>Place Order</h2><p>Complete your purchase</p></div>
+
+    <div class="form-body">
+
+      <div class="section-label">Buyer Information</div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="co-name" placeholder="Your full name"
+               oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"
+               onblur="validateName(this)">
+        <div class="field-error" id="err-name"></div>
+        <div class="input-hint">Letters only — no numbers or symbols</div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="co-phone" placeholder="0XXXXXXXX (9 digits)"
+               maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length>0 && this.value[0]!=='0') this.value='0'+this.value.slice(1); if(this.value.length>9) this.value=this.value.slice(0,9);"
+               onblur="validatePhone(this)">
+        <div class="field-error" id="err-phone"></div>
+        <div class="input-hint">Must start with 0 and be exactly 9 digits (e.g. 076123456)</div>
+      </div>
+      <div class="form-group">
+        <label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="email" id="co-email" placeholder="you@example.com">
+      </div>
+
+      <div class="section-label">Delivery Information</div>
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <input type="text" id="co-address" placeholder="Street / Landmark">
+      </div>
+      <div class="form-group">
+        <label>District</label>
+        <select id="co-district">
+          <option value="">— Select District —</option>
+          <option>Bo</option>
+          <option>Bombali</option>
+          <option>Bonthe</option>
+          <option>Falaba</option>
+          <option>Kailahun</option>
+          <option>Kambia</option>
+          <option>Karene</option>
+          <option>Kenema</option>
+          <option>Koinadugu</option>
+          <option>Kono</option>
+          <option>Moyamba</option>
+          <option>Port Loko</option>
+          <option>Pujehun</option>
+          <option>Tonkolili</option>
+          <option>Western Area Rural</option>
+          <option>Western Area Urban (Freetown)</option>
+        </select>
+        <div class="field-error" id="err-district"></div>
+      </div>
+      <div class="form-group">
+        <label>Town / Village</label>
+        <input type="text" id="co-town" placeholder="Enter town or village">
+      </div>
+
+      <div class="section-label">Order Details</div>
+      <div id="co-order-summary" class="cart-summary" style="margin-bottom:14px"></div>
+
+      <div class="form-group">
+        <label>Preferred Delivery Date</label>
+        <input type="date" id="co-date">
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="mobile-money" checked>
+            <div>
+              <div class="payment-option-label">📱 Mobile Money</div>
+              <div class="payment-option-sub">Orange Money, Africell Money</div>
+            </div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="cash">
+            <div>
+              <div class="payment-option-label">💵 Cash on Delivery</div>
+              <div class="payment-option-sub">Pay when you receive your order</div>
+            </div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="bank">
+            <div>
+              <div class="payment-option-label">🏦 Bank Transfer</div>
+              <div class="payment-option-sub">Direct bank payment</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Notes / Instructions</label>
+        <textarea id="co-notes" placeholder="Any special instructions for your order…"></textarea>
+      </div>
+
+      <div class="section-label">Confirmation</div>
+
+      <div class="check-group">
+        <input type="checkbox" id="co-terms">
+        <label for="co-terms">I agree to the <a href="#">Terms and Conditions</a> of Farmer Marketplace.</label>
+      </div>
+
+      <div class="form-group">
+        <label>Buyer Signature <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="text" id="co-signature" placeholder="Type your full name as signature">
+      </div>
+
+      <div class="form-group">
+        <label>Order Date</label>
+        <div class="sys-field" id="co-order-date"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="placeOrder()">
+          <i class="fa-solid fa-check-circle"></i> Confirm Order
+        </button>
+        <button class="btn-secondary" onclick="goTo('cart')">Back</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ══════════════ ORDER SUCCESS ══════════════ -->
+<div class="screen" id="screen-success">
+  <div class="mobile">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">✅</div>
+    <div class="page-title"><h2>Order Placed!</h2><p>Your order is on its way</p></div>
+    <div class="form-body">
+      <div class="success-banner">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3>Order Confirmed</h3>
+        <p id="success-msg">Your order has been received and will be processed shortly.</p>
+      </div>
+      <div class="section-label">Order Summary</div>
+      <div id="success-order-table" style="margin-bottom:16px"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goTo('dashboard'); clearCart()">
+          <i class="fa-solid fa-house"></i> Back to Home
+        </button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════
+   DATA
+══════════════════════════════════ */
+const PRODUCTS = [
+  { id:1, name:"Fresh Tomatoes",     farmer:"Kamara Farms",    desc:"Sun-ripened tomatoes, harvested this week.",      price:25000, qty:80,  unit:"crate",   cat:"vegetables", emoji:"🍅", location:"Kenema", popular:5 },
+  { id:2, name:"Groundnuts (5kg bag)",farmer:"Sesay Agro",     desc:"Roasted-ready groundnuts, clean and dry.",        price:22000, qty:120, unit:"bag",     cat:"grains",     emoji:"🥜", location:"Bo",     popular:8 },
+  { id:3, name:"Cassava Leaves",     farmer:"Conteh Harvest",  desc:"Fresh cassava leaves, bundle of 5.",              price:6000,  qty:200, unit:"bundle",  cat:"vegetables", emoji:"🌿", location:"Makeni", popular:3 },
+  { id:4, name:"Local Rice (50kg)",  farmer:"Bangura Rice Co", desc:"Premium local rice, direct from the paddy.",      price:180000,qty:30,  unit:"bag",     cat:"grains",     emoji:"🌾", location:"Kenema", popular:9 },
+  { id:5, name:"Ripe Plantain",      farmer:"Koroma Fruits",   desc:"Sweet yellow plantains, sold per bunch.",         price:15000, qty:60,  unit:"bunch",   cat:"fruits",     emoji:"🍌", location:"Freetown",popular:6 },
+  { id:6, name:"Live Chicken",       farmer:"Jalloh Poultry",  desc:"Free-range farm chicken, average 1.5–2 kg.",      price:65000, qty:20,  unit:"piece",   cat:"livestock",  emoji:"🐔", location:"Bo",     popular:4 },
+];
+
+let cart = []; // [{product, qty, date, note}]
+
+/* ══════════════════════════════════
+   NAVIGATION
+══════════════════════════════════ */
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById('screen-' + id);
+  if (s) { s.classList.add('active'); window.scrollTo(0,0); }
+  if (id === 'browse')   renderBrowse('all');
+  if (id === 'search')   runSearch();
+  if (id === 'cart')     renderCart();
+  if (id === 'checkout') renderCheckout();
+  updateBadge();
+}
+
+/* ══════════════════════════════════
+   BADGE
+══════════════════════════════════ */
+function updateBadge() {
+  const count = cart.reduce((a,c)=>a+c.qty,0);
+  const el = document.getElementById('dash-badge');
+  if (el) el.textContent = count;
+}
+
+/* ══════════════════════════════════
+   BROWSE
+══════════════════════════════════ */
+function filterCategory(chip, cat) {
+  document.querySelectorAll('#browse-chips .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  renderBrowse(cat);
+}
+
+function renderBrowse(cat) {
+  const list = cat === 'all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===cat);
+  const el = document.getElementById('product-list');
+  if (!list.length) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>No products in this category.</p></div>`; return; }
+  el.innerHTML = list.map(p => productCardHTML(p)).join('');
+}
+
+function productCardHTML(p) {
+  const statusDot = p.qty > 20 ? '🟢 Available' : p.qty > 0 ? '🟡 Limited Stock' : '🔴 Out of Stock';
+  return `
+    <div class="product-card">
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-info">
+        <span class="tag-chip">${capitalize(p.cat)}</span>
+        <div class="product-name">${p.name}</div>
+        <div class="product-farmer"><i class="fa-solid fa-user-tie" style="color:#b2d8b3;margin-right:4px"></i>${p.farmer} &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${p.location}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-meta">
+          <div>
+            <div class="product-price">Le ${p.price.toLocaleString()}<span style="font-size:11px;color:#888;font-weight:400"> / ${p.unit}</span></div>
+            <div class="product-qty">${statusDot} &nbsp;·&nbsp; ${p.qty} ${p.unit}s left</div>
+          </div>
+          <button class="add-cart-btn" onclick="addToCart(${p.id})"><i class="fa-solid fa-plus"></i> Add</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════
+   SEARCH
+══════════════════════════════════ */
+function runSearch() {
+  let results = [...PRODUCTS];
+  const kw    = (document.getElementById('search-keyword')?.value||'').toLowerCase();
+  const cat   = document.getElementById('filter-category')?.value||'';
+  const loc   = (document.getElementById('filter-location')?.value||'').toLowerCase();
+  const minP  = parseFloat(document.getElementById('filter-min')?.value)||0;
+  const maxP  = parseFloat(document.getElementById('filter-max')?.value)||Infinity;
+  const status= document.getElementById('filter-status')?.value||'';
+  const seller= (document.getElementById('filter-seller')?.value||'').toLowerCase();
+  const sort  = document.getElementById('filter-sort')?.value||'';
+
+  if (kw)     results = results.filter(p => p.name.toLowerCase().includes(kw) || p.desc.toLowerCase().includes(kw));
+  if (cat)    results = results.filter(p => p.cat === cat.toLowerCase());
+  if (loc)    results = results.filter(p => p.location.toLowerCase() === loc.toLowerCase());
+  if (minP)   results = results.filter(p => p.price >= minP);
+  if (maxP !== Infinity) results = results.filter(p => p.price <= maxP);
+  if (status === 'available') results = results.filter(p => p.qty > 20);
+  if (status === 'limited')   results = results.filter(p => p.qty > 0 && p.qty <= 20);
+  if (seller) results = results.filter(p => p.farmer.toLowerCase().includes(seller));
+
+  if (sort === 'price-asc')  results.sort((a,b)=>a.price-b.price);
+  if (sort === 'price-desc') results.sort((a,b)=>b.price-a.price);
+  if (sort === 'newest')     results.reverse();
+  if (sort === 'popular')    results.sort((a,b)=>b.popular-a.popular);
+
+  const el = document.getElementById('search-results');
+  if (!results.length) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><p>No products match your search.</p></div>`; return; }
+  el.innerHTML = results.map(p => productCardHTML(p)).join('');
+}
+
+/* ══════════════════════════════════
+   CART
+══════════════════════════════════ */
+function addToCart(productId) {
+  const p = PRODUCTS.find(p=>p.id===productId);
+  if (!p) return;
+  const existing = cart.find(c=>c.product.id===productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ product: p, qty: 1, date: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}), note: '' });
+  }
+  showToast(`${p.emoji} ${p.name} added to cart`);
+  updateBadge();
+}
+
+function changeQty(productId, delta) {
+  const item = cart.find(c=>c.product.id===productId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(c=>c.product.id!==productId);
+  renderCart();
+  updateBadge();
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(c=>c.product.id!==productId);
+  renderCart();
+  updateBadge();
+}
+
+function cartTotal() { return cart.reduce((a,c)=>a+(c.product.price*c.qty),0); }
+
+function renderCart() {
+  const el = document.getElementById('cart-items-container');
+  const summarySection = document.getElementById('cart-summary-section');
+
+  if (!cart.length) {
+    el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-cart-shopping"></i><p>Your cart is empty.<br>Browse products to add items.</p></div>`;
+    if (summarySection) summarySection.style.display = 'none';
+    return;
+  }
+
+  el.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.product.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.product.name}</div>
+        <div class="cart-item-unit">Le ${item.product.price.toLocaleString()} / ${item.product.unit}</div>
+        <div class="cart-item-row">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(${item.product.id},-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.product.id},1)">+</button>
+          </div>
+          <span class="cart-item-price">Le ${(item.product.price*item.qty).toLocaleString()}</span>
+          <button class="remove-btn" onclick="removeFromCart(${item.product.id})"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-date">Added: ${item.date}</div>
+      </div>
+    </div>`).join('');
+
+  if (summarySection) summarySection.style.display = 'block';
+
+  const summaryEl = document.getElementById('cart-summary');
+  const deliveryFee = 10000;
+  const total = cartTotal();
+  summaryEl.innerHTML = `
+    <div class="summary-row"><span>Subtotal</span><span>Le ${total.toLocaleString()}</span></div>
+    <div class="summary-row"><span>Delivery Fee</span><span>Le ${deliveryFee.toLocaleString()}</span></div>
+    <div class="summary-row total"><span>Total</span><span>Le ${(total+deliveryFee).toLocaleString()}</span></div>`;
+}
+
+/* ══════════════════════════════════
+   CHECKOUT
+══════════════════════════════════ */
+function renderCheckout() {
+  // Set today's date
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const el = document.getElementById('co-order-date');
+  if (el) el.textContent = dateStr;
+
+  // Set min delivery date
+  const dateInput = document.getElementById('co-date');
+  if (dateInput) {
+    const minDate = new Date(today); minDate.setDate(minDate.getDate()+1);
+    dateInput.min = minDate.toISOString().split('T')[0];
+  }
+
+  // Order summary
+  const summaryEl = document.getElementById('co-order-summary');
+  if (!summaryEl) return;
+  if (!cart.length) {
+    summaryEl.innerHTML = `<p style="color:#aaa;font-size:13px;text-align:center">Your cart is empty.</p>`;
+    return;
+  }
+  const deliveryFee = 10000;
+  const total = cartTotal();
+  summaryEl.innerHTML = `
+    ${cart.map(item=>`<div class="summary-row"><span>${item.product.name} ×${item.qty}</span><span>Le ${(item.product.price*item.qty).toLocaleString()}</span></div>`).join('')}
+    <div class="summary-row"><span>Delivery Fee</span><span>Le ${deliveryFee.toLocaleString()}</span></div>
+    <div class="summary-row total"><span>Total</span><span>Le ${(total+deliveryFee).toLocaleString()}</span></div>`;
+}
+
+/* ── FIELD VALIDATORS ── */
+function validateName(input) {
+  const val = input.value.trim();
+  const errEl = document.getElementById('err-name');
+  if (!val) {
+    setFieldState(input, errEl, 'invalid', 'Full name is required.');
+    return false;
+  }
+  if (!/^[a-zA-Z\s'\-]+$/.test(val)) {
+    setFieldState(input, errEl, 'invalid', 'Name must contain letters only — no numbers or symbols.');
+    return false;
+  }
+  setFieldState(input, errEl, 'valid', '');
+  return true;
+}
+
+function validatePhone(input) {
+  const val = input.value.trim();
+  const errEl = document.getElementById('err-phone');
+  if (!val) {
+    setFieldState(input, errEl, 'invalid', 'Phone number is required.');
+    return false;
+  }
+  if (!/^0\d{8}$/.test(val)) {
+    setFieldState(input, errEl, 'invalid', 'Phone must start with 0 and be exactly 9 digits (e.g. 076123456).');
+    return false;
+  }
+  setFieldState(input, errEl, 'valid', '');
+  return true;
+}
+
+function setFieldState(input, errEl, state, msg) {
+  input.classList.remove('input-invalid', 'input-valid');
+  input.classList.add(state === 'invalid' ? 'input-invalid' : 'input-valid');
+  if (errEl) errEl.textContent = msg;
+}
+
+function placeOrder() {
+  const nameInput     = document.getElementById('co-name');
+  const phoneInput    = document.getElementById('co-phone');
+  const address       = document.getElementById('co-address')?.value.trim();
+  const districtSel   = document.getElementById('co-district');
+  const district      = districtSel?.value.trim();
+  const terms         = document.getElementById('co-terms')?.checked;
+
+  // Run all validators
+  const nameOk    = validateName(nameInput);
+  const phoneOk   = validatePhone(phoneInput);
+
+  // District validation
+  const distErrEl = document.getElementById('err-district');
+  let districtOk = true;
+  if (!district) {
+    districtSel.classList.add('input-invalid');
+    if (distErrEl) distErrEl.textContent = 'Please select a district.';
+    districtOk = false;
+  } else {
+    districtSel.classList.remove('input-invalid');
+    districtSel.classList.add('input-valid');
+    if (distErrEl) distErrEl.textContent = '';
+  }
+
+  if (!nameOk || !phoneOk || !address || !districtOk) {
+    showToast('⚠️ Please fix the errors above');
+    return;
+  }
+  if (!cart.length) { showToast('⚠️ Your cart is empty'); return; }
+  if (!terms) { showToast('⚠️ Please agree to Terms & Conditions'); return; }
+
+  const name  = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+
+  const deliveryFee = 10000;
+  const total = cartTotal();
+  const orderNum = 'ORD-' + Date.now().toString().slice(-6);
+  const payMethod = document.querySelector('input[name="payment"]:checked')?.value || 'mobile-money';
+  const payLabel = { 'mobile-money':'Mobile Money','cash':'Cash on Delivery','bank':'Bank Transfer' }[payMethod];
+
+  // Success screen
+  document.getElementById('success-msg').textContent = `Order ${orderNum} confirmed. You'll receive a confirmation via SMS.`;
+  document.getElementById('success-order-table').innerHTML = `
+    <table class="order-summary-table">
+      <tr><td>Order ID</td><td>${orderNum}</td></tr>
+      <tr><td>Customer</td><td>${name}</td></tr>
+      <tr><td>Phone</td><td>${phone}</td></tr>
+      <tr><td>District</td><td>${district}</td></tr>
+      <tr><td>Items</td><td>${cart.length} product${cart.length>1?'s':''}</td></tr>
+      <tr><td>Subtotal</td><td>Le ${total.toLocaleString()}</td></tr>
+      <tr><td>Delivery Fee</td><td>Le ${deliveryFee.toLocaleString()}</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>Le ${(total+deliveryFee).toLocaleString()}</strong></td></tr>
+      <tr><td>Payment</td><td>${payLabel}</td></tr>
+      <tr><td>Order Date</td><td>${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td></tr>
+    </table>`;
+
+  goTo('success');
+}
+
+function clearCart() {
+  cart = [];
+  updateBadge();
+}
+
+/* ══════════════════════════════════
+   UTILS
+══════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* ══════════════════════════════════
+   INIT
+══════════════════════════════════ */
+goTo('dashboard');
+</script>
+</body>
+</html>
