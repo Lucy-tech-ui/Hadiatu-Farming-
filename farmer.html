@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Marketplace - Farmer Portal</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background: #f0f4f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px 10px;
+  }
+
+  .mobile {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #156b1d;
+    padding: 36px 25px 30px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+  }
+  .header h1 { font-size: 22px; margin-bottom: 6px; }
+  .header p  { font-size: 13px; opacity: 0.88; }
+  .back-btn {
+    position: absolute; top: 18px; left: 18px;
+    color: #fff; font-size: 18px; cursor: pointer;
+    background: rgba(255,255,255,.18); border: none;
+    border-radius: 50%; width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-btn:hover { background: rgba(255,255,255,.3); }
+
+  /* ── LOGO ── */
+  .logo {
+    width: 90px; height: 90px;
+    margin: -45px auto 10px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    border: 4px solid #fff;
+  }
+
+  /* ── PAGE TITLE ── */
+  .page-title { text-align: center; padding: 4px 20px 18px; }
+  .page-title h2 { color: #156b1d; font-size: 20px; margin-bottom: 4px; }
+  .page-title p  { color: #888; font-size: 13px; }
+
+  /* ── DASHBOARD GRID ── */
+  .dashboard-grid {
+    padding: 0 20px 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .grid-btn {
+    background: #fff;
+    border: 1.5px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .25s ease;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  }
+  .grid-btn:hover {
+    background: #edf8ed; border-color: #156b1d;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(21,107,29,.12);
+  }
+  .grid-btn i    { color: #156b1d; font-size: 26px; margin-bottom: 10px; }
+  .grid-btn span { font-size: 11px; font-weight: 700; color: #444; line-height: 1.3; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* ── SCREENS ── */
+  .screen { display: none; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ── FORM LAYOUT ── */
+  .form-body { padding: 0 20px 24px; flex: 1; overflow-y: auto; }
+  .form-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: #156b1d;
+    margin: 18px 0 10px; padding-bottom: 6px;
+    border-bottom: 1.5px solid #e6f4e6;
+  }
+  .form-group { margin-bottom: 14px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
+  input[type=text], input[type=email], input[type=tel],
+  input[type=password], input[type=number], input[type=date],
+  select, textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px; font-size: 14px;
+    background: #fafafa; color: #333;
+    transition: border-color .2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: #156b1d; background: #fff; }
+  textarea { resize: vertical; min-height: 80px; }
+  .input-hint { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+  /* Upload button */
+  .upload-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border: 1.5px dashed #b2d8b3;
+    border-radius: 12px; font-size: 13px; color: #156b1d;
+    background: #f4fbf4; cursor: pointer; font-weight: 600;
+  }
+  .upload-btn:hover { background: #e6f4e6; }
+
+  /* Radio row */
+  .radio-row { display: flex; gap: 16px; }
+  .radio-row label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .radio-row input[type=radio] { accent-color: #156b1d; width: 16px; height: 16px; }
+
+  /* Action buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 22px; }
+  .btn-primary {
+    flex: 1; padding: 13px; background: #156b1d;
+    color: #fff; border: none; border-radius: 14px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: #0f4f15; }
+  .btn-secondary {
+    flex: 1; padding: 13px; background: #fff;
+    color: #156b1d; border: 1.5px solid #156b1d;
+    border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .btn-secondary:hover { background: #edf8ed; }
+  .btn-danger {
+    flex: 1; padding: 13px; background: #c62828;
+    color: #fff; border: none; border-radius: 14px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .btn-danger:hover { background: #9b1d1d; }
+
+  /* Warning box */
+  .warning-box {
+    background: #fff3e0; border: 1.5px solid #ffb74d;
+    border-radius: 14px; padding: 14px 16px; margin: 14px 0;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .warning-box i { color: #f57c00; font-size: 18px; margin-top: 2px; }
+  .warning-box p { font-size: 13px; color: #7a4e00; line-height: 1.5; }
+
+  /* Order card (View Orders) */
+  .order-card {
+    border: 1.5px solid #e9ecef; border-radius: 16px;
+    padding: 16px; margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .order-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .order-id { font-size: 13px; font-weight: 700; color: #156b1d; }
+  .order-badge {
+    font-size: 10px; font-weight: 700; padding: 3px 10px;
+    border-radius: 20px; text-transform: uppercase;
+  }
+  .badge-pending   { background: #fff3e0; color: #e65100; }
+  .badge-confirmed { background: #e8f5e9; color: #2e7d32; }
+  .badge-shipped   { background: #e3f2fd; color: #1565c0; }
+  .order-row { display: flex; justify-content: space-between; font-size: 13px; color: #555; padding: 3px 0; border-bottom: 1px solid #f5f5f5; }
+  .order-row:last-child { border-bottom: none; }
+  .order-row span:first-child { color: #999; font-size: 12px; }
+  .order-row i { width: 16px; color: #156b1d; margin-right: 8px; }
+
+  /* System-generated field */
+  .sys-field {
+    width: 100%; padding: 10px 14px;
+    background: #f0f4f0; border: 1.5px solid #dce8dc;
+    border-radius: 12px; font-size: 13px; color: #888;
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 14px 20px; margin: 20px 20px 20px;
+    color: #fff; font-weight: 600; font-size: 12px;
+    background: #156b1d; border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(21,107,29,.25);
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile screen active" id="screen-dashboard">
+  <div class="header">
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">🚜</div>
+  <div class="page-title">
+    <h2>Farmer Portal</h2>
+    <p>Manage your farming business</p>
+  </div>
+  <div class="dashboard-grid">
+    <button class="grid-btn" onclick="show('create-profile')">
+      <i class="fa-solid fa-user-plus"></i><span>Create Profile</span>
+    </button>
+    <button class="grid-btn" onclick="show('manage-profile')">
+      <i class="fa-solid fa-user-gear"></i><span>Manage Profile</span>
+    </button>
+    <button class="grid-btn" onclick="show('add-product')">
+      <i class="fa-solid fa-box-open"></i><span>Add Products</span>
+    </button>
+    <button class="grid-btn" onclick="show('manage-orders')">
+      <i class="fa-solid fa-pen-to-square"></i><span>Edit Products</span>
+    </button>
+    <button class="grid-btn" onclick="show('delete-product')">
+      <i class="fa-solid fa-trash-can"></i><span>Delete Products</span>
+    </button>
+    <button class="grid-btn" onclick="show('set-prices')">
+      <i class="fa-solid fa-tags"></i><span>Set Prices &amp; Stock</span>
+    </button>
+    <button class="grid-btn" onclick="show('view-orders')">
+      <i class="fa-solid fa-eye"></i><span>View Orders</span>
+    </button>
+    <button class="grid-btn" onclick="show('manage-orders')">
+      <i class="fa-solid fa-boxes-packing"></i><span>Manage Orders</span>
+    </button>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-create-profile">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">👤</div>
+  <div class="page-title"><h2>Create Profile</h2><p>Set up your farmer account</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Personal Information</div>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label>Farmer ID</label>
+      <div class="sys-field"><i class="fa-solid fa-wand-magic-sparkles"></i> &nbsp;Auto-generated by system</div>
+    </div>
+
+    <div class="form-group">
+      <label>Profile Photo</label>
+      <div class="upload-btn"><i class="fa-solid fa-camera"></i> Upload Photo</div>
+    </div>
+
+    <div class="form-group">
+      <label>Gender</label>
+      <select>
+        <option value="">Select gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Prefer not to say</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date">
+    </div>
+
+    <div class="form-group">
+      <label>National ID Number <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="text" placeholder="Enter national ID">
+    </div>
+
+    <div class="form-section-label">Contact Information</div>
+
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+232 XX XXX XXXX">
+    </div>
+
+    <div class="form-group">
+      <label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="email" placeholder="you@example.com">
+    </div>
+
+    <div class="form-section-label">Location</div>
+
+    <div class="form-group">
+      <label>District</label>
+      <input type="text" placeholder="e.g. Kenema">
+    </div>
+    <div class="form-group">
+      <label>Region</label>
+      <input type="text" placeholder="e.g. Eastern Province">
+    </div>
+    <div class="form-group">
+      <label>Chiefdom</label>
+      <input type="text" placeholder="Enter chiefdom">
+    </div>
+    <div class="form-group">
+      <label>Community</label>
+      <input type="text" placeholder="Enter community">
+    </div>
+
+    <div class="form-group">
+      <label>Residential Address</label>
+      <input type="text" placeholder="Street / House number">
+    </div>
+
+    <div class="form-group">
+      <label>GPS Coordinates</label>
+      <input type="text" placeholder="Tap to detect location">
+    </div>
+
+    <div class="form-section-label">Farm Information</div>
+
+    <div class="form-group">
+      <label>Farm Name <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="text" placeholder="Enter farm name">
+    </div>
+
+    <div class="form-group">
+      <label>Farm Size</label>
+      <input type="text" placeholder="e.g. 2 hectares / 5 acres">
+    </div>
+
+    <div class="form-group">
+      <label>Type of Farming</label>
+      <select>
+        <option value="">Select farming type</option>
+        <option>Crop</option>
+        <option>Livestock</option>
+        <option>Poultry</option>
+        <option>Mixed</option>
+        <option>Fisheries</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Years of Experience</label>
+      <input type="number" placeholder="e.g. 5" min="0">
+    </div>
+
+    <div class="form-group">
+      <label>Membership</label>
+      <select>
+        <option value="">Select membership type</option>
+        <option>Cooperative</option>
+        <option>Individual</option>
+        <option>Farmer Group</option>
+      </select>
+    </div>
+
+    <div class="form-section-label">Emergency Contact</div>
+
+    <div class="form-group">
+      <label>Contact Name</label>
+      <input type="text" placeholder="Full name">
+    </div>
+    <div class="form-group">
+      <label>Relationship</label>
+      <input type="text" placeholder="e.g. Spouse, Parent">
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+232 XX XXX XXXX">
+    </div>
+
+    <div class="form-section-label">Account</div>
+
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" placeholder="Choose a username">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="Create a password">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary"><i class="fa-solid fa-user-plus"></i> &nbsp;Create Profile</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Cancel</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-manage-profile">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">⚙️</div>
+  <div class="page-title"><h2>Manage Profile</h2><p>Update your information</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Personal Information</div>
+    <div class="form-group">
+      <label>Full Name</label><input type="text" placeholder="John Farmer">
+    </div>
+    <div class="form-group">
+      <label>Profile Photo</label>
+      <div class="upload-btn"><i class="fa-solid fa-upload"></i> Upload</div>
+    </div>
+    <div class="form-group">
+      <label>Gender</label>
+      <select><option>Male</option><option>Female</option><option>Prefer not to say</option></select>
+    </div>
+    <div class="form-group">
+      <label>Date of Birth</label><input type="date">
+    </div>
+
+    <div class="form-section-label">Contact</div>
+    <div class="form-group">
+      <label>Phone Number</label><input type="tel" placeholder="+232 XX XXX XXXX">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label><input type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label>Address</label><input type="text" placeholder="Street / House number">
+    </div>
+
+    <div class="form-section-label">Location</div>
+    <div class="form-group">
+      <label>Country</label><input type="text" placeholder="Sierra Leone">
+    </div>
+    <div class="form-group">
+      <label>District</label><input type="text" placeholder="e.g. Kenema">
+    </div>
+    <div class="form-group">
+      <label>Town / Village</label><input type="text" placeholder="Enter town or village">
+    </div>
+
+    <div class="form-section-label">Farm Information</div>
+    <div class="form-group">
+      <label>Farm Name</label><input type="text" placeholder="My Farm">
+    </div>
+    <div class="form-group">
+      <label>Farm Size</label><input type="text" placeholder="e.g. 2 hectares">
+    </div>
+    <div class="form-group">
+      <label>Farming Type</label>
+      <select>
+        <option>Crop</option><option>Livestock</option><option>Poultry</option>
+        <option>Mixed</option><option>Fisheries</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Main Crops</label><input type="text" placeholder="e.g. Rice, Cassava">
+    </div>
+    <div class="form-group">
+      <label>Livestock</label><input type="text" placeholder="e.g. Cattle, Goats">
+    </div>
+    <div class="form-group">
+      <label>Years of Experience</label><input type="number" placeholder="5" min="0">
+    </div>
+
+    <div class="form-section-label">Account</div>
+    <div class="form-group">
+      <label>Username</label><input type="text" placeholder="my_username">
+    </div>
+    <div class="form-group">
+      <label>Change Password</label><input type="password" placeholder="New password">
+    </div>
+
+    <div class="form-section-label">Payment (Optional)</div>
+    <div class="form-group">
+      <label>Mobile Money</label><input type="tel" placeholder="Mobile money number">
+    </div>
+    <div class="form-group">
+      <label>Bank Name</label><input type="text" placeholder="Enter bank name">
+    </div>
+    <div class="form-group">
+      <label>Account Number</label><input type="text" placeholder="Enter account number">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp;Save Changes</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Cancel</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-add-product">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">📦</div>
+  <div class="page-title"><h2>Add Products</h2><p>List a new product for sale</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Product Details</div>
+    <div class="form-group">
+      <label>Product Name</label><input type="text" placeholder="e.g. Fresh Tomatoes">
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select>
+        <option value="">Select category</option>
+        <option>Vegetables</option><option>Fruits</option><option>Grains</option>
+        <option>Livestock</option><option>Poultry</option><option>Fisheries</option><option>Dairy</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea placeholder="Describe your product…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Product Image</label>
+      <div class="upload-btn"><i class="fa-solid fa-image"></i> Upload Image</div>
+    </div>
+
+    <div class="form-section-label">Pricing &amp; Quantity</div>
+    <div class="form-group">
+      <label>Unit of Measure</label>
+      <select>
+        <option value="">Select unit</option>
+        <option>kg</option><option>bag</option><option>crate</option>
+        <option>litre</option><option>piece</option><option>bundle</option>
+      </select>
+      <div class="input-hint">e.g. kg, bag, crate, litre</div>
+    </div>
+    <div class="form-group">
+      <label>Price per Unit (Le)</label><input type="number" placeholder="0.00" min="0">
+    </div>
+    <div class="form-group">
+      <label>Available Quantity</label><input type="number" placeholder="e.g. 50" min="0">
+    </div>
+    <div class="form-group">
+      <label>Minimum Order Quantity</label><input type="number" placeholder="e.g. 5" min="1">
+    </div>
+
+    <div class="form-section-label">Dates</div>
+    <div class="form-group">
+      <label>Harvest Date</label><input type="date">
+    </div>
+    <div class="form-group">
+      <label>Expiry Date <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="date">
+    </div>
+
+    <div class="form-section-label">Availability</div>
+    <div class="form-group">
+      <label>Farm Location</label><input type="text" placeholder="Where can buyers collect?">
+    </div>
+    <div class="form-group">
+      <label>Delivery Available?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="delivery" value="yes"> Yes</label>
+        <label><input type="radio" name="delivery" value="no" checked> No</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Pickup Available?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="pickup" value="yes" checked> Yes</label>
+        <label><input type="radio" name="pickup" value="no"> No</label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary"><i class="fa-solid fa-plus"></i> &nbsp;Add Product</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Cancel</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-manage-orders">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">✏️</div>
+  <div class="page-title"><h2>Manage Orders</h2><p>Edit your product listings</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Select Product</div>
+    <div class="form-group">
+      <label>Select Product</label>
+      <select>
+        <option value="">Choose a product…</option>
+        <option>Fresh Tomatoes</option>
+        <option>Groundnuts (5kg bag)</option>
+        <option>Cassava Leaves</option>
+      </select>
+    </div>
+
+    <div class="form-section-label">Product Information</div>
+    <div class="form-group">
+      <label>Product Name</label><input type="text" placeholder="Product name">
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select>
+        <option value="">Select category</option>
+        <option>Vegetables</option><option>Fruits</option><option>Grains</option>
+        <option>Livestock</option><option>Poultry</option><option>Fisheries</option><option>Dairy</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea placeholder="Product description…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Update Image</label>
+      <div class="upload-btn"><i class="fa-solid fa-upload"></i> Upload</div>
+    </div>
+    <div class="form-group">
+      <label>Price (Le)</label><input type="number" placeholder="0.00" min="0">
+    </div>
+    <div class="form-group">
+      <label>Quantity Available</label><input type="number" placeholder="0" min="0">
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select>
+        <option value="">Select status</option>
+        <option>Available</option>
+        <option>Out of Stock</option>
+        <option>Archived</option>
+      </select>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp;Save Changes</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Cancel</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-delete-product">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">🗑️</div>
+  <div class="page-title"><h2>Delete Products</h2><p>Remove a listing permanently</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Select Product</div>
+    <div class="form-group">
+      <label>Select Product</label>
+      <select>
+        <option value="">Choose a product to delete…</option>
+        <option>Fresh Tomatoes</option>
+        <option>Groundnuts (5kg bag)</option>
+        <option>Cassava Leaves</option>
+      </select>
+    </div>
+
+    <div class="warning-box">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p><strong>Warning:</strong> Deleting this product will permanently remove it from your listings. This action cannot be undone.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-danger"><i class="fa-solid fa-trash-can"></i> &nbsp;Delete Product</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Cancel</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-set-prices">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">🏷️</div>
+  <div class="page-title"><h2>Set Prices &amp; Stock</h2><p>Update pricing and inventory</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Product</div>
+    <div class="form-group">
+      <label>Select Product</label>
+      <select>
+        <option value="">Choose a product…</option>
+        <option>Fresh Tomatoes</option>
+        <option>Groundnuts (5kg bag)</option>
+       <option>Cassava Leaves</option>
+      </select>
+    </div>
+
+    <div class="form-section-label">Pricing</div>
+    <div class="form-group">
+      <label>Current Price (Le)</label>
+      <div class="sys-field">Le 25,000</div>
+    </div>
+    <div class="form-group">
+      <label>New Price (Le)</label><input type="number" placeholder="Enter new price" min="0">
+    </div>
+
+    <div class="form-section-label">Stock</div>
+    <div class="form-group">
+      <label>Available Stock</label><input type="number" placeholder="Enter quantity" min="0">
+    </div>
+    <div class="form-group">
+      <label>Low Stock Alert Level</label><input type="number" placeholder="e.g. 10" min="0">
+      <div class="input-hint">Get notified when stock falls below this number</div>
+    </div>
+
+    <div class="form-section-label">Discount (Optional)</div>
+    <div class="form-group">
+      <label>Discount (%)</label><input type="number" placeholder="e.g. 10" min="0" max="100">
+    </div>
+    <div class="form-group">
+      <label>Sale Start Date</label><input type="date">
+    </div>
+    <div class="form-group">
+      <label>Sale End Date</label><input type="date">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary"><i class="fa-solid fa-rotate"></i> &nbsp;Update Price &amp; Stock</button>
+      <button class="btn-secondary" onclick="show('dashboard')">Reset</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<div class="mobile screen" id="screen-view-orders">
+  <div class="header">
+    <button class="back-btn" onclick="show('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">👁️</div>
+  <div class="page-title"><h2>View Orders</h2><p>All incoming orders at a glance</p></div>
+
+  <div class="form-body">
+
+    <div class="form-section-label">Recent Orders</div>
+
+        <div class="order-card">
+      <div class="order-card-header">
+        <span class="order-id">#ORD-20260011</span>
+        <span class="order-badge badge-confirmed">Confirmed</span>
+      </div>
+      <div class="order-row"><span><i class="fa-solid fa-user"></i>Customer</span><span>Aminata Kamara</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-box-open"></i>Product(s)</span><span>Fresh Tomatoes</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-weight-scale"></i>Quantity</span><span>3 crates</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-money-bill-wave"></i>Total Amount</span><span>Le 75,000</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-credit-card"></i>Payment Status</span><span>✅ Paid</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-truck-fast"></i>Order Status</span><span>Confirmed</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-calendar-days"></i>Date &amp; Time</span><span>11 Jun 2026 · 09:14 AM</span></div>
+    </div>
+
+        <div class="order-card">
+      <div class="order-card-header">
+        <span class="order-id">#ORD-20260012</span>
+        <span class="order-badge badge-pending">Pending</span>
+      </div>
+      <div class="order-row"><span><i class="fa-solid fa-user"></i>Customer</span><span>Ibrahim Sesay</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-box-open"></i>Product(s)</span><span>Groundnuts</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-weight-scale"></i>Quantity</span><span>2 bags</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-money-bill-wave"></i>Total Amount</span><span>Le 50,000</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-credit-card"></i>Payment Status</span><span>⏳ Pending</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-truck-fast"></i>Order Status</span><span>Pending</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-calendar-days"></i>Date &amp; Time</span><span>11 Jun 2026 · 10:30 AM</span></div>
+    </div>
+
+        <div class="order-card">
+      <div class="order-card-header">
+        <span class="order-id">#ORD-20260010</span>
+        <span class="order-badge badge-shipped">Shipped</span>
+      </div>
+      <div class="order-row"><span><i class="fa-solid fa-user"></i>Customer</span><span>Fatmata Conteh</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-box-open"></i>Product(s)</span><span>Cassava Leaves</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-weight-scale"></i>Quantity</span><span>5 bundles</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-money-bill-wave"></i>Total Amount</span><span>Le 30,000</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-credit-card"></i>Payment Status</span><span>✅ Paid</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-truck-fast"></i>Order Status</span><span>Shipped</span></div>
+      <div class="order-row"><span><i class="fa-solid fa-calendar-days"></i>Date &amp; Time</span><span>10 Jun 2026 · 03:45 PM</span></div>
+    </div>
+
+    <div style="text-align:center; color:#aaa; font-size:12px; margin-top:8px; padding-bottom:4px;">
+      Showing 3 of 3 orders
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<script>
+  // Map screen IDs to element IDs
+  const screens = {
+    'dashboard':      'screen-dashboard',
+    'create-profile': 'screen-create-profile',
+    'manage-profile': 'screen-manage-profile',
+    'add-product':    'screen-add-product',
+    'manage-orders':  'screen-manage-orders',
+    'delete-product': 'screen-delete-product',
+    'set-prices':     'screen-set-prices',
+    'view-orders':    'screen-view-orders',
+  };
+
+  function show(id) {
+    Object.values(screens).forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.classList.remove('active');
+    });
+    const target = document.getElementById(screens[id]);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+  }
+</script>
+</body>
+</html>
