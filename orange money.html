@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orange Money - Mobile Payment Form</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+body { background:#f5f5f5; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:20px 10px; }
+
+.mobile { width:100%; max-width:420px; margin:0 auto; background:#fff; border-radius:30px; overflow:hidden; border:1px solid #e0e0e0; box-shadow:0 10px 40px rgba(0,0,0,.1); display:flex; flex-direction:column; min-height:85vh; }
+
+.header { background:#FF7900; padding:30px 25px; color:#fff; text-align:center; position:relative; flex-shrink:0; }
+.header h1 { font-size:19px; margin-bottom:4px; }
+.header p  { font-size:12px; opacity:.9; }
+.back-btn {
+  position:absolute; top:18px; left:18px;
+  color:#fff; font-size:18px; cursor:pointer;
+  background:rgba(255,255,255,.22); border:none;
+  border-radius:50%; width:38px; height:38px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.back-btn:hover { background:rgba(255,255,255,.36); transform:translateX(-2px); }
+
+.logo {
+  width:84px; height:84px; margin:-42px auto 8px;
+  background:#fff; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:38px; box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border:4px solid #fff; flex-shrink:0; color:#FF7900;
+}
+
+.content-area { padding:6px 24px 10px; flex:1; overflow-y:auto; }
+
+.section-label {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.8px; color:#FF7900;
+  margin:18px 0 10px; padding-bottom:6px;
+  border-bottom:1.5px solid #ffe6cc;
+  display:flex; align-items:center; gap:6px;
+}
+
+label { display:block; margin-bottom:8px; color:#444; font-weight:600; font-size:13px; }
+.input-box {
+  display:flex; align-items:center; background:#fdfdfd;
+  border:2px solid #e9ecef; border-radius:12px;
+  padding:0 15px; margin-bottom:16px; transition:.25s;
+}
+.input-box:focus-within { border-color:#FF7900; background:#fff; }
+.input-box i { color:#bbb; margin-right:10px; width:16px; text-align:center; }
+.input-box input, .input-box select, .input-box textarea {
+  width:100%; padding:13px 0; border:none; outline:none;
+  background:transparent; font-size:14px; font-family:inherit;
+}
+.input-box textarea { resize:vertical; min-height:60px; padding-top:12px; }
+.input-hint { font-size:11px; color:#aaa; margin:-10px 0 14px 4px; }
+.field-error { font-size:11px; color:#e53935; font-weight:600; margin:-10px 0 14px 4px; min-height:14px; }
+.input-box.invalid { border-color:#e53935; background:#fff5f5; }
+.input-box.valid   { border-color:#43a047; background:#f4fbf4; }
+
+.sys-field {
+  display:flex; align-items:center; gap:10px;
+  background:#fff7ef; border:2px solid #ffe6cc; border-radius:12px;
+  padding:12px 15px; margin-bottom:16px; font-size:13px; color:#a16a35; font-style:italic;
+}
+.sys-field i { color:#FF7900; }
+
+.pay-btn {
+  width:100%; padding:16px; background:#FF7900; color:#fff;
+  border:none; border-radius:12px; font-weight:bold; cursor:pointer;
+  font-size:16px; transition:.3s; display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.pay-btn:hover { background:#e56c00; transform:translateY(-2px); }
+.pay-btn:disabled { background:#ffd0a3; cursor:not-allowed; transform:none; }
+
+/* ── SUMMARY CARD ── */
+#summary-card { display:none; text-align:center; padding:24px 20px; border:2px solid #156b1d; border-radius:20px; background:#f9fff9; margin-top:6px; }
+#summary-card > i { font-size:54px; color:#156b1d; margin-bottom:6px; }
+#summary-card h3 { color:#156b1d; font-size:17px; margin-bottom:14px; }
+.summary-item { display:flex; justify-content:space-between; margin:8px 0; font-size:13px; text-align:left; padding-bottom:6px; border-bottom:1px solid #e8f5e9; gap:10px; }
+.summary-item:last-of-type { border-bottom:none; }
+.summary-item span:first-child { color:#888; flex-shrink:0; }
+.summary-item b { color:#222; text-align:right; word-break:break-word; }
+
+.footer { text-align:center; padding:15px; margin:15px 20px 20px; color:#fff; font-weight:600; font-size:12px; background:#156b1d; border-radius:16px; box-shadow:0 4px 10px rgba(21,107,29,.3); flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="mobile">
+  <div class="header">
+    <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🍊 Orange Money Sierra Leone</h1>
+    <p>Mobile Payment Form</p>
+  </div>
+
+  <div class="logo"><i class="fa-solid fa-mobile-screen-button"></i></div>
+
+  <div class="content-area">
+    <form id="om-payment-form">
+
+      <!-- ═══ Customer Information ═══ -->
+      <div class="section-label"><i class="fa-solid fa-user"></i> Customer Information</div>
+
+      <label>Full Name</label>
+      <div class="input-box">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="full-name" placeholder="Enter your full name"
+               oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"
+               onblur="validateField(this,'full-name-err', v=>v.trim()!=='' && /^[a-zA-Z\s'-]+$/.test(v), 'Name must contain letters only')">
+      </div>
+      <div class="field-error" id="full-name-err"></div>
+
+      <label>Phone Number (Orange Money Account)</label>
+      <div class="input-box">
+        <i class="fa-solid fa-phone"></i>
+        <input type="tel" id="cust-phone" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"
+               onblur="validateField(this,'cust-phone-err', v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits')">
+      </div>
+      <div class="input-hint">9 digits, starting with 0 (e.g. 076123456)</div>
+      <div class="field-error" id="cust-phone-err"></div>
+
+      <label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <div class="input-box">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="cust-email" placeholder="you@example.com">
+      </div>
+
+      <!-- ═══ Payment Details ═══ -->
+      <div class="section-label"><i class="fa-solid fa-money-bill-wave"></i> Payment Details</div>
+
+      <div class="sys-field">
+        <i class="fa-solid fa-hashtag"></i>
+        <span id="txn-ref-field">Transaction Reference: will be generated on submit</span>
+      </div>
+
+      <label>Amount to Pay</label>
+      <div class="input-box">
+        <i class="fa-solid fa-coins"></i>
+        <input type="number" id="amount" placeholder="Enter amount" min="1" step="0.01"
+               onblur="validateField(this,'amount-err', v=>v!=='' && parseFloat(v)>0, 'Enter a valid amount greater than 0')">
+      </div>
+      <div class="field-error" id="amount-err"></div>
+
+      <label>Currency</label>
+      <div class="input-box">
+        <i class="fa-solid fa-coins"></i>
+        <select id="currency">
+          <option value="SLE">SLE — Sierra Leonean Leone</option>
+          <option value="USD">USD — US Dollar</option>
+          <option value="GBP">GBP — British Pound</option>
+        </select>
+      </div>
+
+      <label>Purpose of Payment</label>
+      <div class="input-box">
+        <i class="fa-solid fa-circle-info"></i>
+        <select id="purpose">
+          <option value="">Select purpose…</option>
+          <option>Product Purchase</option>
+          <option>Order Payment</option>
+          <option>Delivery Fee</option>
+          <option>Subscription / Membership</option>
+          <option>Service Fee</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- ═══ Receiver Information ═══ -->
+      <div class="section-label"><i class="fa-solid fa-store"></i> Receiver Information</div>
+
+      <label>Merchant / Business Name</label>
+      <div class="input-box">
+        <i class="fa-solid fa-shop"></i>
+        <input type="text" id="merchant-name" placeholder="e.g. Farmer Marketplace"
+               onblur="validateField(this,'merchant-name-err', v=>v.trim()!=='', 'Merchant name is required')">
+      </div>
+      <div class="field-error" id="merchant-name-err"></div>
+
+      <label>Merchant Orange Money Number</label>
+      <div class="input-box">
+        <i class="fa-solid fa-phone-volume"></i>
+        <input type="tel" id="merchant-phone" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"
+               onblur="validateField(this,'merchant-phone-err', v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits')">
+      </div>
+      <div class="input-hint">9 digits, starting with 0</div>
+      <div class="field-error" id="merchant-phone-err"></div>
+
+      <!-- ═══ Order Information (Optional) ═══ -->
+      <div class="section-label"><i class="fa-solid fa-box"></i> Order Information <span style="color:#cfa483;font-weight:400;text-transform:none;font-size:11px">(Optional)</span></div>
+
+      <label>Order ID</label>
+      <div class="input-box">
+        <i class="fa-solid fa-receipt"></i>
+        <input type="text" id="order-id" placeholder="e.g. ORD-20260011">
+      </div>
+
+      <label>Product / Service Description</label>
+      <div class="input-box">
+        <i class="fa-solid fa-pen"></i>
+        <textarea id="product-desc" placeholder="Describe the product or service…"></textarea>
+      </div>
+
+      <label>Quantity</label>
+      <div class="input-box">
+        <i class="fa-solid fa-cubes-stacked"></i>
+        <input type="number" id="order-qty" placeholder="e.g. 3" min="0">
+      </div>
+
+      <!-- ═══ Confirmation ═══ -->
+      <div class="section-label"><i class="fa-solid fa-clipboard-check"></i> Confirmation</div>
+
+      <div class="sys-field">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Payment Date: <strong id="pay-date-field"></strong></span>
+      </div>
+
+      <div class="sys-field">
+        <i class="fa-solid fa-sms"></i>
+        <span>Confirmation Code / SMS Reference: <strong id="confirm-code-field"></strong></span>
+      </div>
+
+      <label>Customer Signature <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <div class="input-box">
+        <i class="fa-solid fa-signature"></i>
+        <input type="text" id="signature" placeholder="Draw or type your signature here">
+      </div>
+
+      <label>User PIN</label>
+      <div class="input-box">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="pin" placeholder="Enter 4-digit PIN" maxlength="4"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)"
+               onblur="validateField(this,'pin-err', v=>/^[0-9]{4}$/.test(v), 'PIN must be exactly 4 digits')">
+      </div>
+      <div class="field-error" id="pin-err"></div>
+
+      <button type="submit" class="pay-btn"><i class="fa-solid fa-circle-check"></i> Confirm Payment</button>
+    </form>
+
+    <!-- ═══ SUMMARY CARD ═══ -->
+    <div id="summary-card">
+      <i class="fa-solid fa-circle-check"></i>
+      <h3>Payment Successful!</h3>
+
+      <div class="summary-item"><span>Full Name</span><b id="sum-name"></b></div>
+      <div class="summary-item"><span>Phone Number</span><b id="sum-phone"></b></div>
+      <div class="summary-item"><span>Transaction Ref.</span><b id="sum-ref"></b></div>
+      <div class="summary-item"><span>Amount</span><b id="sum-amount"></b></div>
+      <div class="summary-item"><span>Purpose</span><b id="sum-purpose"></b></div>
+      <div class="summary-item"><span>Merchant</span><b id="sum-merchant"></b></div>
+      <div class="summary-item"><span>Merchant Number</span><b id="sum-merchant-phone"></b></div>
+      <div class="summary-item" id="sum-order-row" style="display:none"><span>Order ID</span><b id="sum-order"></b></div>
+      <div class="summary-item" id="sum-product-row" style="display:none"><span>Product/Service</span><b id="sum-product"></b></div>
+      <div class="summary-item" id="sum-qty-row" style="display:none"><span>Quantity</span><b id="sum-qty"></b></div>
+      <div class="summary-item"><span>Payment Date</span><b id="sum-date"></b></div>
+      <div class="summary-item"><span>Confirmation Code</span><b id="sum-code"></b></div>
+      <div class="summary-item"><span>Status</span><b style="color:#156b1d">Completed</b></div>
+
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="pay-btn" style="background:#fff;color:#156b1d;border:2px solid #156b1d;" onclick="goBack()">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <button class="pay-btn" style="background:#156b1d" onclick="resetForm()">
+          <i class="fa-solid fa-rotate-left"></i> New Payment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Secured by Orange Money SL</div>
+</div>
+
+<script>
+function goBack() {
+  if (window.history.length > 1) { window.history.back(); }
+  else { alert('Returning to previous screen…'); }
+}
+
+/* ── FIELD VALIDATION ── */
+function validateField(input, errId, testFn, msg) {
+  const val = input.value.trim();
+  const box = input.closest('.input-box');
+  const errEl = document.getElementById(errId);
+  const ok = testFn(val);
+  box.classList.remove('invalid','valid');
+  box.classList.add(ok ? 'valid' : 'invalid');
+  if (errEl) errEl.textContent = ok ? '' : msg;
+  return ok;
+}
+
+/* ── HELPERS ── */
+function generateTxnRef() {
+  return 'TXN' + Date.now().toString().slice(-9);
+}
+function generateConfirmCode() {
+  return 'OM-' + Math.random().toString(36).substring(2,8).toUpperCase();
+}
+function formatDate() {
+  return new Date().toLocaleString('en-GB', {
+    day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+}
+
+/* ── LIVE PAYMENT DATE & CONFIRMATION CODE ── */
+let liveConfirmCode = generateConfirmCode();
+
+function updateLiveDate() {
+  const el = document.getElementById('pay-date-field');
+  if (el) el.textContent = formatDate();
+}
+
+function updateLiveConfirmCode(regenerate = false) {
+  if (regenerate) liveConfirmCode = generateConfirmCode();
+  const el = document.getElementById('confirm-code-field');
+  if (el) el.textContent = liveConfirmCode;
+}
+
+updateLiveDate();
+updateLiveConfirmCode();
+setInterval(updateLiveDate, 1000);
+
+/* ── FORM SUBMIT ── */
+document.getElementById('om-payment-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const fullName      = document.getElementById('full-name');
+  const custPhone     = document.getElementById('cust-phone');
+  const amount        = document.getElementById('amount');
+  const merchantName  = document.getElementById('merchant-name');
+  const merchantPhone = document.getElementById('merchant-phone');
+  const pin           = document.getElementById('pin');
+
+  const nameOk     = validateField(fullName,'full-name-err', v=>v!=='' && /^[a-zA-Z\s'-]+$/.test(v), 'Name must contain letters only');
+  const custPhOk   = validateField(custPhone,'cust-phone-err', v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits');
+  const amountOk   = validateField(amount,'amount-err', v=>v!=='' && parseFloat(v)>0, 'Enter a valid amount greater than 0');
+  const merchOk    = validateField(merchantName,'merchant-name-err', v=>v.trim()!=='', 'Merchant name is required');
+  const merchPhOk  = validateField(merchantPhone,'merchant-phone-err', v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits');
+  const pinOk      = validateField(pin,'pin-err', v=>/^[0-9]{4}$/.test(v), 'PIN must be exactly 4 digits');
+
+  if (!(nameOk && custPhOk && amountOk && merchOk && merchPhOk && pinOk)) {
+    return;
+  }
+
+  // Gather values
+  const currency    = document.getElementById('currency').value;
+  const purpose     = document.getElementById('purpose').value || '—';
+  const orderId     = document.getElementById('order-id').value.trim();
+  const productDesc = document.getElementById('product-desc').value.trim();
+  const qty         = document.getElementById('order-qty').value;
+  const txnRef      = generateTxnRef();
+  const confirmCode = liveConfirmCode;
+  const payDate     = formatDate();
+
+  // Populate summary
+  document.getElementById('sum-name').textContent  = fullName.value.trim();
+  document.getElementById('sum-phone').textContent = custPhone.value.trim();
+  document.getElementById('sum-ref').textContent   = txnRef;
+  document.getElementById('sum-amount').textContent = parseFloat(amount.value).toLocaleString() + ' ' + currency;
+  document.getElementById('sum-purpose').textContent = purpose;
+  document.getElementById('sum-merchant').textContent = merchantName.value.trim();
+  document.getElementById('sum-merchant-phone').textContent = merchantPhone.value.trim();
+
+  if (orderId) {
+    document.getElementById('sum-order-row').style.display = 'flex';
+    document.getElementById('sum-order').textContent = orderId;
+  }
+  if (productDesc) {
+    document.getElementById('sum-product-row').style.display = 'flex';
+    document.getElementById('sum-product').textContent = productDesc;
+  }
+  if (qty) {
+    document.getElementById('sum-qty-row').style.display = 'flex';
+    document.getElementById('sum-qty').textContent = qty;
+  }
+
+  document.getElementById('sum-date').textContent = payDate;
+  document.getElementById('sum-code').textContent = confirmCode;
+
+  // Switch views
+  document.getElementById('om-payment-form').style.display = 'none';
+  document.getElementById('summary-card').style.display = 'block';
+});
+
+/* ── RESET ── */
+function resetForm() {
+  document.getElementById('om-payment-form').reset();
+  document.querySelectorAll('.input-box').forEach(b => b.classList.remove('invalid','valid'));
+  document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
+  ['sum-order-row','sum-product-row','sum-qty-row'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('summary-card').style.display = 'none';
+  document.getElementById('om-payment-form').style.display = 'block';
+  updateLiveConfirmCode(true);
+  window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>
