@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Marketplace – Admin Portal</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+/* ── RESET ── */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+
+body {
+  background:#f0f4f0;
+  display:flex; justify-content:center; align-items:flex-start;
+  min-height:100vh; padding:20px 10px;
+}
+
+/* ── SCREEN WRAPPER ── */
+.screen { display:none; }
+.screen.active { display:block; }
+
+.mobile {
+  width:100%; max-width:420px;
+  background:#fff; border-radius:30px; overflow:hidden;
+  border:1px solid #e0e0e0;
+  box-shadow:0 10px 40px rgba(0,0,0,.10);
+  display:flex; flex-direction:column; min-height:85vh;
+  margin:0 auto;
+}
+
+/* ── HEADER ── */
+.header {
+  background:#156b1d; padding:36px 25px 30px;
+  color:#fff; text-align:center; position:relative; flex-shrink:0;
+}
+.header h1 { font-size:22px; margin-bottom:6px; }
+.header p  { font-size:13px; opacity:.88; }
+
+.back-btn {
+  position:absolute; top:18px; left:18px;
+  color:#fff; font-size:18px; cursor:pointer;
+  background:rgba(255,255,255,.18); border:none;
+  border-radius:50%; width:38px; height:38px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s; backdrop-filter:blur(4px);
+}
+.back-btn:hover { background:rgba(255,255,255,.32); transform:translateX(-2px); }
+
+/* ── LOGO ── */
+.logo {
+  width:90px; height:90px; margin:-45px auto 10px;
+  background:#fff; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:44px; box-shadow:0 4px 16px rgba(0,0,0,.12);
+  border:4px solid #fff; flex-shrink:0;
+}
+
+/* ── PAGE TITLE ── */
+.page-title { text-align:center; padding:4px 20px 16px; flex-shrink:0; }
+.page-title h2 { color:#156b1d; font-size:20px; margin-bottom:4px; }
+.page-title p  { color:#888; font-size:13px; }
+
+/* ── DASHBOARD GRID ── */
+.dashboard-grid {
+  padding:0 20px 20px;
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:14px; flex:1; align-content:start;
+}
+.grid-btn {
+  background:#fff; border:1.5px solid #e9ecef; border-radius:16px;
+  padding:24px 10px; text-align:center; cursor:pointer;
+  transition:all .25s; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+.grid-btn:last-child:nth-child(odd) { grid-column:1/-1; padding:28px 10px; }
+.grid-btn:hover {
+  background:#edf8ed; border-color:#156b1d;
+  transform:translateY(-3px);
+  box-shadow:0 6px 14px rgba(21,107,29,.12);
+}
+.grid-btn .icon-circle {
+  width:54px; height:54px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:12px; font-size:24px; transition:transform .25s;
+}
+.grid-btn:hover .icon-circle { transform:scale(1.1); }
+.grid-btn.verify  .icon-circle { background:#e8f5e9; color:#2e7d32; }
+.grid-btn.users   .icon-circle { background:#e3f2fd; color:#1565c0; }
+.grid-btn.monitor .icon-circle { background:#fff3e0; color:#e65100; }
+.grid-btn span {
+  font-size:11px; font-weight:700; color:#444;
+  line-height:1.3; text-transform:uppercase; letter-spacing:.5px;
+}
+
+/* ── FORM BODY ── */
+.form-body { padding:0 20px 24px; flex:1; overflow-y:auto; }
+
+.section-label {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.8px; color:#156b1d;
+  margin:18px 0 10px; padding-bottom:6px;
+  border-bottom:1.5px solid #e6f4e6;
+}
+
+.form-group { margin-bottom:13px; }
+label { display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px; }
+
+input[type=text],input[type=email],input[type=tel],
+input[type=number],input[type=date],input[type=datetime-local],
+select,textarea {
+  width:100%; padding:10px 14px;
+  border:1.5px solid #e0e0e0; border-radius:12px;
+  font-size:14px; background:#fafafa; color:#333;
+  transition:border-color .2s; outline:none;
+}
+input:focus,select:focus,textarea:focus { border-color:#156b1d; background:#fff; }
+textarea { resize:vertical; min-height:72px; }
+.input-hint { font-size:11px; color:#aaa; margin-top:3px; }
+
+/* ── SYS FIELD ── */
+.sys-field {
+  width:100%; padding:10px 14px;
+  background:#f0f4f0; border:1.5px solid #dce8dc;
+  border-radius:12px; font-size:13px; color:#888; font-style:italic;
+}
+
+/* ── BUTTONS ── */
+.btn-row { display:flex; gap:10px; margin-top:20px; }
+.btn-primary {
+  flex:1; padding:13px; background:#156b1d;
+  color:#fff; border:none; border-radius:14px;
+  font-size:14px; font-weight:700; cursor:pointer;
+  transition:background .2s; display:flex; align-items:center; justify-content:center; gap:7px;
+}
+.btn-primary:hover { background:#0f4f15; }
+.btn-secondary {
+  flex:1; padding:13px; background:#fff;
+  color:#156b1d; border:1.5px solid #156b1d;
+  border-radius:14px; font-size:14px; font-weight:700; cursor:pointer;
+}
+.btn-secondary:hover { background:#edf8ed; }
+.btn-danger {
+  flex:1; padding:13px; background:#c62828;
+  color:#fff; border:none; border-radius:14px;
+  font-size:14px; font-weight:700; cursor:pointer;
+}
+.btn-danger:hover { background:#9b1d1d; }
+
+/* ── STATUS BADGE ── */
+.badge {
+  display:inline-block; padding:3px 12px; border-radius:20px;
+  font-size:11px; font-weight:700; text-transform:uppercase;
+}
+.badge-pending  { background:#fff3e0; color:#e65100; }
+.badge-approved { background:#e8f5e9; color:#2e7d32; }
+.badge-rejected { background:#ffebee; color:#c62828; }
+.badge-active    { background:#e8f5e9; color:#2e7d32; }
+.badge-suspended { background:#ffebee; color:#c62828; }
+.badge-paid      { background:#e8f5e9; color:#2e7d32; }
+.badge-unpaid    { background:#fff3e0; color:#e65100; }
+.badge-delivered { background:#e3f2fd; color:#1565c0; }
+
+/* ── RECORD CARDS (list view) ── */
+.record-card {
+  border:1.5px solid #e9ecef; border-radius:16px;
+  padding:14px 16px; margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer;
+  transition:box-shadow .2s, border-color .2s;
+}
+.record-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); border-color:#b2d8b3; }
+.record-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.record-id    { font-size:13px; font-weight:700; color:#156b1d; }
+.record-name  { font-size:14px; font-weight:700; color:#222; margin-bottom:3px; }
+.record-meta  { font-size:12px; color:#888; }
+.record-row   { display:flex; justify-content:space-between; font-size:12px; color:#555; padding:3px 0; border-bottom:1px solid #f5f5f5; }
+.record-row:last-child { border-bottom:none; }
+.record-row span:first-child { color:#aaa; }
+
+/* ── SEARCH / TAB BAR ── */
+.tab-bar {
+  display:flex; gap:6px; padding:0 20px 12px; flex-shrink:0;
+}
+.tab-btn {
+  flex:1; padding:8px 4px; border-radius:10px; border:1.5px solid #e0e0e0;
+  background:#fff; font-size:11px; font-weight:700; color:#777;
+  cursor:pointer; text-transform:uppercase; letter-spacing:.4px; transition:all .2s;
+}
+.tab-btn.active { background:#156b1d; color:#fff; border-color:#156b1d; }
+
+.search-bar {
+  display:flex; align-items:center;
+  background:#fafafa; border:1.5px solid #e0e0e0;
+  border-radius:14px; padding:0 14px;
+  margin:0 20px 12px; gap:10px; flex-shrink:0;
+}
+.search-bar i { color:#aaa; font-size:15px; }
+.search-bar input {
+  border:none; background:transparent;
+  padding:11px 0; font-size:14px; flex:1;
+}
+.search-bar input:focus { outline:none; }
+
+/* ── DETAIL PANEL ── */
+.detail-panel {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.45); z-index:200;
+  align-items:flex-end; justify-content:center;
+}
+.detail-panel.open { display:flex; }
+.detail-sheet {
+  background:#fff; width:100%; max-width:420px;
+  border-radius:24px 24px 0 0; padding:24px 22px 32px;
+  max-height:88vh; overflow-y:auto;
+}
+.sheet-handle { width:40px; height:4px; background:#e0e0e0; border-radius:2px; margin:0 auto 18px; }
+.sheet-title { font-size:17px; font-weight:700; color:#156b1d; margin-bottom:16px; }
+.sheet-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
+.sheet-row:last-child { border-bottom:none; }
+.sheet-row span:first-child { color:#aaa; width:45%; flex-shrink:0; }
+.sheet-row span:last-child  { font-weight:600; color:#333; text-align:right; }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+  background:#156b1d; color:#fff;
+  padding:12px 24px; border-radius:30px;
+  font-size:13px; font-weight:600;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+  opacity:0; pointer-events:none; transition:opacity .3s;
+  z-index:999; white-space:nowrap;
+}
+.toast.show { opacity:1; }
+
+/* ── STATS ROW ── */
+.stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:0 20px 16px; }
+.stat-card {
+  background:#f4fbf4; border:1.5px solid #b2d8b3;
+  border-radius:14px; padding:12px 8px; text-align:center;
+}
+.stat-num   { font-size:22px; font-weight:800; color:#156b1d; }
+.stat-label { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align:center; padding:14px 20px; margin:20px;
+  color:#fff; font-weight:600; font-size:12px;
+  background:#156b1d; border-radius:16px;
+  box-shadow:0 4px 10px rgba(21,107,29,.25); flex-shrink:0;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align:center; padding:40px 20px; color:#bbb; }
+.empty-state i { font-size:46px; margin-bottom:12px; display:block; }
+.empty-state p { font-size:14px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ DASHBOARD ════════════════ -->
+<div class="screen active" id="screen-dashboard">
+  <div class="mobile">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🛡️</div>
+    <div class="page-title">
+      <h2>Admin Portal</h2>
+      <p>Manage and oversee platform operations</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="stat-farmers">4</div><div class="stat-label">Farmers</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-users">6</div><div class="stat-label">Users</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-txn">5</div><div class="stat-label">Transactions</div></div>
+    </div>
+
+    <div class="dashboard-grid">
+      <button class="grid-btn verify" onclick="goTo('verify')">
+        <div class="icon-circle"><i class="fa-solid fa-user-shield"></i></div>
+        <span>Verify Farmers</span>
+      </button>
+      <button class="grid-btn users" onclick="goTo('users')">
+        <div class="icon-circle"><i class="fa-solid fa-users-gear"></i></div>
+        <span>Manage Users</span>
+      </button>
+      <button class="grid-btn monitor" onclick="goTo('monitor')">
+        <div class="icon-circle"><i class="fa-solid fa-chart-line"></i></div>
+        <span>Monitor Transactions</span>
+      </button>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ 1. VERIFY FARMERS ════════════════ -->
+<div class="screen" id="screen-verify">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">✅</div>
+    <div class="page-title"><h2>Verify Farmers</h2><p>Review and approve farmer registrations</p></div>
+
+    <!-- Filter tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterFarmers(this,'all')">All</button>
+      <button class="tab-btn" onclick="filterFarmers(this,'Pending')">Pending</button>
+      <button class="tab-btn" onclick="filterFarmers(this,'Approved')">Approved</button>
+      <button class="tab-btn" onclick="filterFarmers(this,'Rejected')">Rejected</button>
+    </div>
+
+    <div class="search-bar">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="verify-search" placeholder="Search by name or ID…" oninput="renderFarmerList()">
+    </div>
+
+    <div class="form-body" style="padding-top:4px">
+      <div id="farmer-list"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ 2. MANAGE USERS ════════════════ -->
+<div class="screen" id="screen-users">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">👥</div>
+    <div class="page-title"><h2>Manage Users</h2><p>View, edit and control user accounts</p></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterUsers(this,'all')">All</button>
+      <button class="tab-btn" onclick="filterUsers(this,'Admin')">Admin</button>
+      <button class="tab-btn" onclick="filterUsers(this,'Farmer')">Farmer</button>
+      <button class="tab-btn" onclick="filterUsers(this,'Buyer')">Buyer</button>
+    </div>
+
+    <div class="search-bar">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="user-search" placeholder="Search by name or username…" oninput="renderUserList()">
+    </div>
+
+    <div class="form-body" style="padding-top:4px">
+      <div id="user-list"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ 3. MONITOR TRANSACTIONS ════════════════ -->
+<div class="screen" id="screen-monitor">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">💳</div>
+    <div class="page-title"><h2>Monitor Transactions</h2><p>Track all platform payments and orders</p></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterTxn(this,'all')">All</button>
+      <button class="tab-btn" onclick="filterTxn(this,'Paid')">Paid</button>
+      <button class="tab-btn" onclick="filterTxn(this,'Unpaid')">Unpaid</button>
+      <button class="tab-btn" onclick="filterTxn(this,'Delivered')">Delivered</button>
+    </div>
+
+    <div class="search-bar">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="txn-search" placeholder="Search by ID, buyer or farmer…" oninput="renderTxnList()">
+    </div>
+
+    <div class="form-body" style="padding-top:4px">
+      <div id="txn-list"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ DETAIL PANELS ════════════════ -->
+
+<!-- Farmer Detail Panel -->
+<div class="detail-panel" id="panel-farmer">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-id-card-clip" style="margin-right:8px;color:#156b1d"></i>Farmer Verification</div>
+    <div id="panel-farmer-body"></div>
+    <div style="margin-top:18px; display:flex; flex-direction:column; gap:10px;" id="panel-farmer-actions"></div>
+  </div>
+</div>
+
+<!-- User Detail Panel -->
+<div class="detail-panel" id="panel-user">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-user-gear" style="margin-right:8px;color:#156b1d"></i>User Account</div>
+    <div id="panel-user-body"></div>
+    <div style="margin-top:18px; display:flex; flex-direction:column; gap:10px;" id="panel-user-actions"></div>
+  </div>
+</div>
+
+<!-- Transaction Detail Panel -->
+<div class="detail-panel" id="panel-txn">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-receipt" style="margin-right:8px;color:#156b1d"></i>Transaction Detail</div>
+    <div id="panel-txn-body"></div>
+    <div style="margin-top:18px;" id="panel-txn-actions"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const DISTRICTS = ['Bo','Bombali','Bonthe','Falaba','Kailahun','Kambia','Karene',
+  'Kenema','Koinadugu','Kono','Moyamba','Port Loko','Pujehun','Tonkolili',
+  'Western Area Rural','Western Area Urban (Freetown)'];
+
+let farmers = [
+  { id:'FRM-001', name:'Aminata Kamara',   nationalId:'NID-4421', phone:'076123456', email:'aminata@mail.com', farm:'Kamara Farms',    district:'Kenema',     docs:'NID, Farm Certificate', status:'Pending',  reviewedBy:'',        reviewDate:'', remarks:'' },
+  { id:'FRM-002', name:'Ibrahim Sesay',    nationalId:'NID-3318', phone:'077334455', email:'ibrahim@mail.com', farm:'Sesay Agro',      district:'Bo',         docs:'NID, Land Title',       status:'Approved', reviewedBy:'Admin01', reviewDate:autoDate(), remarks:'All docs verified.' },
+  { id:'FRM-003', name:'Fatmata Conteh',   nationalId:'NID-9912', phone:'078556677', email:'fatmata@mail.com', farm:'Conteh Harvest',  district:'Makeni',     docs:'NID',                   status:'Rejected', reviewedBy:'Admin01', reviewDate:autoDate(), remarks:'Incomplete documents.' },
+  { id:'FRM-004', name:'Mohamed Bangura',  nationalId:'NID-6678', phone:'079112233', email:'',                 farm:'Bangura Rice Co', district:'Kenema',     docs:'NID, Farm Certificate', status:'Pending',  reviewedBy:'',        reviewDate:'', remarks:'' },
+];
+
+let users = [
+  { id:'USR-001', name:'Admin User',       username:'admin01',    email:'admin@market.com',   phone:'076000001', role:'Admin',  status:'Active',    dateCreated:'01 Jan 2026', lastLogin:'11 Jun 2026', notes:'' },
+  { id:'USR-002', name:'Aminata Kamara',   username:'aminata_k',  email:'aminata@mail.com',   phone:'076123456', role:'Farmer', status:'Active',    dateCreated:'05 Jan 2026', lastLogin:'10 Jun 2026', notes:'' },
+  { id:'USR-003', name:'Ibrahim Sesay',    username:'ibrahim_s',  email:'ibrahim@mail.com',   phone:'077334455', role:'Farmer', status:'Active',    dateCreated:'06 Jan 2026', lastLogin:'09 Jun 2026', notes:'' },
+  { id:'USR-004', name:'Mariama Koroma',   username:'mariama_k',  email:'mariama@mail.com',   phone:'078990011', role:'Buyer',  status:'Active',    dateCreated:'10 Jan 2026', lastLogin:'11 Jun 2026', notes:'' },
+  { id:'USR-005', name:'John Jalloh',      username:'john_j',     email:'john@mail.com',      phone:'079223344', role:'Buyer',  status:'Suspended', dateCreated:'15 Jan 2026', lastLogin:'01 Mar 2026', notes:'Suspended due to fraudulent activity.' },
+  { id:'USR-006', name:'Fatmata Conteh',   username:'fatmata_c',  email:'fatmata@mail.com',   phone:'078556677', role:'Farmer', status:'Active',    dateCreated:'20 Jan 2026', lastLogin:'08 Jun 2026', notes:'' },
+];
+
+let transactions = [
+  { id:'TXN-20260001', orderId:'ORD-20260011', buyer:'Mariama Koroma', farmer:'Aminata Kamara', product:'Fresh Tomatoes',      qty:'3 crates',   amount:75000,  method:'Mobile Money',  payStatus:'Paid',   date:'11 Jun 2026 · 09:14', deliveryStatus:'Delivered', remarks:'' },
+  { id:'TXN-20260002', orderId:'ORD-20260012', buyer:'John Jalloh',    farmer:'Ibrahim Sesay',  product:'Groundnuts (5kg bag)', qty:'2 bags',    amount:44000,  method:'Cash on Delivery', payStatus:'Unpaid', date:'11 Jun 2026 · 10:30', deliveryStatus:'Pending',   remarks:'Awaiting collection.' },
+  { id:'TXN-20260003', orderId:'ORD-20260010', buyer:'Mariama Koroma', farmer:'Fatmata Conteh', product:'Cassava Leaves',      qty:'5 bundles',  amount:30000,  method:'Bank Transfer',  payStatus:'Paid',   date:'10 Jun 2026 · 15:45', deliveryStatus:'Delivered', remarks:'' },
+  { id:'TXN-20260004', orderId:'ORD-20260009', buyer:'Mariama Koroma', farmer:'Mohamed Bangura',product:'Local Rice (50kg)',    qty:'1 bag',     amount:180000, method:'Mobile Money',  payStatus:'Paid',   date:'09 Jun 2026 · 12:00', deliveryStatus:'Delivered', remarks:'' },
+  { id:'TXN-20260005', orderId:'ORD-20260013', buyer:'John Jalloh',    farmer:'Ibrahim Sesay',  product:'Ripe Plantain',       qty:'4 bunches', amount:60000,  method:'Cash on Delivery', payStatus:'Unpaid', date:'11 Jun 2026 · 14:10', deliveryStatus:'Processing',remarks:'' },
+];
+
+/* active filter states */
+let farmerFilter = 'all';
+let userFilter   = 'all';
+let txnFilter    = 'all';
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0,0);
+  closeAllPanels();
+  if (id === 'verify')  renderFarmerList();
+  if (id === 'users')   renderUserList();
+  if (id === 'monitor') renderTxnList();
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('stat-farmers').textContent = farmers.length;
+  document.getElementById('stat-users').textContent   = users.length;
+  document.getElementById('stat-txn').textContent     = transactions.length;
+}
+
+/* ══════════════════════════════════════════
+   1. VERIFY FARMERS
+══════════════════════════════════════════ */
+function filterFarmers(btn, filter) {
+  document.querySelectorAll('#screen-verify .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  farmerFilter = filter;
+  renderFarmerList();
+}
+
+function renderFarmerList() {
+  const kw = (document.getElementById('verify-search')?.value || '').toLowerCase();
+  let list = farmers.filter(f => {
+    const matchFilter = farmerFilter === 'all' || f.status === farmerFilter;
+    const matchSearch = !kw || f.name.toLowerCase().includes(kw) || f.id.toLowerCase().includes(kw);
+    return matchFilter && matchSearch;
+  });
+
+  const el = document.getElementById('farmer-list');
+  if (!list.length) { el.innerHTML = emptyState('fa-id-card','No farmers found.'); return; }
+  el.innerHTML = list.map(f => `
+    <div class="record-card" onclick="openFarmerPanel('${f.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${f.id}</span>
+        <span class="badge badge-${f.status.toLowerCase()}">${f.status}</span>
+      </div>
+      <div class="record-name">${f.name}</div>
+      <div class="record-meta"><i class="fa-solid fa-tractor" style="color:#b2d8b3;margin-right:4px"></i>${f.farm} &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${f.district}</div>
+      <div style="margin-top:6px;font-size:11px;color:#aaa"><i class="fa-solid fa-file-lines" style="margin-right:4px"></i>${f.docs}</div>
+    </div>`).join('');
+}
+
+function openFarmerPanel(id) {
+  const f = farmers.find(x => x.id === id);
+  if (!f) return;
+  const body = document.getElementById('panel-farmer-body');
+  body.innerHTML = `
+    <div class="sheet-row"><span>Farmer ID</span><span>${f.id}</span></div>
+    <div class="sheet-row"><span>Full Name</span><span>${f.name}</span></div>
+    <div class="sheet-row"><span>National ID / Reg No.</span><span>${f.nationalId}</span></div>
+    <div class="sheet-row"><span>Phone Number</span><span>${f.phone}</span></div>
+    <div class="sheet-row"><span>Email Address</span><span>${f.email || '—'}</span></div>
+    <div class="sheet-row"><span>Farm Name</span><span>${f.farm}</span></div>
+    <div class="sheet-row"><span>District</span><span>${f.district}</span></div>
+    <div class="sheet-row"><span>Submitted Docs</span><span>${f.docs}</span></div>
+    <div class="sheet-row"><span>Status</span><span><span class="badge badge-${f.status.toLowerCase()}">${f.status}</span></span></div>
+    <div class="sheet-row"><span>Reviewed By</span><span>${f.reviewedBy || '—'}</span></div>
+    <div class="sheet-row"><span>Review Date</span><span>${f.reviewDate || '—'}</span></div>
+    <div class="sheet-row"><span>Remarks</span><span>${f.remarks || '—'}</span></div>
+
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Remarks</label>
+      <textarea id="remark-${f.id}" placeholder="Add remarks…" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:64px;outline:none">${f.remarks}</textarea>
+    </div>`;
+
+  const actions = document.getElementById('panel-farmer-actions');
+  if (f.status === 'Pending') {
+    actions.innerHTML = `
+      <div style="display:flex;gap:10px">
+        <button class="btn-primary" onclick="updateFarmerStatus('${f.id}','Approved')"><i class="fa-solid fa-check"></i> Approve</button>
+        <button class="btn-danger"  onclick="updateFarmerStatus('${f.id}','Rejected')"><i class="fa-solid fa-xmark"></i> Reject</button>
+      </div>
+      <button class="btn-secondary" onclick="closePanel('panel-farmer')">Close</button>`;
+  } else {
+    actions.innerHTML = `
+      <div style="display:flex;gap:10px">
+        <button class="btn-primary" onclick="updateFarmerStatus('${f.id}','Approved')"><i class="fa-solid fa-check"></i> Approve</button>
+        <button class="btn-danger"  onclick="updateFarmerStatus('${f.id}','Rejected')"><i class="fa-solid fa-xmark"></i> Reject</button>
+      </div>
+      <button class="btn-secondary" onclick="closePanel('panel-farmer')">Close</button>`;
+  }
+  openPanel('panel-farmer');
+}
+
+function updateFarmerStatus(id, newStatus) {
+  const f = farmers.find(x => x.id === id);
+  if (!f) return;
+  const remarkVal = document.getElementById('remark-' + id)?.value.trim();
+  f.status     = newStatus;
+  f.reviewedBy = 'Admin01';
+  f.reviewDate = autoDate();
+  if (remarkVal) f.remarks = remarkVal;
+  closePanel('panel-farmer');
+  renderFarmerList();
+  showToast(newStatus === 'Approved' ? `✅ ${f.name} approved` : `❌ ${f.name} rejected`);
+}
+
+/* ══════════════════════════════════════════
+   2. MANAGE USERS
+══════════════════════════════════════════ */
+function filterUsers(btn, filter) {
+  document.querySelectorAll('#screen-users .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  userFilter = filter;
+  renderUserList();
+}
+
+function renderUserList() {
+  const kw = (document.getElementById('user-search')?.value || '').toLowerCase();
+  let list = users.filter(u => {
+    const matchFilter = userFilter === 'all' || u.role === userFilter;
+    const matchSearch = !kw || u.name.toLowerCase().includes(kw) || u.username.toLowerCase().includes(kw);
+    return matchFilter && matchSearch;
+  });
+
+  const roleIcon = { Admin:'fa-shield-halved', Farmer:'fa-tractor', Buyer:'fa-bag-shopping' };
+  const el = document.getElementById('user-list');
+  if (!list.length) { el.innerHTML = emptyState('fa-users','No users found.'); return; }
+  el.innerHTML = list.map(u => `
+    <div class="record-card" onclick="openUserPanel('${u.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${u.id}</span>
+        <span class="badge badge-${u.status.toLowerCase()}">${u.status}</span>
+      </div>
+      <div class="record-name">${u.name}</div>
+      <div class="record-meta">
+        <i class="fa-solid ${roleIcon[u.role] || 'fa-user'}" style="color:#b2d8b3;margin-right:4px"></i>${u.role}
+        &nbsp;·&nbsp; @${u.username}
+        &nbsp;·&nbsp; <i class="fa-solid fa-clock" style="color:#b2d8b3;margin-right:4px"></i>Last: ${u.lastLogin}
+      </div>
+    </div>`).join('');
+}
+
+function openUserPanel(id) {
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  const body = document.getElementById('panel-user-body');
+  body.innerHTML = `
+    <div class="sheet-row"><span>User ID</span><span>${u.id}</span></div>
+    <div class="sheet-row"><span>Full Name</span><span>${u.name}</span></div>
+    <div class="sheet-row"><span>Username</span><span>@${u.username}</span></div>
+    <div class="sheet-row"><span>Email Address</span><span>${u.email}</span></div>
+    <div class="sheet-row"><span>Phone Number</span><span>${u.phone}</span></div>
+    <div class="sheet-row"><span>Role</span><span>${u.role}</span></div>
+    <div class="sheet-row"><span>Account Status</span><span><span class="badge badge-${u.status.toLowerCase()}">${u.status}</span></span></div>
+    <div class="sheet-row"><span>Date Created</span><span>${u.dateCreated}</span></div>
+    <div class="sheet-row"><span>Last Login</span><span>${u.lastLogin}</span></div>
+
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Notes</label>
+      <textarea id="note-${u.id}" placeholder="Add notes about this user…" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:64px;outline:none">${u.notes}</textarea>
+    </div>`;
+
+  const actions = document.getElementById('panel-user-actions');
+  const toggleLabel = u.status === 'Active' ? 'Suspend User' : 'Activate User';
+  const toggleClass = u.status === 'Active' ? 'btn-danger' : 'btn-primary';
+  actions.innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <button class="${toggleClass}" style="flex:1;padding:13px;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;" onclick="toggleUserStatus('${u.id}')">
+        <i class="fa-solid ${u.status === 'Active' ? 'fa-ban' : 'fa-circle-check'}"></i> ${toggleLabel}
+      </button>
+      <button class="btn-primary" onclick="saveUserNote('${u.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+    </div>
+    <button class="btn-secondary" onclick="closePanel('panel-user')">Close</button>`;
+  openPanel('panel-user');
+}
+
+function toggleUserStatus(id) {
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  const noteVal = document.getElementById('note-' + id)?.value.trim();
+  u.status = u.status === 'Active' ? 'Suspended' : 'Active';
+  if (noteVal) u.notes = noteVal;
+  closePanel('panel-user');
+  renderUserList();
+  showToast(u.status === 'Active' ? `✅ ${u.name} activated` : `🚫 ${u.name} suspended`);
+}
+
+function saveUserNote(id) {
+  const u = users.find(x => x.id === id);
+  const noteVal = document.getElementById('note-' + id)?.value.trim();
+  if (u && noteVal !== undefined) { u.notes = noteVal; showToast('📝 Notes saved'); }
+  closePanel('panel-user');
+}
+
+/* ══════════════════════════════════════════
+   3. MONITOR TRANSACTIONS
+══════════════════════════════════════════ */
+function filterTxn(btn, filter) {
+  document.querySelectorAll('#screen-monitor .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  txnFilter = filter;
+  renderTxnList();
+}
+
+function renderTxnList() {
+  const kw = (document.getElementById('txn-search')?.value || '').toLowerCase();
+  let list = transactions.filter(t => {
+    const matchFilter = txnFilter === 'all' || t.payStatus === txnFilter || t.deliveryStatus === txnFilter;
+    const matchSearch = !kw || t.id.toLowerCase().includes(kw)
+      || t.buyer.toLowerCase().includes(kw) || t.farmer.toLowerCase().includes(kw)
+      || t.product.toLowerCase().includes(kw);
+    return matchFilter && matchSearch;
+  });
+
+  const el = document.getElementById('txn-list');
+  if (!list.length) { el.innerHTML = emptyState('fa-money-bill-transfer','No transactions found.'); return; }
+
+  const payClass  = s => s === 'Paid' ? 'badge-paid' : 'badge-unpaid';
+  const delClass  = s => s === 'Delivered' ? 'badge-delivered' : 'badge-pending';
+
+  el.innerHTML = list.map(t => `
+    <div class="record-card" onclick="openTxnPanel('${t.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${t.id}</span>
+        <span class="badge ${payClass(t.payStatus)}">${t.payStatus}</span>
+      </div>
+      <div class="record-name">${t.product} <span style="font-weight:400;color:#888">× ${t.qty}</span></div>
+      <div class="record-meta">
+        <i class="fa-solid fa-user" style="color:#b2d8b3;margin-right:4px"></i>${t.buyer}
+        &nbsp;→&nbsp;
+        <i class="fa-solid fa-tractor" style="color:#b2d8b3;margin-right:4px"></i>${t.farmer}
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px;">
+        <span style="font-weight:800;color:#156b1d">Le ${t.amount.toLocaleString()}</span>
+        <span class="badge ${delClass(t.deliveryStatus)}" style="font-size:10px">${t.deliveryStatus}</span>
+      </div>
+    </div>`).join('');
+}
+
+function openTxnPanel(id) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  const payClass = t.payStatus === 'Paid' ? 'badge-paid' : 'badge-unpaid';
+  const delClass = t.deliveryStatus === 'Delivered' ? 'badge-delivered' : 'badge-pending';
+
+  document.getElementById('panel-txn-body').innerHTML = `
+    <div class="sheet-row"><span>Transaction ID</span><span>${t.id}</span></div>
+    <div class="sheet-row"><span>Order ID</span><span>${t.orderId}</span></div>
+    <div class="sheet-row"><span>Buyer Name</span><span>${t.buyer}</span></div>
+    <div class="sheet-row"><span>Farmer Name</span><span>${t.farmer}</span></div>
+    <div class="sheet-row"><span>Product Name</span><span>${t.product}</span></div>
+    <div class="sheet-row"><span>Quantity</span><span>${t.qty}</span></div>
+    <div class="sheet-row"><span>Total Amount</span><span style="color:#156b1d;font-weight:800">Le ${t.amount.toLocaleString()}</span></div>
+    <div class="sheet-row"><span>Payment Method</span><span>${t.method}</span></div>
+    <div class="sheet-row"><span>Payment Status</span><span><span class="badge ${payClass}">${t.payStatus}</span></span></div>
+    <div class="sheet-row"><span>Transaction Date</span><span>${t.date}</span></div>
+    <div class="sheet-row"><span>Delivery Status</span><span><span class="badge ${delClass}">${t.deliveryStatus}</span></span></div>
+    <div class="sheet-row"><span>Admin Remarks</span><span>${t.remarks || '—'}</span></div>
+
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Delivery Status</label>
+      <select id="del-status-${t.id}" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;outline:none">
+        <option ${t.deliveryStatus==='Pending'   ?'selected':''}>Pending</option>
+        <option ${t.deliveryStatus==='Processing'?'selected':''}>Processing</option>
+        <option ${t.deliveryStatus==='Shipped'   ?'selected':''}>Shipped</option>
+        <option ${t.deliveryStatus==='Delivered' ?'selected':''}>Delivered</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Admin Remarks</label>
+      <textarea id="txn-remark-${t.id}" placeholder="Add remarks…" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:60px;outline:none">${t.remarks}</textarea>
+    </div>`;
+
+  document.getElementById('panel-txn-actions').innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <button class="btn-primary" style="flex:1" onclick="saveTxnUpdate('${t.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="btn-secondary" style="flex:1" onclick="closePanel('panel-txn')">Close</button>
+    </div>`;
+
+  openPanel('panel-txn');
+}
+
+function saveTxnUpdate(id) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  const newDel    = document.getElementById('del-status-' + id)?.value;
+  const newRemark = document.getElementById('txn-remark-' + id)?.value.trim();
+  if (newDel)    t.deliveryStatus = newDel;
+  if (newRemark !== undefined) t.remarks = newRemark;
+  closePanel('panel-txn');
+  renderTxnList();
+  showToast('💾 Transaction updated');
+}
+
+/* ══════════════════════════════════════════
+   PANEL HELPERS
+══════════════════════════════════════════ */
+function openPanel(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closePanel(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function closeAllPanels() {
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+}
+
+// Close panel when clicking backdrop
+document.querySelectorAll('.detail-panel').forEach(panel => {
+  panel.addEventListener('click', e => {
+    if (e.target === panel) closePanel(panel.id);
+  });
+});
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function autoDate() {
+  return new Date().toLocaleString('en-GB', {
+    day:'2-digit', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit', timeZone:'GMT'
+  }) + ' GMT';
+}
+
+function emptyState(icon, msg) {
+  return `<div class="empty-state"><i class="fa-solid ${icon}"></i><p>${msg}</p></div>`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+updateStats();
+</script>
+</body>
+</html>
