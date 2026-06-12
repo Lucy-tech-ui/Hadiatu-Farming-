@@ -6,216 +6,804 @@
 <title>Farmer Marketplace - Login</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+body { background:#f0f4f0; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:20px 10px; }
+.screen { display:none; }
+.screen.active { display:block; }
+.mobile { width:100%; max-width:420px; margin:0 auto; background:#fff; border-radius:30px; overflow:hidden; border:1px solid #e0e0e0; box-shadow:0 10px 40px rgba(0,0,0,.1); display:flex; flex-direction:column; min-height:85vh; }
 
-    body {
-        background: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 10px;
-    }
+.header { background:#156b1d; padding:36px 25px 30px; color:#fff; text-align:center; position:relative; flex-shrink:0; }
+.header h1 { font-size:22px; margin-bottom:6px; }
+.header p { font-size:13px; opacity:.88; }
+.back-btn { position:absolute; top:18px; left:18px; color:#fff; font-size:18px; cursor:pointer; background:rgba(255,255,255,.18); border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.back-btn:hover { background:rgba(255,255,255,.32); }
 
-    .mobile {
-        width: 100%;
-        max-width: 420px;
-        background: #ffffff;
-        border-radius: 30px;
-        overflow: hidden;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
+.logo { width:90px; height:90px; margin:-45px auto 10px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:44px; box-shadow:0 4px 16px rgba(0,0,0,.12); border:4px solid #fff; flex-shrink:0; }
 
-    .header {
-        background: #156b1d;
-        padding: 40px 25px;
-        color: #fff;
-        text-align: center;
-    }
+.form { padding:0 30px 10px; }
+label { display:block; margin-bottom:8px; color:#444; font-weight:600; font-size:14px; }
+.input-box { display:flex; align-items:center; background:#f8f9fa; border:2px solid #e9ecef; border-radius:12px; padding:0 15px; margin-bottom:18px; transition:.3s; }
+.input-box:focus-within { border-color:#156b1d; background:#fff; }
+.input-box i { color:#aaa; margin-right:10px; }
+.input-box input { width:100%; padding:14px 0; border:none; outline:none; background:transparent; font-size:15px; }
+.links { text-align:right; margin-bottom:18px; }
+.links a { color:#156b1d; text-decoration:none; font-size:13px; font-weight:600; }
+.login-btn { width:100%; padding:15px; background:#156b1d; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s; }
+.login-btn:hover { background:#115517; transform:translateY(-2px); }
+.register { margin-top:20px; text-align:center; color:#555; font-size:14px; }
+.register a { color:#156b1d; text-decoration:none; font-weight:bold; }
 
-    .header h1 { font-size: 24px; margin-bottom: 10px; }
-    .header p { font-size: 14px; opacity: 0.9; }
+.features { margin-top:25px; padding:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; background:#fafafa; border-top:1px solid #f0f0f0; }
+.feature-btn { background:#fff; border:1px solid #e9ecef; border-radius:12px; padding:15px 5px; text-align:center; cursor:pointer; transition:all .3s; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.feature-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 4px 10px rgba(21,107,29,.1); }
+.feature-btn i { color:#156b1d; font-size:22px; margin-bottom:8px; transition:.3s; }
+.feature-btn span { font-size:11px; font-weight:700; color:#555; }
 
-    .logo {
-        width: 100px;
-        height: 100px;
-        margin: -50px auto 20px;
-        background: #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 50px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border: 4px solid #ffffff;
-    }
+.page-title { text-align:center; padding:4px 20px 16px; flex-shrink:0; }
+.page-title h2 { color:#156b1d; font-size:20px; margin-bottom:4px; }
+.page-title p { color:#888; font-size:13px; }
 
-    .form { padding: 0 30px 20px; }
+.form-body { padding:0 20px 24px; flex:1; overflow-y:auto; }
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:#156b1d; margin:18px 0 10px; padding-bottom:6px; border-bottom:1.5px solid #e6f4e6; }
+.form-group { margin-bottom:13px; }
+.form-group label { font-size:12px; font-weight:600; color:#555; margin-bottom:5px; }
+input[type=text],input[type=tel],input[type=number],input[type=date],select,textarea {
+  width:100%; padding:10px 14px; border:1.5px solid #e0e0e0; border-radius:12px; font-size:14px; background:#fafafa; color:#333; transition:border-color .2s; outline:none;
+}
+input:focus, select:focus, textarea:focus { border-color:#156b1d; background:#fff; }
+textarea { resize:vertical; min-height:70px; }
+.sys-field { width:100%; padding:10px 14px; background:#f0f4f0; border:1.5px solid #dce8dc; border-radius:12px; font-size:13px; color:#888; font-style:italic; }
+.input-hint { font-size:11px; color:#aaa; margin-top:3px; }
 
-    label { display: block; margin-bottom: 8px; color: #444; font-weight: 600; font-size: 14px; }
+.btn-row { display:flex; gap:10px; margin-top:20px; }
+.btn-primary { flex:1; padding:13px; background:#156b1d; color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; transition:background .2s; display:flex; align-items:center; justify-content:center; gap:7px; }
+.btn-primary:hover { background:#0f4f15; }
+.btn-secondary { flex:1; padding:13px; background:#fff; color:#156b1d; border:1.5px solid #156b1d; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; }
+.btn-secondary:hover { background:#edf8ed; }
+.btn-danger { flex:1; padding:13px; background:#c62828; color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; }
+.btn-danger:hover { background:#9b1d1d; }
 
-    .input-box {
-        display: flex;
-        align-items: center;
-        background: #f8f9fa;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 0 15px;
-        margin-bottom: 20px;
-        transition: 0.3s;
-    }
+.tab-bar { display:flex; gap:6px; padding:0 20px 12px; flex-shrink:0; }
+.tab-btn { flex:1; padding:8px 4px; border-radius:10px; border:1.5px solid #e0e0e0; background:#fff; font-size:11px; font-weight:700; color:#777; cursor:pointer; text-transform:uppercase; letter-spacing:.4px; transition:all .2s; }
+.tab-btn.active { background:#156b1d; color:#fff; border-color:#156b1d; }
 
-    .input-box:focus-within { border-color: #156b1d; background: #fff; }
+.record-card { border:1.5px solid #e9ecef; border-radius:16px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; transition:box-shadow .2s, border-color .2s; }
+.record-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); border-color:#b2d8b3; }
+.record-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.record-id { font-size:13px; font-weight:700; color:#156b1d; }
+.record-name { font-size:14px; font-weight:700; color:#222; margin-bottom:3px; }
+.record-meta { font-size:12px; color:#888; }
 
-    .input-box i { color: #aaa; margin-right: 10px; }
+.badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; }
+.badge-available { background:#e8f5e9; color:#2e7d32; }
+.badge-active { background:#e3f2fd; color:#1565c0; }
+.badge-sold { background:#ffebee; color:#c62828; }
+.badge-pending { background:#fff3e0; color:#e65100; }
+.badge-dispatched { background:#e3f2fd; color:#1565c0; }
+.badge-delivered { background:#e8f5e9; color:#2e7d32; }
 
-    .input-box input {
-        width: 100%;
-        padding: 14px 0;
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: 15px;
-    }
+.detail-panel { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:flex-end; justify-content:center; }
+.detail-panel.open { display:flex; }
+.detail-sheet { background:#fff; width:100%; max-width:420px; border-radius:24px 24px 0 0; padding:24px 22px 32px; max-height:88vh; overflow-y:auto; }
+.sheet-handle { width:40px; height:4px; background:#e0e0e0; border-radius:2px; margin:0 auto 18px; }
+.sheet-title { font-size:17px; font-weight:700; color:#156b1d; margin-bottom:16px; }
+.sheet-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
+.sheet-row:last-child { border-bottom:none; }
+.sheet-row span:first-child { color:#aaa; width:45%; flex-shrink:0; }
+.sheet-row span:last-child { font-weight:600; color:#333; text-align:right; }
 
-    .links { text-align: right; margin-bottom: 20px; }
-    .links a { color: #156b1d; text-decoration: none; font-size: 13px; font-weight: 600; }
+.fab { position:fixed; bottom:30px; right:calc(50% - 200px + 10px); width:54px; height:54px; border-radius:50%; background:#156b1d; color:#fff; border:none; font-size:22px; box-shadow:0 6px 16px rgba(21,107,29,.35); cursor:pointer; z-index:150; display:flex; align-items:center; justify-content:center; transition:transform .2s; }
+.fab:hover { transform:scale(1.08); }
+@media (max-width:440px){ .fab { right:24px; } }
 
-    .login-btn {
-        width: 100%;
-        padding: 15px;
-        background: #156b1d;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#156b1d; color:#fff; padding:12px 24px; border-radius:30px; font-size:13px; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,.2); opacity:0; pointer-events:none; transition:opacity .3s; z-index:999; white-space:nowrap; }
+.toast.show { opacity:1; }
 
-    .login-btn:hover { background: #115517; transform: translateY(-2px); }
+.empty-state { text-align:center; padding:40px 20px; color:#bbb; }
+.empty-state i { font-size:46px; margin-bottom:12px; display:block; }
+.empty-state p { font-size:14px; }
 
-    .register { margin-top: 25px; text-align: center; color: #555; font-size: 14px; }
-    .register a { color: #156b1d; text-decoration: none; font-weight: bold; }
-
-    .features {
-        margin-top: 30px;
-        padding: 20px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        background: #fafafa;
-        border-top: 1px solid #f0f0f0;
-    }
-
-    .feature-btn {
-        background: #ffffff;
-        border: 1px solid #e9ecef;
-        border-radius: 12px;
-        padding: 15px 5px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .feature-btn:hover {
-        background: #edf8ed;
-        border-color: #156b1d;
-        transform: translateY(-3px);
-        box-shadow: 0 4px 10px rgba(21, 107, 29, 0.1);
-    }
-
-    .feature-btn i { color: #156b1d; font-size: 22px; margin-bottom: 8px; transition: 0.3s; }
-    .feature-btn span { font-size: 11px; font-weight: 700; color: #555; }
-
-    /* Footer - Updated to match primary green */
-    .footer { 
-        text-align: center; 
-        padding: 15px; 
-        margin: 15px 20px 20px; 
-        color: #ffffff; 
-        font-weight: 600;
-        font-size: 12px; 
-        background: #156b1d; /* Matched the login button and header */
-        border-radius: 16px; 
-        box-shadow: 0 4px 10px rgba(21, 107, 29, 0.3);
-    }
+.footer { text-align:center; padding:15px; margin:15px 20px 20px; color:#fff; font-weight:600; font-size:12px; background:#156b1d; border-radius:16px; box-shadow:0 4px 10px rgba(21,107,29,.3); flex-shrink:0; }
 </style>
 </head>
 <body>
 
-<div class="mobile">
+<!-- ════════════════ LOGIN ════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="mobile">
     <div class="header">
-        <h1>🌾 Farmer Marketplace</h1>
-        <p>Connecting farmers, buyers, and logistics.</p>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
     </div>
-
     <div class="logo">🚜</div>
 
     <div class="form">
-        <label>Username</label>
-        <div class="input-box">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="Enter your username" id="username">
-        </div>
-
-        <label>Password</label>
-        <div class="input-box">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="Enter your password" id="password">
-        </div>
-
-        <div class="links">
-            <a href="#">Forgot Password?</a>
-        </div>
-
-        <button class="login-btn" onclick="login()">Login</button>
-
-        <div class="register">
-            Don't have an account? <a href="Register.html">Register</a>
-        </div>
+      <label>Username</label>
+      <div class="input-box">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" placeholder="Enter your username" id="username">
+      </div>
+      <label>Password</label>
+      <div class="input-box">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" placeholder="Enter your password" id="password">
+      </div>
+      <div class="links"><a href="#">Forgot Password?</a></div>
+      <button class="login-btn" onclick="login()">Login</button>
+      <div class="register">Don't have an account? <a href="#">Register</a></div>
     </div>
 
     <div class="features">
-        <button class="feature-btn" onclick="location.href='Crops.html'">
-            <i class="fa-solid fa-seedling"></i>
-            <span>Crops</span>
-        </button>
-        <button class="feature-btn" onclick="location.href='Market.html'">
-            <i class="fa-solid fa-store"></i>
-            <span>Market</span>
-        </button>
-        <button class="feature-btn" onclick="location.href='Delivery.html'">
-            <i class="fa-solid fa-truck"></i>
-            <span>Delivery</span>
-        </button>
+      <button class="feature-btn" onclick="goTo('crops')">
+        <i class="fa-solid fa-seedling"></i><span>Crops</span>
+      </button>
+      <button class="feature-btn" onclick="goTo('market')">
+        <i class="fa-solid fa-store"></i><span>Market</span>
+      </button>
+      <button class="feature-btn" onclick="goTo('delivery')">
+        <i class="fa-solid fa-truck"></i><span>Delivery</span>
+      </button>
     </div>
 
     <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
 </div>
 
-<script>
-    function login() {
-        let username = document.getElementById("username").value.trim();
-        let password = document.getElementById("password").value.trim();
-        if(username === "" || password === "") {
-            alert("Please enter your username and password.");
-            return;
-        }
-        window.location.href = "HomeScreen.html";
-    }
-</script>
+<!-- ════════════════ CROPS ════════════════ -->
+<div class="screen" id="screen-crops">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🌱</div>
+    <div class="page-title"><h2>Crops</h2><p>Manage your crop inventory</p></div>
 
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="setTab(this,'crop-list')">List</button>
+      <button class="tab-btn" onclick="setTab(this,'crop-form')">Add New</button>
+    </div>
+
+    <div class="form-body" id="crop-list">
+      <div id="crops-container"></div>
+    </div>
+
+    <div class="form-body" id="crop-form" style="display:none">
+      <div class="section-label">Crop Details</div>
+      <div class="form-group">
+        <label>Crop ID</label>
+        <div class="sys-field" id="crop-id-field">Auto-generated on save</div>
+      </div>
+      <div class="form-group">
+        <label>Crop Name</label>
+        <input type="text" id="crop-name" placeholder="e.g. Tomatoes">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="crop-category">
+          <option value="">Select category</option>
+          <option>Vegetables</option><option>Fruits</option><option>Grains</option>
+          <option>Tubers</option><option>Legumes</option><option>Cash Crops</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Variety</label>
+        <input type="text" id="crop-variety" placeholder="e.g. Roma, Beefsteak">
+      </div>
+      <div class="form-group">
+        <label>Quantity Available</label>
+        <input type="number" id="crop-qty" placeholder="e.g. 50" min="0">
+      </div>
+      <div class="form-group">
+        <label>Unit</label>
+        <select id="crop-unit">
+          <option value="">Select unit</option>
+          <option>kg</option><option>bag</option><option>crate</option>
+          <option>bundle</option><option>litre</option><option>piece</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Price per Unit (Le)</label>
+        <input type="number" id="crop-price" placeholder="0.00" min="0">
+      </div>
+      <div class="form-group">
+        <label>Harvest Date</label>
+        <input type="date" id="crop-harvest">
+      </div>
+      <div class="form-group">
+        <label>Quality Grade</label>
+        <select id="crop-grade">
+          <option value="">Select grade</option>
+          <option>Grade A</option><option>Grade B</option><option>Grade C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Storage Location</label>
+        <input type="text" id="crop-storage" placeholder="e.g. Warehouse 1, Kenema">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="crop-desc" placeholder="Describe the crop…"></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="saveCrop()"><i class="fa-solid fa-plus"></i> Add Crop</button>
+        <button class="btn-secondary" onclick="resetCropForm()">Reset</button>
+      </div>
+    </div>
+
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ MARKET ════════════════ -->
+<div class="screen" id="screen-market">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🏪</div>
+    <div class="page-title"><h2>Market</h2><p>Manage your product listings</p></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="setTab(this,'market-list')">Listings</button>
+      <button class="tab-btn" onclick="setTab(this,'market-form')">New Listing</button>
+    </div>
+
+    <div class="form-body" id="market-list">
+      <div id="market-container"></div>
+    </div>
+
+    <div class="form-body" id="market-form" style="display:none">
+      <div class="section-label">Listing Details</div>
+      <div class="form-group">
+        <label>Listing ID</label>
+        <div class="sys-field" id="listing-id-field">Auto-generated on save</div>
+      </div>
+      <div class="form-group">
+        <label>Seller Name</label>
+        <input type="text" id="listing-seller" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" id="listing-product" placeholder="e.g. Fresh Tomatoes">
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" id="listing-qty" placeholder="e.g. 20" min="0">
+      </div>
+      <div class="form-group">
+        <label>Unit Price (Le)</label>
+        <input type="number" id="listing-price" placeholder="0.00" min="0">
+      </div>
+      <div class="form-group">
+        <label>Market Location</label>
+        <select id="listing-location">
+          <option value="">Select district</option>
+          <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
+          <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
+          <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
+          <option>Pujehun</option><option>Tonkolili</option><option>Western Area Rural</option>
+          <option>Western Area Urban (Freetown)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Listing Date</label>
+        <div class="sys-field" id="listing-date-field"></div>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="listing-status">
+          <option>Active</option>
+          <option>Pending</option>
+          <option>Sold</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Contact Information</label>
+        <input type="tel" id="listing-contact" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+        <div class="input-hint">9-digit phone number starting with 0</div>
+      </div>
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="listing-notes" placeholder="Additional notes…"></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="saveListing()"><i class="fa-solid fa-plus"></i> Add Listing</button>
+        <button class="btn-secondary" onclick="resetListingForm()">Reset</button>
+      </div>
+    </div>
+
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ DELIVERY ════════════════ -->
+<div class="screen" id="screen-delivery">
+  <div class="mobile">
+    <div class="header">
+      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+    </div>
+    <div class="logo">🚚</div>
+    <div class="page-title"><h2>Delivery</h2><p>Track and manage deliveries</p></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="setTab(this,'delivery-list')">Deliveries</button>
+      <button class="tab-btn" onclick="setTab(this,'delivery-form')">New Delivery</button>
+    </div>
+
+    <div class="form-body" id="delivery-list">
+      <div id="delivery-container"></div>
+    </div>
+
+    <div class="form-body" id="delivery-form" style="display:none">
+      <div class="section-label">Delivery Details</div>
+      <div class="form-group">
+        <label>Delivery ID</label>
+        <div class="sys-field" id="delivery-id-field">Auto-generated on save</div>
+      </div>
+      <div class="form-group">
+        <label>Order ID</label>
+        <input type="text" id="delivery-order" placeholder="e.g. ORD-20260011">
+      </div>
+      <div class="form-group">
+        <label>Recipient Name</label>
+        <input type="text" id="delivery-recipient" placeholder="Full name"
+               oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')">
+        <div class="input-hint">Letters only</div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="delivery-phone" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+        <div class="input-hint">9-digit phone number starting with 0</div>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <input type="text" id="delivery-address" placeholder="Street / Landmark">
+      </div>
+      <div class="form-group">
+        <label>Product(s)</label>
+        <input type="text" id="delivery-products" placeholder="e.g. Fresh Tomatoes, Groundnuts">
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="text" id="delivery-qty" placeholder="e.g. 3 crates, 2 bags">
+      </div>
+      <div class="form-group">
+        <label>Dispatch Date</label>
+        <input type="date" id="delivery-dispatch">
+      </div>
+      <div class="form-group">
+        <label>Expected Delivery Date</label>
+        <input type="date" id="delivery-expected">
+      </div>
+      <div class="form-group">
+        <label>Delivery Status</label>
+        <select id="delivery-status">
+          <option>Pending</option>
+          <option>Dispatched</option>
+          <option>In Transit</option>
+          <option>Delivered</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Courier / Driver</label>
+        <input type="text" id="delivery-courier" placeholder="Driver name">
+      </div>
+      <div class="form-group">
+        <label>Remarks</label>
+        <textarea id="delivery-remarks" placeholder="Additional remarks…"></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="saveDelivery()"><i class="fa-solid fa-plus"></i> Add Delivery</button>
+        <button class="btn-secondary" onclick="resetDeliveryForm()">Reset</button>
+      </div>
+    </div>
+
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+</div>
+
+<!-- ════════════════ DETAIL PANELS ════════════════ -->
+<div class="detail-panel" id="panel-crop">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-seedling" style="margin-right:8px;color:#156b1d"></i>Crop Details</div>
+    <div id="panel-crop-body"></div>
+    <div class="btn-row">
+      <button class="btn-danger" id="panel-crop-delete"><i class="fa-solid fa-trash-can"></i> Remove</button>
+      <button class="btn-secondary" onclick="closePanel('panel-crop')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="detail-panel" id="panel-listing">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-store" style="margin-right:8px;color:#156b1d"></i>Listing Details</div>
+    <div id="panel-listing-body"></div>
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Status</label>
+      <select id="listing-status-update" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;outline:none">
+        <option>Active</option><option>Pending</option><option>Sold</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" id="panel-listing-save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="btn-danger" id="panel-listing-delete"><i class="fa-solid fa-trash-can"></i> Remove</button>
+    </div>
+    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closePanel('panel-listing')">Close</button>
+  </div>
+</div>
+
+<div class="detail-panel" id="panel-delivery">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-truck" style="margin-right:8px;color:#156b1d"></i>Delivery Details</div>
+    <div id="panel-delivery-body"></div>
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Delivery Status</label>
+      <select id="delivery-status-update" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;outline:none">
+        <option>Pending</option><option>Dispatched</option><option>In Transit</option><option>Delivered</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" id="panel-delivery-save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="btn-danger" id="panel-delivery-delete"><i class="fa-solid fa-trash-can"></i> Remove</button>
+    </div>
+    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closePanel('panel-delivery')">Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+let crops = [
+  { id:'CRP-001', name:'Fresh Tomatoes', category:'Vegetables', variety:'Roma', qty:80, unit:'crate', price:25000, harvest:'2026-06-05', grade:'Grade A', storage:'Warehouse 1, Kenema', desc:'Sun-ripened tomatoes harvested this week.' },
+  { id:'CRP-002', name:'Groundnuts',     category:'Legumes',    variety:'Local Red', qty:120, unit:'bag', price:22000, harvest:'2026-05-28', grade:'Grade A', storage:'Store Room B, Bo', desc:'Roasted-ready groundnuts, clean and dry.' },
+  { id:'CRP-003', name:'Local Rice',     category:'Grains',     variety:'Lowland Rice', qty:30, unit:'bag', price:180000, harvest:'2026-05-15', grade:'Grade B', storage:'Main Warehouse, Kenema', desc:'Premium local rice direct from the paddy.' },
+];
+
+let listings = [
+  { id:'LST-001', seller:'Aminata Kamara', product:'Fresh Tomatoes', qty:30, price:25000, location:'Kenema', date:autoDate(), status:'Active', contact:'076123456', notes:'Available for pickup or delivery.' },
+  { id:'LST-002', seller:'Ibrahim Sesay',  product:'Groundnuts',     qty:50, price:22000, location:'Bo',     date:autoDate(), status:'Pending', contact:'077334455', notes:'Awaiting buyer confirmation.' },
+];
+
+let deliveries = [
+  { id:'DLV-001', orderId:'ORD-20260011', recipient:'Mariama Koroma', phone:'078990011', address:'12 Lumley Beach Rd, Freetown', products:'Fresh Tomatoes', qty:'3 crates', dispatch:'2026-06-11', expected:'2026-06-12', status:'In Transit', courier:'Samuel Turay', remarks:'Handle with care.' },
+  { id:'DLV-002', orderId:'ORD-20260012', recipient:'John Jalloh',    phone:'079223344', address:'5 Wallace Johnson St, Bo', products:'Groundnuts', qty:'2 bags', dispatch:'', expected:'2026-06-13', status:'Pending', courier:'', remarks:'' },
+];
+
+let cropCounter = crops.length;
+let listingCounter = listings.length;
+let deliveryCounter = deliveries.length;
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0,0);
+  closeAllPanels();
+  if (id === 'crops')    renderCrops();
+  if (id === 'market')   renderListings();
+  if (id === 'delivery') renderDeliveries();
+  if (id === 'market')   document.getElementById('listing-date-field').textContent = autoDate();
+}
+
+function setTab(btn, targetId) {
+  const screen = btn.closest('.mobile');
+  screen.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  screen.querySelectorAll('.form-body').forEach(f => f.style.display = 'none');
+  document.getElementById(targetId).style.display = 'block';
+  if (targetId === 'listing-date-field') {} // n/a
+  if (targetId === 'market-form') document.getElementById('listing-date-field').textContent = autoDate();
+}
+
+/* ══════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════ */
+function login() {
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+  if (username === "" || password === "") {
+    showToast("⚠️ Please enter your username and password.");
+    return;
+  }
+  showToast(`👋 Welcome, ${username}!`);
+}
+
+/* ══════════════════════════════════════════
+   CROPS
+══════════════════════════════════════════ */
+function renderCrops() {
+  const el = document.getElementById('crops-container');
+  if (!crops.length) { el.innerHTML = emptyState('fa-seedling','No crops added yet.'); return; }
+  el.innerHTML = crops.map(c => `
+    <div class="record-card" onclick="openCropPanel('${c.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${c.id}</span>
+        <span class="badge badge-available">${c.grade || 'Ungraded'}</span>
+      </div>
+      <div class="record-name">${c.name} <span style="font-weight:400;color:#888">(${c.variety || '—'})</span></div>
+      <div class="record-meta">
+        <i class="fa-solid fa-tag" style="color:#b2d8b3;margin-right:4px"></i>${c.category || '—'}
+        &nbsp;·&nbsp; <i class="fa-solid fa-warehouse" style="color:#b2d8b3;margin-right:4px"></i>${c.storage || '—'}
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px;">
+        <span style="font-weight:800;color:#156b1d">Le ${c.price.toLocaleString()} / ${c.unit}</span>
+        <span style="color:#888">${c.qty} ${c.unit}s available</span>
+      </div>
+    </div>`).join('');
+}
+
+function saveCrop() {
+  const name = document.getElementById('crop-name').value.trim();
+  const category = document.getElementById('crop-category').value;
+  const variety = document.getElementById('crop-variety').value.trim();
+  const qty = parseFloat(document.getElementById('crop-qty').value);
+  const unit = document.getElementById('crop-unit').value;
+  const price = parseFloat(document.getElementById('crop-price').value);
+  const harvest = document.getElementById('crop-harvest').value;
+  const grade = document.getElementById('crop-grade').value;
+  const storage = document.getElementById('crop-storage').value.trim();
+  const desc = document.getElementById('crop-desc').value.trim();
+
+  if (!name || !category || isNaN(qty) || !unit || isNaN(price)) {
+    showToast('⚠️ Please fill in all required fields'); return;
+  }
+
+  cropCounter++;
+  const id = 'CRP-' + String(cropCounter).padStart(3,'0');
+  crops.push({ id, name, category, variety, qty, unit, price, harvest, grade, storage, desc });
+  showToast(`✅ ${name} added as ${id}`);
+  resetCropForm();
+  document.querySelector('#screen-crops .tab-btn').click();
+}
+
+function resetCropForm() {
+  ['crop-name','crop-variety','crop-qty','crop-price','crop-harvest','crop-storage','crop-desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('crop-category').value = '';
+  document.getElementById('crop-unit').value = '';
+  document.getElementById('crop-grade').value = '';
+}
+
+function openCropPanel(id) {
+  const c = crops.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('panel-crop-body').innerHTML = `
+    <div class="sheet-row"><span>Crop ID</span><span>${c.id}</span></div>
+    <div class="sheet-row"><span>Crop Name</span><span>${c.name}</span></div>
+    <div class="sheet-row"><span>Category</span><span>${c.category || '—'}</span></div>
+    <div class="sheet-row"><span>Variety</span><span>${c.variety || '—'}</span></div>
+    <div class="sheet-row"><span>Quantity Available</span><span>${c.qty} ${c.unit}</span></div>
+    <div class="sheet-row"><span>Price per Unit</span><span>Le ${c.price.toLocaleString()}</span></div>
+    <div class="sheet-row"><span>Harvest Date</span><span>${c.harvest || '—'}</span></div>
+    <div class="sheet-row"><span>Quality Grade</span><span>${c.grade || '—'}</span></div>
+    <div class="sheet-row"><span>Storage Location</span><span>${c.storage || '—'}</span></div>
+    <div class="sheet-row"><span>Description</span><span>${c.desc || '—'}</span></div>`;
+  document.getElementById('panel-crop-delete').onclick = () => {
+    crops = crops.filter(x => x.id !== id);
+    closePanel('panel-crop');
+    renderCrops();
+    showToast(`🗑️ ${c.name} removed`);
+  };
+  openPanel('panel-crop');
+}
+
+/* ══════════════════════════════════════════
+   MARKET
+══════════════════════════════════════════ */
+function renderListings() {
+  const el = document.getElementById('market-container');
+  if (!listings.length) { el.innerHTML = emptyState('fa-store','No listings yet.'); return; }
+  const badgeClass = s => s === 'Active' ? 'badge-active' : s === 'Sold' ? 'badge-sold' : 'badge-pending';
+  el.innerHTML = listings.map(l => `
+    <div class="record-card" onclick="openListingPanel('${l.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${l.id}</span>
+        <span class="badge ${badgeClass(l.status)}">${l.status}</span>
+      </div>
+      <div class="record-name">${l.product} <span style="font-weight:400;color:#888">× ${l.qty}</span></div>
+      <div class="record-meta">
+        <i class="fa-solid fa-user" style="color:#b2d8b3;margin-right:4px"></i>${l.seller}
+        &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${l.location}
+      </div>
+      <div style="margin-top:6px;font-size:12px;font-weight:800;color:#156b1d">Le ${l.price.toLocaleString()} / unit</div>
+    </div>`).join('');
+}
+
+function saveListing() {
+  const seller = document.getElementById('listing-seller').value.trim();
+  const product = document.getElementById('listing-product').value.trim();
+  const qty = parseFloat(document.getElementById('listing-qty').value);
+  const price = parseFloat(document.getElementById('listing-price').value);
+  const location = document.getElementById('listing-location').value;
+  const status = document.getElementById('listing-status').value;
+  const contact = document.getElementById('listing-contact').value.trim();
+  const notes = document.getElementById('listing-notes').value.trim();
+
+  if (!seller || !product || isNaN(qty) || isNaN(price) || !location) {
+    showToast('⚠️ Please fill in all required fields'); return;
+  }
+  if (contact && !/^0\d{8}$/.test(contact)) {
+    showToast('⚠️ Contact number must start with 0 and be 9 digits'); return;
+  }
+
+  listingCounter++;
+  const id = 'LST-' + String(listingCounter).padStart(3,'0');
+  listings.push({ id, seller, product, qty, price, location, date: autoDate(), status, contact, notes });
+  showToast(`✅ Listing ${id} created`);
+  resetListingForm();
+  document.querySelector('#screen-market .tab-btn').click();
+}
+
+function resetListingForm() {
+  ['listing-seller','listing-product','listing-qty','listing-price','listing-contact','listing-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('listing-location').value = '';
+  document.getElementById('listing-status').value = 'Active';
+  document.getElementById('listing-date-field').textContent = autoDate();
+}
+
+function openListingPanel(id) {
+  const l = listings.find(x => x.id === id);
+  if (!l) return;
+  const badgeClass = s => s === 'Active' ? 'badge-active' : s === 'Sold' ? 'badge-sold' : 'badge-pending';
+  document.getElementById('panel-listing-body').innerHTML = `
+    <div class="sheet-row"><span>Listing ID</span><span>${l.id}</span></div>
+    <div class="sheet-row"><span>Seller Name</span><span>${l.seller}</span></div>
+    <div class="sheet-row"><span>Product Name</span><span>${l.product}</span></div>
+    <div class="sheet-row"><span>Quantity</span><span>${l.qty}</span></div>
+    <div class="sheet-row"><span>Unit Price</span><span>Le ${l.price.toLocaleString()}</span></div>
+    <div class="sheet-row"><span>Market Location</span><span>${l.location}</span></div>
+    <div class="sheet-row"><span>Listing Date</span><span>${l.date}</span></div>
+    <div class="sheet-row"><span>Status</span><span><span class="badge ${badgeClass(l.status)}">${l.status}</span></span></div>
+    <div class="sheet-row"><span>Contact</span><span>${l.contact || '—'}</span></div>
+    <div class="sheet-row"><span>Notes</span><span>${l.notes || '—'}</span></div>`;
+  document.getElementById('listing-status-update').value = l.status;
+  document.getElementById('panel-listing-save').onclick = () => {
+    l.status = document.getElementById('listing-status-update').value;
+    closePanel('panel-listing');
+    renderListings();
+    showToast(`💾 ${l.id} updated to ${l.status}`);
+  };
+  document.getElementById('panel-listing-delete').onclick = () => {
+    listings = listings.filter(x => x.id !== id);
+    closePanel('panel-listing');
+    renderListings();
+    showToast(`🗑️ ${l.id} removed`);
+  };
+  openPanel('panel-listing');
+}
+
+/* ══════════════════════════════════════════
+   DELIVERY
+══════════════════════════════════════════ */
+function renderDeliveries() {
+  const el = document.getElementById('delivery-container');
+  if (!deliveries.length) { el.innerHTML = emptyState('fa-truck','No deliveries yet.'); return; }
+  const badgeClass = s => s === 'Delivered' ? 'badge-delivered' : s === 'Pending' ? 'badge-pending' : 'badge-dispatched';
+  el.innerHTML = deliveries.map(d => `
+    <div class="record-card" onclick="openDeliveryPanel('${d.id}')">
+      <div class="record-card-header">
+        <span class="record-id">${d.id}</span>
+        <span class="badge ${badgeClass(d.status)}">${d.status}</span>
+      </div>
+      <div class="record-name">${d.recipient}</div>
+      <div class="record-meta">
+        <i class="fa-solid fa-box" style="color:#b2d8b3;margin-right:4px"></i>${d.products} (${d.qty})
+        &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${d.address}
+      </div>
+      <div style="margin-top:6px;font-size:11px;color:#aaa">Order: ${d.orderId} &nbsp;·&nbsp; ETA: ${d.expected || '—'}</div>
+    </div>`).join('');
+}
+
+function saveDelivery() {
+  const orderId = document.getElementById('delivery-order').value.trim();
+  const recipient = document.getElementById('delivery-recipient').value.trim();
+  const phone = document.getElementById('delivery-phone').value.trim();
+  const address = document.getElementById('delivery-address').value.trim();
+  const products = document.getElementById('delivery-products').value.trim();
+  const qty = document.getElementById('delivery-qty').value.trim();
+  const dispatch = document.getElementById('delivery-dispatch').value;
+  const expected = document.getElementById('delivery-expected').value;
+  const status = document.getElementById('delivery-status').value;
+  const courier = document.getElementById('delivery-courier').value.trim();
+  const remarks = document.getElementById('delivery-remarks').value.trim();
+
+  if (!orderId || !recipient || !address || !products) {
+    showToast('⚠️ Please fill in all required fields'); return;
+  }
+  if (!/^[a-zA-Z\s'-]+$/.test(recipient)) {
+    showToast('⚠️ Recipient name must contain letters only'); return;
+  }
+  if (phone && !/^0\d{8}$/.test(phone)) {
+    showToast('⚠️ Phone must start with 0 and be 9 digits'); return;
+  }
+
+  deliveryCounter++;
+  const id = 'DLV-' + String(deliveryCounter).padStart(3,'0');
+  deliveries.push({ id, orderId, recipient, phone, address, products, qty, dispatch, expected, status, courier, remarks });
+  showToast(`✅ Delivery ${id} created`);
+  resetDeliveryForm();
+  document.querySelector('#screen-delivery .tab-btn').click();
+}
+
+function resetDeliveryForm() {
+  ['delivery-order','delivery-recipient','delivery-phone','delivery-address','delivery-products','delivery-qty','delivery-dispatch','delivery-expected','delivery-courier','delivery-remarks'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('delivery-status').value = 'Pending';
+}
+
+function openDeliveryPanel(id) {
+  const d = deliveries.find(x => x.id === id);
+  if (!d) return;
+  const badgeClass = s => s === 'Delivered' ? 'badge-delivered' : s === 'Pending' ? 'badge-pending' : 'badge-dispatched';
+  document.getElementById('panel-delivery-body').innerHTML = `
+    <div class="sheet-row"><span>Delivery ID</span><span>${d.id}</span></div>
+    <div class="sheet-row"><span>Order ID</span><span>${d.orderId}</span></div>
+    <div class="sheet-row"><span>Recipient Name</span><span>${d.recipient}</span></div>
+    <div class="sheet-row"><span>Phone Number</span><span>${d.phone || '—'}</span></div>
+    <div class="sheet-row"><span>Delivery Address</span><span>${d.address}</span></div>
+    <div class="sheet-row"><span>Product(s)</span><span>${d.products}</span></div>
+    <div class="sheet-row"><span>Quantity</span><span>${d.qty || '—'}</span></div>
+    <div class="sheet-row"><span>Dispatch Date</span><span>${d.dispatch || '—'}</span></div>
+    <div class="sheet-row"><span>Expected Delivery</span><span>${d.expected || '—'}</span></div>
+    <div class="sheet-row"><span>Status</span><span><span class="badge ${badgeClass(d.status)}">${d.status}</span></span></div>
+    <div class="sheet-row"><span>Courier / Driver</span><span>${d.courier || '—'}</span></div>
+    <div class="sheet-row"><span>Remarks</span><span>${d.remarks || '—'}</span></div>`;
+  document.getElementById('delivery-status-update').value = d.status;
+  document.getElementById('panel-delivery-save').onclick = () => {
+    d.status = document.getElementById('delivery-status-update').value;
+    if (d.status === 'Dispatched' && !d.dispatch) d.dispatch = new Date().toISOString().split('T')[0];
+    closePanel('panel-delivery');
+    renderDeliveries();
+    showToast(`💾 ${d.id} updated to ${d.status}`);
+  };
+  document.getElementById('panel-delivery-delete').onclick = () => {
+    deliveries = deliveries.filter(x => x.id !== id);
+    closePanel('panel-delivery');
+    renderDeliveries();
+    showToast(`🗑️ ${d.id} removed`);
+  };
+  openPanel('panel-delivery');
+}
+
+/* ══════════════════════════════════════════
+   PANEL HELPERS
+══════════════════════════════════════════ */
+function openPanel(id) { document.getElementById(id).classList.add('open'); }
+function closePanel(id) { document.getElementById(id).classList.remove('open'); }
+function closeAllPanels() { document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open')); }
+document.querySelectorAll('.detail-panel').forEach(panel => {
+  panel.addEventListener('click', e => { if (e.target === panel) closePanel(panel.id); });
+});
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function autoDate() {
+  return new Date().toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'GMT' }) + ' GMT';
+}
+function emptyState(icon, msg) { return `<div class="empty-state"><i class="fa-solid ${icon}"></i><p>${msg}</p></div>`; }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
 </body>
 </html>
