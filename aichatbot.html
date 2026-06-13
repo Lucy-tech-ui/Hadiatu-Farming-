@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Marketplace - AI Chatbot</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  body {
+    background: #f0f4f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px 10px;
+  }
+
+  .mobile {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER (from farmer.html) ── */
+  .header {
+    background: #156b1d;
+    padding: 36px 25px 30px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+  }
+  .header h1 { font-size: 22px; margin-bottom: 6px; }
+  .header p  { font-size: 13px; opacity: 0.88; }
+  .back-btn {
+    position: absolute; top: 18px; left: 18px;
+    color: #fff; font-size: 18px; cursor: pointer;
+    background: rgba(255,255,255,.18); border: none;
+    border-radius: 50%; width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-btn:hover { background: rgba(255,255,255,.3); }
+
+  .recent-btn {
+    position: absolute; top: 18px; right: 18px;
+    color: #fff; font-size: 16px; cursor: pointer;
+    background: rgba(255,255,255,.18); border: none;
+    border-radius: 50%; width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .recent-btn:hover { background: rgba(255,255,255,.3); }
+
+  /* ── RECENT PANEL ── */
+  .detail-panel {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.45); z-index: 300;
+    align-items: flex-end; justify-content: center;
+  }
+  .detail-panel.open { display: flex; }
+  .detail-sheet {
+    background: #fff; width: 100%; max-width: 420px;
+    border-radius: 24px 24px 0 0; padding: 20px 20px 28px;
+    max-height: 80vh; overflow-y: auto;
+  }
+  .sheet-handle { width: 40px; height: 4px; background: #e0e0e0; border-radius: 2px; margin: 0 auto 16px; }
+  .sheet-title { font-size: 16px; font-weight: 700; color: #156b1d; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+  .recent-card {
+    border: 1.5px solid #e9ecef; border-radius: 14px;
+    padding: 12px 14px; margin-bottom: 10px; cursor: pointer;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .recent-card:hover { border-color: #b2d8b3; box-shadow: 0 4px 12px rgba(21,107,29,.08); }
+  .recent-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .recent-id { font-size: 12px; font-weight: 700; color: #156b1d; }
+  .recent-date { font-size: 11px; color: #aaa; }
+  .recent-preview { font-size: 13px; color: #444; margin-top: 4px; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .recent-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .recent-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #e8f5e9; color: #2e7d32; text-transform: uppercase; }
+  .recent-tag.priority-high   { background: #ffebee; color: #c62828; }
+  .recent-tag.priority-normal { background: #e3f2fd; color: #1565c0; }
+  .recent-tag.priority-low    { background: #e8f5e9; color: #2e7d32; }
+  .recent-empty { text-align: center; color: #bbb; padding: 30px 10px; font-size: 13px; }
+  .recent-empty i { font-size: 40px; display: block; margin-bottom: 10px; }
+  .recent-delete { color: #ccc; font-size: 14px; cursor: pointer; padding: 4px; }
+  .recent-delete:hover { color: #e53935; }
+
+  /* ── LOGO ── */
+  .logo {
+    width: 90px; height: 90px;
+    margin: -45px auto 10px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    border: 4px solid #fff;
+  }
+
+  /* ── PAGE TITLE ── */
+  .page-title { text-align: center; padding: 4px 20px 18px; }
+  .page-title h2 { color: #156b1d; font-size: 20px; margin-bottom: 4px; }
+  .page-title p  { color: #888; font-size: 13px; }
+
+  /* ── FORM LAYOUT ── */
+  .form-body { padding: 0 20px 24px; flex: 1; overflow-y: auto; }
+  .form-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: #156b1d;
+    margin: 18px 0 10px; padding-bottom: 6px;
+    border-bottom: 1.5px solid #e6f4e6;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .form-group { margin-bottom: 14px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
+  input[type=text], input[type=email], input[type=tel],
+  input[type=password], input[type=number], input[type=date],
+  input[type=time], input[type=file],
+  select, textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px; font-size: 14px;
+    background: #fafafa; color: #333;
+    transition: border-color .2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: #156b1d; background: #fff; }
+  textarea { resize: vertical; min-height: 80px; }
+  .input-hint { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+  /* Upload button */
+  .upload-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border: 1.5px dashed #b2d8b3;
+    border-radius: 12px; font-size: 13px; color: #156b1d;
+    background: #f4fbf4; cursor: pointer; font-weight: 600;
+    position: relative; overflow: hidden;
+  }
+  .upload-btn:hover { background: #e6f4e6; }
+  .upload-btn input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    width: 100%; height: 100%;
+  }
+  .file-name { font-size: 12px; color: #156b1d; margin-top: 6px; font-weight: 600; }
+
+  /* Radio / category chips */
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip-option {
+    padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #e0e0e0; background: #fff; color: #555;
+    transition: all .2s;
+  }
+  .chip-option.selected { background: #156b1d; color: #fff; border-color: #156b1d; }
+
+  /* Priority chips */
+  .priority-row { display: flex; gap: 8px; }
+  .priority-chip {
+    flex: 1; text-align: center; padding: 10px 6px; border-radius: 12px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    border: 1.5px solid #e0e0e0; background: #fff; color: #555;
+    transition: all .2s; text-transform: uppercase; letter-spacing: .4px;
+  }
+  .priority-chip.low.selected      { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+  .priority-chip.normal.selected   { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+  .priority-chip.high.selected     { background: #ffebee; color: #c62828; border-color: #c62828; }
+
+  /* Star rating */
+  .star-row { display: flex; gap: 6px; font-size: 26px; color: #e0e0e0; cursor: pointer; }
+  .star-row i.active { color: #FFB400; }
+
+  /* Chat bubble area */
+  .chat-window {
+    background: #f7faf7; border: 1.5px solid #e6f4e6;
+    border-radius: 16px; padding: 14px; margin-bottom: 14px;
+    max-height: 280px; overflow-y: auto;
+  }
+  .chat-bubble {
+    border-radius: 14px; padding: 10px 14px; margin-bottom: 10px;
+    font-size: 13px; line-height: 1.5; max-width: 88%;
+  }
+  .chat-bubble.user {
+    background: #156b1d; color: #fff;
+    margin-left: auto; border-bottom-right-radius: 4px;
+  }
+  .chat-bubble.ai {
+    background: #fff; color: #333; border: 1.5px solid #e6f4e6;
+    margin-right: auto; border-bottom-left-radius: 4px;
+  }
+  .chat-bubble.ai i { color: #156b1d; margin-right: 6px; }
+  .chat-empty { text-align: center; color: #bbb; font-size: 12px; padding: 20px 0; }
+
+  /* Typing dots */
+  .typing-dots span {
+    display: inline-block; width: 6px; height: 6px; margin: 0 1px;
+    background: #156b1d; border-radius: 50%;
+    animation: blink 1.2s infinite ease-in-out;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: .2s; }
+  .typing-dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .2; } 40% { opacity: 1; } }
+
+  /* Action buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 22px; }
+  .btn-primary {
+    flex: 1; padding: 13px; background: #156b1d;
+    color: #fff; border: none; border-radius: 14px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: background .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-primary:hover { background: #0f4f15; }
+  .btn-primary:disabled { background: #b2d8b3; cursor: not-allowed; }
+  .btn-secondary {
+    flex: 1; padding: 13px; background: #fff;
+    color: #156b1d; border: 1.5px solid #156b1d;
+    border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .btn-secondary:hover { background: #edf8ed; }
+
+  /* System-generated field */
+  .sys-field {
+    width: 100%; padding: 10px 14px;
+    background: #f0f4f0; border: 1.5px solid #dce8dc;
+    border-radius: 12px; font-size: 13px; color: #888;
+    font-style: italic;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sys-field i { color: #156b1d; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #156b1d; color: #fff;
+    padding: 12px 24px; border-radius: 30px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    opacity: 0; pointer-events: none; transition: opacity .3s;
+    z-index: 999; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Footer (from farmer.html) */
+  .footer {
+    text-align: center; padding: 14px 20px; margin: 20px 20px 20px;
+    color: #fff; font-weight: 600; font-size: 12px;
+    background: #156b1d; border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(21,107,29,.25);
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile">
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <button class="back-btn" onclick="window.history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="recent-btn" onclick="openRecentPanel()" title="Recent Chats">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span id="recent-badge" style="position:absolute;top:-4px;right:-4px;background:#e53935;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">0</span>
+    </button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+
+  <div class="logo">🤖</div>
+
+  <div class="page-title">
+    <h2>AI Chatbot</h2>
+    <p>Get instant help with your questions</p>
+  </div>
+
+  <div class="form-body">
+
+    <!-- ═══ User Information ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-user"></i> User Information</div>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="full-name" placeholder="Enter your full name"
+             oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')">
+      <div class="input-hint">Letters only</div>
+    </div>
+
+    <div class="form-group">
+      <label>Username <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="text" id="username" placeholder="Enter your username">
+    </div>
+
+    <div class="form-group">
+      <label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <input type="email" id="email" placeholder="you@example.com">
+    </div>
+
+    <!-- ═══ Chat Category ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-layer-group"></i> Chat Category</div>
+    <div class="chip-grid" id="category-chips">
+      <span class="chip-option" onclick="selectCategory(this,'Product Inquiry')">Product Inquiry</span>
+      <span class="chip-option" onclick="selectCategory(this,'Order Assistance')">Order Assistance</span>
+      <span class="chip-option" onclick="selectCategory(this,'Payment Support')">Payment Support</span>
+      <span class="chip-option" onclick="selectCategory(this,'Delivery & Logistics')">Delivery &amp; Logistics</span>
+      <span class="chip-option" onclick="selectCategory(this,'Technical Support')">Technical Support</span>
+      <span class="chip-option" onclick="selectCategory(this,'General Information')">General Information</span>
+      <span class="chip-option" onclick="selectCategory(this,'Other')">Other</span>
+    </div>
+    <div class="form-group" id="other-category-group" style="display:none; margin-top:10px;">
+      <label>Specify Other Category</label>
+      <input type="text" id="other-category" placeholder="Describe category">
+    </div>
+
+    <!-- ═══ Preferred Language ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-language"></i> Preferred Language</div>
+    <div class="form-group">
+      <label>Language</label>
+      <select id="language">
+        <option value="">Select language</option>
+        <option>English</option>
+        <option>Krio</option>
+        <option>Mende</option>
+        <option>Temne</option>
+        <option>Limba</option>
+        <option>French</option>
+      </select>
+    </div>
+
+    <!-- ═══ Priority Level ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-gauge-high"></i> Priority Level</div>
+    <div class="priority-row" id="priority-chips">
+      <span class="priority-chip low" onclick="selectPriority(this,'Low')">Low</span>
+      <span class="priority-chip normal selected" onclick="selectPriority(this,'Normal')">Normal</span>
+      <span class="priority-chip high" onclick="selectPriority(this,'High')">High</span>
+    </div>
+
+    <!-- ═══ Attachment ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-paperclip"></i> Attachment <span style="color:#aaa;font-weight:400;text-transform:none;font-size:11px">(Optional)</span></div>
+    <div class="form-group">
+      <label>Upload File / Image</label>
+      <div class="upload-btn">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+        <input type="file" id="attachment" onchange="handleFile(this)">
+      </div>
+      <div class="file-name" id="file-name-display"></div>
+    </div>
+
+    <!-- ═══ Chat Request ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-comments"></i> Chat Request</div>
+
+    <div class="chat-window" id="chat-window">
+      <div class="chat-empty" id="chat-empty">No messages yet. Ask a question to get started!</div>
+    </div>
+
+    <div class="form-group">
+      <label>Question or Prompt</label>
+      <textarea id="chat-prompt" placeholder="Type your question here…"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="send-btn" onclick="sendMessage()">
+        <i class="fa-solid fa-paper-plane"></i> Send Message
+      </button>
+      <button class="btn-secondary" onclick="clearChat()">Clear</button>
+    </div>
+
+    <!-- ═══ AI Response ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-robot"></i> AI Response</div>
+    <div class="form-group">
+      <label>Generated Response</label>
+      <textarea id="ai-response" placeholder="The AI's response will appear here…" readonly></textarea>
+    </div>
+
+    <!-- ═══ Feedback ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-star"></i> Feedback</div>
+
+    <div class="form-group">
+      <label>Was your question answered?</label>
+      <div class="chip-grid" id="answered-chips">
+        <span class="chip-option" onclick="selectAnswered(this,'Yes')">Yes</span>
+        <span class="chip-option" onclick="selectAnswered(this,'No')">No</span>
+        <span class="chip-option" onclick="selectAnswered(this,'Partially')">Partially</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Rate the response</label>
+      <div class="star-row" id="star-row">
+        <i class="fa-solid fa-star" data-val="1" onclick="setRating(1)"></i>
+        <i class="fa-solid fa-star" data-val="2" onclick="setRating(2)"></i>
+        <i class="fa-solid fa-star" data-val="3" onclick="setRating(3)"></i>
+        <i class="fa-solid fa-star" data-val="4" onclick="setRating(4)"></i>
+        <i class="fa-solid fa-star" data-val="5" onclick="setRating(5)"></i>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Additional Comments</label>
+      <textarea id="feedback-comments" placeholder="Any other feedback…"></textarea>
+    </div>
+
+    <!-- ═══ Session Information ═══ -->
+    <div class="form-section-label"><i class="fa-solid fa-clock"></i> Session Information</div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <div class="sys-field"><i class="fa-solid fa-calendar-days"></i> <span id="session-date"></span></div>
+    </div>
+    <div class="form-group">
+      <label>Time</label>
+      <div class="sys-field"><i class="fa-solid fa-clock"></i> <span id="session-time"></span></div>
+    </div>
+    <div class="form-group">
+      <label>Chat Session ID</label>
+      <div class="sys-field"><i class="fa-solid fa-fingerprint"></i> <span id="session-id"></span></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="submitFeedback()">
+        <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+      </button>
+      <button class="btn-secondary" onclick="resetAll()">Reset</button>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+
+<!-- ── RECENT CHATS PANEL ── -->
+<div class="detail-panel" id="panel-recent">
+  <div class="detail-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Chats</div>
+
+    <!-- Search -->
+    <div style="display:flex;align-items:center;background:#fafafa;border:1.5px solid #e0e0e0;border-radius:12px;padding:0 12px;margin-bottom:10px;gap:8px">
+      <i class="fa-solid fa-magnifying-glass" style="color:#bbb;font-size:13px"></i>
+      <input type="text" id="recent-search" placeholder="Search by name, ID or topic…"
+             oninput="renderRecentList()"
+             style="border:none;background:transparent;padding:11px 0;font-size:13px;width:100%;outline:none">
+    </div>
+
+    <!-- Filter chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+      <span class="recent-filter-btn active" data-filter="all" onclick="setRecentFilter(this,'all')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #156b1d;background:#156b1d;color:#fff">All</span>
+      <span class="recent-filter-btn" data-filter="High" onclick="setRecentFilter(this,'High')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🔴 High</span>
+      <span class="recent-filter-btn" data-filter="Normal" onclick="setRecentFilter(this,'Normal')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🔵 Normal</span>
+      <span class="recent-filter-btn" data-filter="Low" onclick="setRecentFilter(this,'Low')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🟢 Low</span>
+      <span class="recent-filter-btn" data-filter="Order Assistance" onclick="setRecentFilter(this,'Order Assistance')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">Orders</span>
+      <span class="recent-filter-btn" data-filter="Payment Support" onclick="setRecentFilter(this,'Payment Support')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">Payment</span>
+      <span class="recent-filter-btn" data-filter="Delivery & Logistics" onclick="setRecentFilter(this,'Delivery & Logistics')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">Delivery</span>
+    </div>
+
+    <div id="recent-list"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn-secondary" style="flex:1" onclick="closeRecentPanel()">Close</button>
+      <button onclick="if(sessions.length&&confirm('Delete all sessions?')){sessions=[];updateRecentBadge();renderRecentList();showToast('🗑️ All sessions cleared')}" style="flex:1;padding:13px;background:#fff;color:#c62828;border:1.5px solid #c62828;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer">Clear All</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let selectedCategory = '';
+let selectedPriority = 'Normal';
+let selectedAnswered = '';
+let currentRating    = 0;
+let chatMessages     = [];
+let currentSessionId = '';
+let recentFilter     = 'all';
+
+let sessions = [
+  {
+    id: 'CHAT-20260001', name: 'Aminata Kamara', username: 'aminata_k', email: 'aminata@mail.com',
+    category: 'Order Assistance', priority: 'High', language: 'English',
+    date: '11 Jun 2026', time: '09:14:22',
+    messages: [
+      { role:'user', text:'Where is my order ORD-20260011?' },
+      { role:'ai',   text:"You can track your order status under 'View Orders' or 'Manage Orders'. If you need help with a specific order, please share the Order ID." }
+    ],
+    aiResponse: "You can track your order status under 'View Orders' or 'Manage Orders'.",
+    answered: 'Yes', rating: 4, comments: 'Very helpful response!'
+  },
+  {
+    id: 'CHAT-20260002', name: 'Ibrahim Sesay', username: 'ibrahim_s', email: '',
+    category: 'Payment Support', priority: 'Normal', language: 'Krio',
+    date: '11 Jun 2026', time: '10:30:05',
+    messages: [
+      { role:'user', text:'How do I pay with Orange Money?' },
+      { role:'ai',   text:'We support Mobile Money (Orange Money), Cash on Delivery, and Bank Transfer. You can complete payments from the Checkout or Place Order screen.' }
+    ],
+    aiResponse: 'We support Mobile Money (Orange Money), Cash on Delivery, and Bank Transfer.',
+    answered: 'Yes', rating: 5, comments: ''
+  },
+  {
+    id: 'CHAT-20260003', name: 'Fatmata Conteh', username: '', email: 'fatmata@mail.com',
+    category: 'Delivery & Logistics', priority: 'Low', language: 'Mende',
+    date: '10 Jun 2026', time: '15:45:33',
+    messages: [
+      { role:'user', text:'When will my cassava leaves be delivered?' },
+      { role:'ai',   text:"Deliveries are tracked from dispatch to drop-off. You'll see status updates such as Pending, Dispatched, In Transit, and Delivered on the Delivery screen." }
+    ],
+    aiResponse: "Deliveries are tracked from dispatch to drop-off.",
+    answered: 'Partially', rating: 3, comments: 'Could be more specific.'
+  }
+];
+
+/* ── SESSION INFO ── */
+function initSession() {
+  const now = new Date();
+  currentSessionId = 'CHAT-' + Date.now().toString().slice(-8);
+  document.getElementById('session-date').textContent = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  document.getElementById('session-time').textContent = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  document.getElementById('session-id').textContent   = currentSessionId;
+}
+initSession();
+setInterval(() => {
+  document.getElementById('session-time').textContent = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+}, 1000);
+
+/* ── CHIPS ── */
+function selectCategory(el, value) {
+  document.querySelectorAll('#category-chips .chip-option').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCategory = value;
+  document.getElementById('other-category-group').style.display = (value === 'Other') ? 'block' : 'none';
+}
+function selectPriority(el, value) {
+  document.querySelectorAll('#priority-chips .priority-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPriority = value;
+}
+function selectAnswered(el, value) {
+  el.parentElement.querySelectorAll('.chip-option').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedAnswered = value;
+}
+
+/* ── STARS ── */
+function setRating(val) {
+  currentRating = val;
+  document.querySelectorAll('#star-row i').forEach(s => s.classList.toggle('active', parseInt(s.dataset.val) <= val));
+}
+
+/* ── FILE ── */
+function handleFile(input) {
+  const d = document.getElementById('file-name-display');
+  d.innerHTML = input.files.length ? `<i class="fa-solid fa-paperclip"></i> ${input.files[0].name}` : '';
+}
+
+/* ── CHAT ── */
+function appendBubble(text, role) {
+  const win = document.getElementById('chat-window');
+  const empty = document.getElementById('chat-empty');
+  if (empty) empty.remove();
+  const b = document.createElement('div');
+  b.className = 'chat-bubble ' + role;
+  b.innerHTML = role === 'ai' ? `<i class="fa-solid fa-robot"></i>${text}` : '';
+  if (role !== 'ai') b.textContent = text;
+  win.appendChild(b);
+  win.scrollTop = win.scrollHeight;
+  return b;
+}
+
+function sendMessage() {
+  const prompt = document.getElementById('chat-prompt').value.trim();
+  if (!prompt) { showToast('⚠️ Please type a question first'); return; }
+  chatMessages.push({ role:'user', text: prompt });
+  appendBubble(prompt, 'user');
+  document.getElementById('chat-prompt').value = '';
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
+  const typing = appendBubble(`<span class="typing-dots"><span></span><span></span><span></span></span>`, 'ai');
+  setTimeout(() => {
+    const resp = generateResponse(prompt);
+    typing.innerHTML = `<i class="fa-solid fa-robot"></i>${resp}`;
+    chatMessages.push({ role:'ai', text: resp });
+    document.getElementById('ai-response').value = resp;
+    document.getElementById('chat-window').scrollTop = 9999;
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+  }, 1100);
+}
+
+function generateResponse(p) {
+  const cat = selectedCategory || 'General Information';
+  const l = p.toLowerCase();
+  if (l.includes('price') || l.includes('cost'))
+    return "Prices vary by product and season. Check 'Set Prices & Stock' on the Farmer Portal, or 'Browse Products' on the Buyer Portal.";
+  if (l.includes('order'))
+    return "Track your order under 'View Orders' or 'Manage Orders'. Share your Order ID for specific help.";
+  if (l.includes('payment') || l.includes('pay'))
+    return "We support Mobile Money (Orange Money), Cash on Delivery, and Bank Transfer — available at Checkout.";
+  if (l.includes('deliver'))
+    return "Deliveries show status updates: Pending, Dispatched, In Transit, and Delivered on the Delivery screen.";
+  if (l.includes('register') || l.includes('account') || l.includes('profile'))
+    return "Create or update your profile from 'Create Profile' or 'Manage Profile' on the Farmer Portal.";
+  if (l.includes('crop') || l.includes('farm'))
+    return "Manage crop listings from the Crops section — add crops, set prices, and track inventory.";
+  if (l.includes('market') || l.includes('sell') || l.includes('list'))
+    return "Go to Market → New Listing to create a product listing with price and location details.";
+  return `Thanks for your ${cat} request! Our AI assistant will provide guidance shortly. Can I clarify anything?`;
+}
+
+function clearChat() {
+  chatMessages = [];
+  document.getElementById('chat-window').innerHTML = '<div class="chat-empty" id="chat-empty">No messages yet. Ask a question to get started!</div>';
+  document.getElementById('chat-prompt').value  = '';
+  document.getElementById('ai-response').value = '';
+  showToast('🗑️ Chat cleared');
+}
+
+/* ── SUBMIT FEEDBACK → SAVE SESSION ── */
+function submitFeedback() {
+  const fullName = document.getElementById('full-name').value.trim();
+  if (!fullName)            { showToast('⚠️ Please enter your full name'); return; }
+  if (!selectedCategory)    { showToast('⚠️ Please select a chat category'); return; }
+  if (!chatMessages.length) { showToast('⚠️ Please send at least one message first'); return; }
+  if (!selectedAnswered)    { showToast('⚠️ Please indicate whether your question was answered'); return; }
+  if (currentRating === 0)  { showToast('⚠️ Please rate the response'); return; }
+
+  const now = new Date();
+  sessions.unshift({
+    id:         currentSessionId,
+    name:       fullName,
+    username:   document.getElementById('username').value.trim(),
+    email:      document.getElementById('email').value.trim(),
+    category:   selectedCategory,
+    priority:   selectedPriority,
+    language:   document.getElementById('language').value || 'English',
+    date:       now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }),
+    time:       now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' }),
+    messages:   [...chatMessages],
+    aiResponse: document.getElementById('ai-response').value.trim(),
+    answered:   selectedAnswered,
+    rating:     currentRating,
+    comments:   document.getElementById('feedback-comments').value.trim()
+  });
+  updateRecentBadge();
+  showToast(`✅ Session saved — thank you, ${fullName}!`);
+}
+
+/* ── RECENT PANEL ── */
+function updateRecentBadge() {
+  const b = document.getElementById('recent-badge');
+  if (b) b.textContent = sessions.length;
+}
+
+function openRecentPanel() {
+  recentFilter = 'all';
+  document.querySelectorAll('.recent-filter-btn').forEach(b => b.classList.remove('active'));
+  const allBtn = document.querySelector('.recent-filter-btn[data-filter="all"]');
+  if (allBtn) allBtn.classList.add('active');
+  renderRecentList();
+  document.getElementById('panel-recent').classList.add('open');
+}
+
+function closeRecentPanel() {
+  document.getElementById('panel-recent').classList.remove('open');
+}
+
+function setRecentFilter(btn, filter) {
+  document.querySelectorAll('.recent-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  recentFilter = filter;
+  renderRecentList();
+}
+
+function renderRecentList() {
+  const el = document.getElementById('recent-list');
+  const kw = (document.getElementById('recent-search')?.value || '').toLowerCase();
+  let list = sessions.filter(s => {
+    const mf = recentFilter === 'all' || s.category === recentFilter || s.priority === recentFilter;
+    const ms = !kw || s.name.toLowerCase().includes(kw) || s.id.toLowerCase().includes(kw)
+               || s.category.toLowerCase().includes(kw)
+               || (s.messages[0]?.text || '').toLowerCase().includes(kw);
+    return mf && ms;
+  });
+
+  if (!list.length) {
+    el.innerHTML = `<div class="recent-empty"><i class="fa-solid fa-comments"></i><p>No chats found.</p></div>`;
+    return;
+  }
+
+  const stars = n => '⭐'.repeat(n);
+  const pc = p => p === 'High' ? 'priority-high' : p === 'Low' ? 'priority-low' : 'priority-normal';
+  const ac = a => a === 'Yes' ? '#2e7d32' : a === 'No' ? '#c62828' : '#e65100';
+
+  el.innerHTML = list.map(s => `
+    <div class="recent-card">
+      <div class="recent-card-header">
+        <span class="recent-id">${s.id}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="recent-date">${s.date} · ${s.time}</span>
+          <span class="recent-delete" onclick="deleteSession('${s.id}',event)" title="Delete"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:#222;margin-bottom:3px">
+        ${s.name}${s.username ? ` <span style="color:#888;font-weight:400">@${s.username}</span>` : ''}
+      </div>
+      <div class="recent-preview"><span style="color:#999;font-size:11px"><i class="fa-solid fa-user" style="margin-right:3px"></i>Q:</span> ${s.messages.find(m=>m.role==='user')?.text || '—'}</div>
+      <div class="recent-preview" style="margin-top:3px"><span style="color:#156b1d;font-size:11px"><i class="fa-solid fa-robot" style="margin-right:3px"></i>A:</span> ${s.aiResponse || '—'}</div>
+      <div class="recent-meta">
+        <span class="recent-tag">${s.category}</span>
+        <span class="recent-tag ${pc(s.priority)}">${s.priority}</span>
+        <span class="recent-tag" style="background:#f3e5f5;color:#6a1b9a">${s.language}</span>
+        <span class="recent-tag" style="background:#fff8e1;color:#f57f17">${stars(s.rating)}</span>
+        <span class="recent-tag" style="color:${ac(s.answered)};background:#f9f9f9">✔ ${s.answered}</span>
+      </div>
+      ${s.comments ? `<div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">"${s.comments}"</div>` : ''}
+      <button onclick="loadSession('${s.id}')" style="margin-top:10px;width:100%;padding:9px;background:#f4fbf4;color:#156b1d;border:1.5px solid #b2d8b3;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">
+        <i class="fa-solid fa-rotate-left"></i> Load This Session
+      </button>
+    </div>`).join('');
+}
+
+function deleteSession(id, e) {
+  e.stopPropagation();
+  sessions = sessions.filter(s => s.id !== id);
+  updateRecentBadge();
+  renderRecentList();
+  showToast('🗑️ Session deleted');
+}
+
+function loadSession(id) {
+  const s = sessions.find(x => x.id === id);
+  if (!s) return;
+  closeRecentPanel();
+
+  document.getElementById('full-name').value = s.name;
+  document.getElementById('username').value  = s.username || '';
+  document.getElementById('email').value     = s.email    || '';
+
+  document.querySelectorAll('#category-chips .chip-option').forEach(c => {
+    c.classList.toggle('selected', c.textContent.trim() === s.category);
+  });
+  selectedCategory = s.category;
+  document.getElementById('other-category-group').style.display = s.category === 'Other' ? 'block' : 'none';
+
+  document.getElementById('language').value = s.language || '';
+
+  document.querySelectorAll('#priority-chips .priority-chip').forEach(c => {
+    c.classList.remove('selected');
+    if (c.textContent.trim() === s.priority) c.classList.add('selected');
+  });
+  selectedPriority = s.priority;
+
+  chatMessages = [...s.messages];
+  const win = document.getElementById('chat-window');
+  win.innerHTML = '';
+  s.messages.forEach(m => {
+    const b = document.createElement('div');
+    b.className = 'chat-bubble ' + m.role;
+    b.innerHTML = m.role === 'ai' ? `<i class="fa-solid fa-robot"></i>${m.text}` : '';
+    if (m.role !== 'ai') b.textContent = m.text;
+    win.appendChild(b);
+  });
+  win.scrollTop = 9999;
+
+  document.getElementById('ai-response').value = s.aiResponse || '';
+
+  document.querySelectorAll('#answered-chips .chip-option').forEach(c => {
+    c.classList.toggle('selected', c.textContent.trim() === s.answered);
+  });
+  selectedAnswered = s.answered;
+  setRating(s.rating);
+  document.getElementById('feedback-comments').value = s.comments || '';
+
+  currentSessionId = s.id;
+  document.getElementById('session-date').textContent = s.date;
+  document.getElementById('session-id').textContent   = s.id;
+  window.scrollTo(0, 0);
+  showToast(`📂 Session ${s.id} loaded`);
+}
+
+/* ── RESET ── */
+function resetAll() {
+  ['full-name','username','email','other-category','feedback-comments'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('other-category-group').style.display = 'none';
+  document.getElementById('language').value = '';
+  document.getElementById('file-name-display').textContent = '';
+
+  document.querySelectorAll('#category-chips .chip-option').forEach(c => c.classList.remove('selected'));
+  selectedCategory = '';
+  document.querySelectorAll('#priority-chips .priority-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelector('.priority-chip.normal').classList.add('selected');
+  selectedPriority = 'Normal';
+  document.querySelectorAll('#answered-chips .chip-option').forEach(c => c.classList.remove('selected'));
+  selectedAnswered = '';
+
+  setRating(0);
+  clearChat();
+  initSession();
+  showToast('🔄 Form reset');
+}
+
+/* ── TOAST ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── INIT ── */
+document.getElementById('panel-recent').addEventListener('click', e => {
+  if (e.target === document.getElementById('panel-recent')) closeRecentPanel();
+});
+updateRecentBadge();
+</script>
+</body>
+</html>
