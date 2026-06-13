@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Marketplace - Logistics</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 10px;
+    }
+
+    .mobile {
+        width: 100%;
+        max-width: 420px;
+        background: #ffffff;
+        border-radius: 30px;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        min-height: 85vh;
+    }
+
+    /* Header */
+    .header {
+        background: #156b1d;
+        padding: 30px 25px;
+        color: #fff;
+        text-align: center;
+        position: relative;
+    }
+
+    .back-btn {
+        position: absolute;
+        left: 20px;
+        top: 30px;
+        background: rgba(255,255,255,0.15);
+        border: none;
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .header h1 { font-size: 22px; margin-bottom: 6px; }
+    .header p { font-size: 13px; opacity: 0.9; }
+
+    /* Content */
+    .content {
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .section-title {
+        color: #156b1d;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 18px 0 10px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #edf8ed;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-title:first-child { margin-top: 0; }
+    .section-title i { font-size: 14px; }
+
+    .field-group {
+        margin-bottom: 12px;
+    }
+
+    .field-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #333;
+        background: #fafafa;
+        transition: 0.2s;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+        outline: none;
+        border-color: #156b1d;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(21,107,29,0.08);
+    }
+
+    .field-group textarea {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+    .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Action buttons */
+    .actions {
+        padding: 15px 20px 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 14px;
+        padding: 14px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: #156b1d;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(21,107,29,0.3);
+    }
+    .btn-primary:hover { background: #11591a; }
+
+    .btn-secondary {
+        background: #fff;
+        color: #156b1d;
+        border: 1.5px solid #156b1d;
+    }
+    .btn-secondary:hover { background: #edf8ed; }
+
+    .btn-danger {
+        background: #fff;
+        color: #c0392b;
+        border: 1.5px solid #f1c5c0;
+    }
+    .btn-danger:hover { background: #fdf2f1; }
+
+    /* Toast */
+    .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: #156b1d;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 100;
+        white-space: nowrap;
+    }
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Status badge select coloring */
+    select#deliveryStatus, select#confirmationStatus, select#paymentStatus {
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div class="mobile">
+    <div class="header">
+        <button class="back-btn" onclick="location.href='all tabs.html'" aria-label="Back to dashboard">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h1><i class="fa-solid fa-truck"></i> Logistics</h1>
+        <p>Manage pickup, delivery, and tracking details</p>
+    </div>
+
+    <div class="content">
+        <form id="logisticsForm">
+
+            <div class="section-title"><i class="fa-solid fa-clipboard-list"></i> Logistics Information</div>
+            <div class="field-group">
+                <label for="requestId">Logistics Request ID</label>
+                <input type="text" id="requestId" placeholder="e.g. LR-2026-0001">
+            </div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="requestDate">Request Date</label>
+                    <input type="date" id="requestDate">
+                </div>
+                <div class="field-group">
+                    <label for="deliveryStatus">Delivery Status</label>
+                    <select id="deliveryStatus">
+                        <option value="">Select status</option>
+                        <option>Pending</option>
+                        <option>Assigned</option>
+                        <option>Picked Up</option>
+                        <option>In Transit</option>
+                        <option>Delivered</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-user"></i> Sender Information</div>
+            <div class="field-group">
+                <label for="senderName">Sender Name</label>
+                <input type="text" id="senderName" placeholder="Full name">
+            </div>
+            <div class="field-group">
+                <label for="senderPhone">Sender Phone Number</label>
+                <input type="tel" id="senderPhone" placeholder="e.g. 076123456" pattern="0\d{8}" maxlength="9" inputmode="numeric" title="Must start with 0 and contain 9 digits">
+            </div>
+            <div class="field-group">
+                <label for="pickupAddress">Pickup Address</label>
+                <input type="text" id="pickupAddress" placeholder="Street / area">
+            </div>
+            <div class="field-group">
+                <label for="senderDistrict">District / Town</label>
+                <select id="senderDistrict">
+                    <option value="">Select district</option>
+                    <option>Bo</option>
+                    <option>Bombali</option>
+                    <option>Bonthe</option>
+                    <option>Falaba</option>
+                    <option>Kailahun</option>
+                    <option>Kambia</option>
+                    <option>Karene</option>
+                    <option>Kenema</option>
+                    <option>Koinadugu</option>
+                    <option>Kono</option>
+                    <option>Moyamba</option>
+                    <option>Port Loko</option>
+                    <option>Pujehun</option>
+                    <option>Tonkolili</option>
+                    <option>Western Area Rural</option>
+                    <option>Western Area Urban</option>
+                </select>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-user-check"></i> Receiver Information</div>
+            <div class="field-group">
+                <label for="receiverName">Receiver Name</label>
+                <input type="text" id="receiverName" placeholder="Full name">
+            </div>
+            <div class="field-group">
+                <label for="receiverPhone">Receiver Phone Number</label>
+                <input type="tel" id="receiverPhone" placeholder="e.g. 076123456" pattern="0\d{8}" maxlength="9" inputmode="numeric" title="Must start with 0 and contain 9 digits">
+            </div>
+            <div class="field-group">
+                <label for="deliveryAddress">Delivery Address</label>
+                <input type="text" id="deliveryAddress" placeholder="Street / area">
+            </div>
+            <div class="field-group">
+                <label for="receiverDistrict">District / Town</label>
+                <select id="receiverDistrict">
+                    <option value="">Select district</option>
+                    <option>Bo</option>
+                    <option>Bombali</option>
+                    <option>Bonthe</option>
+                    <option>Falaba</option>
+                    <option>Kailahun</option>
+                    <option>Kambia</option>
+                    <option>Karene</option>
+                    <option>Kenema</option>
+                    <option>Koinadugu</option>
+                    <option>Kono</option>
+                    <option>Moyamba</option>
+                    <option>Port Loko</option>
+                    <option>Pujehun</option>
+                    <option>Tonkolili</option>
+                    <option>Western Area Rural</option>
+                    <option>Western Area Urban</option>
+                </select>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-box"></i> Shipment Details</div>
+            <div class="field-group">
+                <label for="orderId">Order ID</label>
+                <input type="text" id="orderId" placeholder="e.g. ORD-1042">
+            </div>
+            <div class="field-group">
+                <label for="productName">Product Name</label>
+                <input type="text" id="productName" placeholder="e.g. Cassava">
+            </div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="productCategory">Product Category</label>
+                    <select id="productCategory">
+                        <option value="">Select category</option>
+                        <option>Grains</option>
+                        <option>Vegetables</option>
+                        <option>Fruits</option>
+                        <option>Tubers</option>
+                        <option>Livestock</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" min="0" placeholder="0">
+                </div>
+            </div>
+            <div class="field-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" min="0" step="0.1" placeholder="0.0">
+            </div>
+            <div class="field-group">
+                <label for="packageDescription">Package Description</label>
+                <textarea id="packageDescription" placeholder="Describe the package"></textarea>
+            </div>
+            <div class="field-group">
+                <label for="specialInstructions">Special Handling Instructions</label>
+                <textarea id="specialInstructions" placeholder="e.g. Keep upright, fragile"></textarea>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-truck-fast"></i> Vehicle &amp; Driver Information</div>
+            <div class="field-group">
+                <label for="driverName">Driver Name</label>
+                <input type="text" id="driverName" placeholder="Full name">
+            </div>
+            <div class="field-group">
+                <label for="driverPhone">Driver Phone Number</label>
+                <input type="tel" id="driverPhone" placeholder="e.g. 076123456" pattern="0\d{8}" maxlength="9" inputmode="numeric" title="Must start with 0 and contain 9 digits">
+            </div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="vehicleReg">Vehicle Reg. Number</label>
+                    <input type="text" id="vehicleReg" placeholder="e.g. AEK 1234">
+                </div>
+                <div class="field-group">
+                    <label for="vehicleType">Vehicle Type</label>
+                    <select id="vehicleType">
+                        <option value="">Select type</option>
+                        <option>Motorbike</option>
+                        <option>Tricycle (Keke)</option>
+                        <option>Pickup Truck</option>
+                        <option>Van</option>
+                        <option>Truck</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-calendar-days"></i> Delivery Schedule</div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="pickupDate">Pickup Date</label>
+                    <input type="date" id="pickupDate">
+                </div>
+                <div class="field-group">
+                    <label for="pickupTime">Pickup Time</label>
+                    <input type="time" id="pickupTime">
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="deliveryDate">Expected Delivery Date</label>
+                    <input type="date" id="deliveryDate">
+                </div>
+                <div class="field-group">
+                    <label for="deliveryTime">Expected Delivery Time</label>
+                    <input type="time" id="deliveryTime">
+                </div>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-money-bill-wave"></i> Payment Information</div>
+            <div class="field-group">
+                <label for="deliveryFee">Delivery Fee (SLE)</label>
+                <input type="number" id="deliveryFee" min="0" step="0.01" placeholder="0.00">
+            </div>
+            <div class="row-2">
+                <div class="field-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod">
+                        <option value="">Select method</option>
+                        <option>Cash</option>
+                        <option>Mobile Money</option>
+                        <option>Bank Transfer</option>
+                        <option>In-App Wallet</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="paymentStatus">Payment Status</label>
+                    <select id="paymentStatus">
+                        <option value="">Select status</option>
+                        <option>Unpaid</option>
+                        <option>Paid</option>
+                        <option>Refunded</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-location-dot"></i> Tracking &amp; Confirmation</div>
+            <div class="field-group">
+                <label for="trackingNumber">Tracking Number</label>
+                <input type="text" id="trackingNumber" placeholder="e.g. TRK-998877">
+            </div>
+            <div class="field-group">
+                <label for="confirmationStatus">Delivery Confirmation Status</label>
+                <select id="confirmationStatus">
+                    <option value="">Select status</option>
+                    <option>Awaiting Confirmation</option>
+                    <option>Confirmed by Receiver</option>
+                    <option>Disputed</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label for="receiverSignature">Receiver Signature (type name)</label>
+                <input type="text" id="receiverSignature" placeholder="Receiver's full name">
+            </div>
+            <div class="field-group">
+                <label for="completionDate">Delivery Completion Date</label>
+                <input type="date" id="completionDate">
+            </div>
+            <div class="field-group">
+                <label for="additionalNotes">Additional Notes</label>
+                <textarea id="additionalNotes" placeholder="Any extra notes"></textarea>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-primary" onclick="saveForm()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Logistics Record
+        </button>
+        <button class="btn btn-secondary" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Print / Export
+        </button>
+        <button class="btn btn-danger" onclick="clearForm()">
+            <i class="fa-solid fa-trash"></i> Clear Form
+        </button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const FIELD_IDS = [
+        'requestId','requestDate','deliveryStatus',
+        'senderName','senderPhone','pickupAddress','senderDistrict',
+        'receiverName','receiverPhone','deliveryAddress','receiverDistrict',
+        'orderId','productName','productCategory','quantity','weight','packageDescription','specialInstructions',
+        'driverName','driverPhone','vehicleReg','vehicleType',
+        'pickupDate','pickupTime','deliveryDate','deliveryTime',
+        'deliveryFee','paymentMethod','paymentStatus',
+        'trackingNumber','confirmationStatus','receiverSignature','completionDate','additionalNotes'
+    ];
+
+    const STORAGE_KEY = 'logisticsRecord';
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function saveForm() {
+        const data = {};
+        FIELD_IDS.forEach(id => {
+            data[id] = document.getElementById(id).value;
+        });
+
+        if (!data.requestId) {
+            showToast('Please enter a Logistics Request ID');
+            document.getElementById('requestId').focus();
+            return;
+        }
+
+        const phonePattern = /^0\d{8}$/;
+        const phoneFields = [
+            ['senderPhone', 'Sender phone'],
+            ['receiverPhone', 'Receiver phone'],
+            ['driverPhone', 'Driver phone']
+        ];
+        for (const [id, label] of phoneFields) {
+            const val = data[id];
+            if (val && !phonePattern.test(val)) {
+                showToast(label + ' must start with 0 and have 9 digits');
+                document.getElementById(id).focus();
+                return;
+            }
+        }
+
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            showToast('Logistics record saved');
+        } catch (e) {
+            showToast('Could not save record');
+        }
+    }
+
+    function loadForm() {
+        let data;
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            data = JSON.parse(raw);
+        } catch (e) {
+            return;
+        }
+        FIELD_IDS.forEach(id => {
+            if (data[id] !== undefined) {
+                document.getElementById(id).value = data[id];
+            }
+        });
+    }
+
+    function clearForm() {
+        if (!confirm('Clear all fields in this logistics form?')) return;
+        FIELD_IDS.forEach(id => {
+            document.getElementById(id).value = '';
+        });
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        showToast('Form cleared');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadForm);
+</script>
+
+</body>
+</html>
