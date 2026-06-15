@@ -3,85 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farmer Marketplace - Login</title>
+<title>Farmer Marketplace</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
 body { background:#f0f4f0; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:20px 10px; }
-.screen { display:none; }
-.screen.active { display:block; }
-.mobile { width:100%; max-width:420px; margin:0 auto; background:#fff; border-radius:30px; overflow:hidden; border:1px solid #e0e0e0; box-shadow:0 10px 40px rgba(0,0,0,.1); display:flex; flex-direction:column; min-height:85vh; }
 
+.page { display:none; width:100%; }
+.page.active { display:block; }
+
+.mobile {
+  width:100%; max-width:420px; margin:0 auto; background:#fff; border-radius:30px;
+  overflow:hidden; border:1px solid #e0e0e0; box-shadow:0 10px 40px rgba(0,0,0,.1);
+  display:flex; flex-direction:column; min-height:85vh;
+}
+
+/* HEADER */
 .header { background:#156b1d; padding:36px 25px 30px; color:#fff; text-align:center; position:relative; flex-shrink:0; }
 .header h1 { font-size:22px; margin-bottom:6px; }
-.header p { font-size:13px; opacity:.88; }
-.back-btn { position:absolute; top:18px; left:18px; color:#fff; font-size:18px; cursor:pointer; background:rgba(255,255,255,.18); border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.header p  { font-size:13px; opacity:.88; }
+.back-btn {
+  position:absolute; top:18px; left:18px; color:#fff; font-size:18px; cursor:pointer;
+  background:rgba(255,255,255,.18); border:none; border-radius:50%;
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center; transition:.2s;
+}
 .back-btn:hover { background:rgba(255,255,255,.32); }
+.logout-btn {
+  position:absolute; top:18px; right:18px; color:#fff; font-size:11px; cursor:pointer;
+  background:rgba(255,255,255,.18); border:none; border-radius:20px;
+  padding:6px 12px; display:flex; align-items:center; gap:5px; font-weight:600; transition:.2s;
+}
+.logout-btn:hover { background:rgba(255,255,255,.32); }
 
-.logo { width:90px; height:90px; margin:-45px auto 10px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:44px; box-shadow:0 4px 16px rgba(0,0,0,.12); border:4px solid #fff; flex-shrink:0; }
+/* LOGO */
+.logo {
+  width:90px; height:90px; margin:-45px auto 10px; background:#fff; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:44px; box-shadow:0 4px 16px rgba(0,0,0,.12); border:4px solid #fff; flex-shrink:0;
+  overflow:hidden;
+}
+.logo img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
 
-.form { padding:0 30px 10px; }
-label { display:block; margin-bottom:8px; color:#444; font-weight:600; font-size:14px; }
-.input-box { display:flex; align-items:center; background:#f8f9fa; border:2px solid #e9ecef; border-radius:12px; padding:0 15px; margin-bottom:18px; transition:.3s; }
+/* PAGE TITLE */
+.page-title { text-align:center; padding:4px 20px 16px; flex-shrink:0; }
+.page-title h2 { color:#156b1d; font-size:20px; margin-bottom:4px; }
+.page-title p  { color:#888; font-size:13px; }
+
+/* ROLE BADGE */
+.role-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:#e8f5e9; border:1.5px solid #b2d8b3;
+  border-radius:20px; padding:4px 14px; font-size:12px; font-weight:700; color:#156b1d; margin-top:6px;
+}
+
+/* LOGIN */
+.login-wrap { padding:0 30px 10px; }
+.login-wrap label { display:block; margin-bottom:8px; color:#444; font-weight:600; font-size:14px; }
+.input-box {
+  display:flex; align-items:center; background:#f8f9fa;
+  border:2px solid #e9ecef; border-radius:12px; padding:0 15px; margin-bottom:18px; transition:.3s;
+}
 .input-box:focus-within { border-color:#156b1d; background:#fff; }
 .input-box i { color:#aaa; margin-right:10px; }
 .input-box input { width:100%; padding:14px 0; border:none; outline:none; background:transparent; font-size:15px; }
+.login-btn {
+  width:100%; padding:15px; background:#156b1d; color:#fff; border:none;
+  border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s;
+}
+.login-btn:hover { background:#115517; transform:translateY(-2px); }
 .links { text-align:right; margin-bottom:18px; }
 .links a { color:#156b1d; text-decoration:none; font-size:13px; font-weight:600; }
-.login-btn { width:100%; padding:15px; background:#156b1d; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s; }
-.login-btn:hover { background:#115517; transform:translateY(-2px); }
 .register { margin-top:20px; text-align:center; color:#555; font-size:14px; }
 .register a { color:#156b1d; text-decoration:none; font-weight:bold; }
 
-.features { margin-top:25px; padding:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; background:#fafafa; border-top:1px solid #f0f0f0; }
-.feature-btn { background:#fff; border:1px solid #e9ecef; border-radius:12px; padding:15px 5px; text-align:center; cursor:pointer; transition:all .3s; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+/* LOGIN FEATURE BUTTONS */
+.features { margin-top:22px; padding:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; background:#fafafa; border-top:1px solid #f0f0f0; }
+.feature-btn {
+  background:#fff; border:1px solid #e9ecef; border-radius:12px; padding:15px 5px;
+  text-align:center; cursor:pointer; transition:all .3s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
 .feature-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 4px 10px rgba(21,107,29,.1); }
-.feature-btn i { color:#156b1d; font-size:22px; margin-bottom:8px; transition:.3s; }
+.feature-btn i    { color:#156b1d; font-size:22px; margin-bottom:8px; }
 .feature-btn span { font-size:11px; font-weight:700; color:#555; }
 
-.page-title { text-align:center; padding:4px 20px 16px; flex-shrink:0; }
-.page-title h2 { color:#156b1d; font-size:20px; margin-bottom:4px; }
-.page-title p { color:#888; font-size:13px; }
-
-.form-body { padding:0 20px 24px; flex:1; overflow-y:auto; }
-.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:#156b1d; margin:18px 0 10px; padding-bottom:6px; border-bottom:1.5px solid #e6f4e6; }
-.form-group { margin-bottom:13px; }
-.form-group label { font-size:12px; font-weight:600; color:#555; margin-bottom:5px; }
-input[type=text],input[type=tel],input[type=number],input[type=date],select,textarea {
-  width:100%; padding:10px 14px; border:1.5px solid #e0e0e0; border-radius:12px; font-size:14px; background:#fafafa; color:#333; transition:border-color .2s; outline:none;
+/* FARMER DASHBOARD GRID */
+.dashboard-grid {
+  padding:0 20px 20px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
 }
-input:focus, select:focus, textarea:focus { border-color:#156b1d; background:#fff; }
-textarea { resize:vertical; min-height:70px; }
-.sys-field { width:100%; padding:10px 14px; background:#f0f4f0; border:1.5px solid #dce8dc; border-radius:12px; font-size:13px; color:#888; font-style:italic; }
-.input-hint { font-size:11px; color:#aaa; margin-top:3px; }
+.grid-btn {
+  background:#fff; border:1.5px solid #e9ecef; border-radius:16px; padding:20px 10px;
+  text-align:center; cursor:pointer; transition:all .25s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+.grid-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 6px 14px rgba(21,107,29,.12); }
+.grid-btn i    { color:#156b1d; font-size:26px; margin-bottom:10px; }
+.grid-btn span { font-size:11px; font-weight:700; color:#444; line-height:1.3; text-transform:uppercase; letter-spacing:.5px; }
 
-.btn-row { display:flex; gap:10px; margin-top:20px; }
-.btn-primary { flex:1; padding:13px; background:#156b1d; color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; transition:background .2s; display:flex; align-items:center; justify-content:center; gap:7px; }
-.btn-primary:hover { background:#0f4f15; }
-.btn-secondary { flex:1; padding:13px; background:#fff; color:#156b1d; border:1.5px solid #156b1d; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; }
-.btn-secondary:hover { background:#edf8ed; }
-.btn-danger { flex:1; padding:13px; background:#c62828; color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; }
-.btn-danger:hover { background:#9b1d1d; }
+/* SUB-SCREENS */
+.sub-screen { display:none; flex-direction:column; }
+.sub-screen.active { display:flex; }
 
+/* TABS */
 .tab-bar { display:flex; gap:6px; padding:0 20px 12px; flex-shrink:0; }
-.tab-btn { flex:1; padding:8px 4px; border-radius:10px; border:1.5px solid #e0e0e0; background:#fff; font-size:11px; font-weight:700; color:#777; cursor:pointer; text-transform:uppercase; letter-spacing:.4px; transition:all .2s; }
+.tab-btn {
+  flex:1; padding:8px 4px; border-radius:10px; border:1.5px solid #e0e0e0;
+  background:#fff; font-size:11px; font-weight:700; color:#777; cursor:pointer;
+  text-transform:uppercase; letter-spacing:.4px; transition:all .2s;
+}
 .tab-btn.active { background:#156b1d; color:#fff; border-color:#156b1d; }
 
-.record-card { border:1.5px solid #e9ecef; border-radius:16px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; transition:box-shadow .2s, border-color .2s; }
+/* FORMS */
+.form-body { padding:0 20px 24px; flex:1; overflow-y:auto; }
+.form-section-label {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.8px; color:#156b1d; margin:18px 0 10px;
+  padding-bottom:6px; border-bottom:1.5px solid #e6f4e6;
+}
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px; }
+input[type=text],input[type=email],input[type=tel],
+input[type=password],input[type=number],input[type=date],
+select,textarea {
+  width:100%; padding:10px 14px; border:1.5px solid #e0e0e0;
+  border-radius:12px; font-size:14px; background:#fafafa; color:#333;
+  transition:border-color .2s; outline:none;
+}
+input:focus,select:focus,textarea:focus { border-color:#156b1d; background:#fff; }
+textarea { resize:vertical; min-height:80px; }
+.input-hint { font-size:11px; color:#aaa; margin-top:4px; }
+
+/* PHOTO UPLOAD */
+.photo-upload-area {
+  display:flex; align-items:center; gap:14px; padding:12px;
+  border:1.5px dashed #b2d8b3; border-radius:14px; background:#f4fbf4; cursor:pointer;
+  transition:all .2s;
+}
+.photo-upload-area:hover { background:#e6f4e6; border-color:#156b1d; }
+.photo-preview {
+  width:60px; height:60px; border-radius:50%; background:#e0f0e0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; overflow:hidden; flex-shrink:0; border:2px solid #b2d8b3;
+}
+.photo-preview img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.photo-upload-info { flex:1; }
+.photo-upload-info strong { display:block; font-size:13px; color:#156b1d; font-weight:700; margin-bottom:2px; }
+.photo-upload-info span  { font-size:11px; color:#888; }
+.photo-upload-btn-inner {
+  display:inline-flex; align-items:center; gap:6px; padding:7px 14px;
+  background:#156b1d; color:#fff; border-radius:8px; font-size:12px; font-weight:700; margin-top:6px;
+}
+
+/* GPS FIELD */
+.gps-field {
+  display:flex; align-items:center; gap:10px; padding:10px 14px;
+  border:1.5px solid #e0e0e0; border-radius:12px; background:#fafafa;
+}
+.gps-field input { flex:1; border:none; outline:none; background:transparent; font-size:14px; color:#333; }
+.gps-detect-btn {
+  display:flex; align-items:center; gap:6px; padding:7px 12px;
+  background:#156b1d; color:#fff; border:none; border-radius:8px;
+  font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; flex-shrink:0; transition:.2s;
+}
+.gps-detect-btn:hover { background:#0f4f15; }
+.gps-detect-btn.loading { background:#888; cursor:not-allowed; }
+.gps-status { font-size:11px; margin-top:4px; }
+.gps-status.ok   { color:#156b1d; }
+.gps-status.err  { color:#c62828; }
+.gps-status.spin { color:#888; }
+
+/* SYS FIELD */
+.sys-field {
+  width:100%; padding:10px 14px; background:#f0f4f0; border:1.5px solid #dce8dc;
+  border-radius:12px; font-size:13px; color:#888; font-style:italic;
+}
+
+/* RADIO */
+.radio-row { display:flex; gap:16px; }
+.radio-row label { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:500; cursor:pointer; }
+.radio-row input[type=radio] { accent-color:#156b1d; width:16px; height:16px; }
+
+/* BUTTONS */
+.btn-row { display:flex; gap:10px; margin-top:22px; }
+.btn-primary {
+  flex:1; padding:13px; background:#156b1d; color:#fff; border:none;
+  border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; transition:.2s;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+}
+.btn-primary:hover { background:#0f4f15; }
+.btn-secondary {
+  flex:1; padding:13px; background:#fff; color:#156b1d;
+  border:1.5px solid #156b1d; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer;
+}
+.btn-secondary:hover { background:#edf8ed; }
+.btn-danger {
+  flex:1; padding:13px; background:#c62828; color:#fff;
+  border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer;
+}
+.btn-danger:hover { background:#9b1d1d; }
+
+/* WARNING */
+.warning-box {
+  background:#fff3e0; border:1.5px solid #ffb74d; border-radius:14px;
+  padding:14px 16px; margin:14px 0; display:flex; gap:10px; align-items:flex-start;
+}
+.warning-box i { color:#f57c00; font-size:18px; margin-top:2px; }
+.warning-box p { font-size:13px; color:#7a4e00; line-height:1.5; }
+
+/* RECORD CARDS */
+.record-card {
+  border:1.5px solid #e9ecef; border-radius:16px; padding:14px 16px; margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; transition:box-shadow .2s,border-color .2s;
+}
 .record-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); border-color:#b2d8b3; }
 .record-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.record-id { font-size:13px; font-weight:700; color:#156b1d; }
+.record-id   { font-size:13px; font-weight:700; color:#156b1d; }
 .record-name { font-size:14px; font-weight:700; color:#222; margin-bottom:3px; }
 .record-meta { font-size:12px; color:#888; }
 
-.badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; }
+/* ORDER CARDS */
+.order-card { border:1.5px solid #e9ecef; border-radius:16px; padding:16px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+.order-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.order-id-label { font-size:13px; font-weight:700; color:#156b1d; }
+.order-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; text-transform:uppercase; }
+.badge-pending   { background:#fff3e0; color:#e65100; }
+.badge-confirmed { background:#e8f5e9; color:#2e7d32; }
+.badge-shipped   { background:#e3f2fd; color:#1565c0; }
 .badge-available { background:#e8f5e9; color:#2e7d32; }
-.badge-active { background:#e3f2fd; color:#1565c0; }
-.badge-sold { background:#ffebee; color:#c62828; }
-.badge-pending { background:#fff3e0; color:#e65100; }
-.badge-dispatched { background:#e3f2fd; color:#1565c0; }
+.badge-active    { background:#e3f2fd; color:#1565c0; }
+.badge-sold      { background:#ffebee; color:#c62828; }
+.badge-dispatched{ background:#e3f2fd; color:#1565c0; }
 .badge-delivered { background:#e8f5e9; color:#2e7d32; }
+.order-row { display:flex; justify-content:space-between; font-size:13px; color:#555; padding:3px 0; border-bottom:1px solid #f5f5f5; }
+.order-row:last-child { border-bottom:none; }
+.order-row span:first-child { color:#999; font-size:12px; }
 
+/* DETAIL PANEL */
 .detail-panel { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:flex-end; justify-content:center; }
 .detail-panel.open { display:flex; }
 .detail-sheet { background:#fff; width:100%; max-width:420px; border-radius:24px 24px 0 0; padding:24px 22px 32px; max-height:88vh; overflow-y:auto; }
@@ -90,199 +248,515 @@ textarea { resize:vertical; min-height:70px; }
 .sheet-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
 .sheet-row:last-child { border-bottom:none; }
 .sheet-row span:first-child { color:#aaa; width:45%; flex-shrink:0; }
-.sheet-row span:last-child { font-weight:600; color:#333; text-align:right; }
+.sheet-row span:last-child  { font-weight:600; color:#333; text-align:right; }
 
-.fab { position:fixed; bottom:30px; right:calc(50% - 200px + 10px); width:54px; height:54px; border-radius:50%; background:#156b1d; color:#fff; border:none; font-size:22px; box-shadow:0 6px 16px rgba(21,107,29,.35); cursor:pointer; z-index:150; display:flex; align-items:center; justify-content:center; transition:transform .2s; }
-.fab:hover { transform:scale(1.08); }
-@media (max-width:440px){ .fab { right:24px; } }
-
-.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#156b1d; color:#fff; padding:12px 24px; border-radius:30px; font-size:13px; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,.2); opacity:0; pointer-events:none; transition:opacity .3s; z-index:999; white-space:nowrap; }
-.toast.show { opacity:1; }
-
+/* EMPTY STATE */
 .empty-state { text-align:center; padding:40px 20px; color:#bbb; }
 .empty-state i { font-size:46px; margin-bottom:12px; display:block; }
 .empty-state p { font-size:14px; }
 
-.footer { text-align:center; padding:15px; margin:15px 20px 20px; color:#fff; font-weight:600; font-size:12px; background:#156b1d; border-radius:16px; box-shadow:0 4px 10px rgba(21,107,29,.3); flex-shrink:0; }
+/* FOOTER */
+.footer {
+  text-align:center; padding:14px 20px; margin:20px 20px 20px;
+  color:#fff; font-weight:600; font-size:12px; background:#156b1d;
+  border-radius:16px; box-shadow:0 4px 10px rgba(21,107,29,.25); flex-shrink:0;
+}
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+  background:#156b1d; color:#fff; padding:12px 24px; border-radius:30px;
+  font-size:13px; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,.2);
+  opacity:0; pointer-events:none; transition:opacity .3s; z-index:999; white-space:nowrap;
+}
+.toast.show { opacity:1; }
+
+/* ══════════════════════════════════════════
+   BUYER PORTAL STYLES
+══════════════════════════════════════════ */
+/* Buyer sub-screens */
+.buyer-screen { display:none; flex-direction:column; min-height:85vh; }
+.buyer-screen.active { display:flex; }
+
+/* Buyer dashboard grid */
+.buyer-grid { padding:0 20px 20px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; flex:1; }
+.buyer-grid-btn {
+  background:#fff; border:1.5px solid #e9ecef; border-radius:16px; padding:26px 10px;
+  text-align:center; cursor:pointer; transition:all .25s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+.buyer-grid-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 6px 14px rgba(21,107,29,.12); }
+.buyer-icon-circle {
+  width:54px; height:54px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:12px; font-size:24px; transition:transform .25s;
+}
+.buyer-grid-btn:hover .buyer-icon-circle { transform:scale(1.1); }
+.buyer-grid-btn.browse  .buyer-icon-circle { background:#e8f5e9; color:#2e7d32; }
+.buyer-grid-btn.search  .buyer-icon-circle { background:#e3f2fd; color:#1565c0; }
+.buyer-grid-btn.cart    .buyer-icon-circle { background:#fff3e0; color:#e65100; }
+.buyer-grid-btn.order   .buyer-icon-circle { background:#fce4ec; color:#c62828; }
+.buyer-grid-btn span { font-size:11px; font-weight:700; color:#444; line-height:1.3; text-transform:uppercase; letter-spacing:.5px; }
+
+/* Cart badge */
+.cart-badge {
+  position:absolute; top:-6px; right:-8px;
+  background:#e53935; color:#fff; font-size:10px; font-weight:700;
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Product cards */
+.product-card { border:1.5px solid #e9ecef; border-radius:16px; margin-bottom:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.04); transition:box-shadow .2s; }
+.product-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); }
+.product-img { width:100%; height:130px; background:#e8f5e9; display:flex; align-items:center; justify-content:center; font-size:60px; }
+.product-info { padding:14px 16px; }
+.product-name   { font-size:15px; font-weight:700; color:#222; margin-bottom:2px; }
+.product-farmer { font-size:12px; color:#888; margin-bottom:6px; }
+.product-desc   { font-size:13px; color:#555; line-height:1.5; margin-bottom:10px; }
+.product-meta   { display:flex; justify-content:space-between; align-items:center; }
+.product-price  { font-size:16px; font-weight:800; color:#156b1d; }
+.product-qty    { font-size:11px; color:#999; }
+.add-cart-btn { background:#156b1d; color:#fff; border:none; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer; transition:background .2s; }
+.add-cart-btn:hover { background:#0f4f15; }
+.tag-chip { display:inline-block; padding:2px 8px; background:#e8f5e9; color:#156b1d; border-radius:20px; font-size:10px; font-weight:700; margin-bottom:6px; }
+
+/* Search bar */
+.search-bar { display:flex; align-items:center; background:#fafafa; border:1.5px solid #e0e0e0; border-radius:14px; padding:0 14px; margin-bottom:14px; gap:10px; }
+.search-bar i { color:#aaa; font-size:15px; }
+.search-bar input { border:none; background:transparent; padding:11px 0; font-size:14px; flex:1; outline:none; }
+
+/* Filter chips */
+.chip-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.chip { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1.5px solid #e0e0e0; background:#fff; color:#555; transition:all .2s; }
+.chip.active { background:#156b1d; color:#fff; border-color:#156b1d; }
+
+/* Price row */
+.price-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+/* Cart items */
+.cart-item { border:1.5px solid #e9ecef; border-radius:14px; padding:14px 16px; margin-bottom:12px; display:flex; align-items:flex-start; gap:12px; }
+.cart-item-icon { width:48px; height:48px; border-radius:12px; background:#e8f5e9; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.cart-item-info { flex:1; }
+.cart-item-name { font-size:14px; font-weight:700; color:#222; }
+.cart-item-unit { font-size:12px; color:#888; margin-bottom:6px; }
+.cart-item-row  { display:flex; justify-content:space-between; align-items:center; }
+.cart-item-price { font-size:15px; font-weight:800; color:#156b1d; }
+.qty-ctrl { display:flex; align-items:center; gap:10px; }
+.qty-btn { width:28px; height:28px; border-radius:8px; border:1.5px solid #e0e0e0; background:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color .2s; }
+.qty-btn:hover { border-color:#156b1d; color:#156b1d; }
+.qty-num { font-size:14px; font-weight:700; min-width:20px; text-align:center; }
+.remove-btn { background:none; border:none; color:#ccc; font-size:16px; cursor:pointer; }
+.remove-btn:hover { color:#e53935; }
+.cart-date { font-size:11px; color:#bbb; margin-top:4px; }
+
+/* Cart summary */
+.cart-summary { background:#f4fbf4; border:1.5px solid #b2d8b3; border-radius:14px; padding:14px 16px; margin-top:6px; }
+.summary-row { display:flex; justify-content:space-between; font-size:13px; color:#555; padding:4px 0; }
+.summary-row.total { font-size:15px; font-weight:800; color:#156b1d; border-top:1.5px dashed #b2d8b3; margin-top:6px; padding-top:10px; }
+
+/* Order success */
+.success-banner { background:#e8f5e9; border:1.5px solid #a5d6a7; border-radius:16px; padding:20px; text-align:center; margin-bottom:16px; }
+.success-banner i  { font-size:40px; color:#2e7d32; margin-bottom:8px; display:block; }
+.success-banner h3 { color:#2e7d32; font-size:16px; }
+.success-banner p  { font-size:13px; color:#555; margin-top:4px; }
+.order-summary-table { width:100%; border-collapse:collapse; }
+.order-summary-table td { padding:8px 0; font-size:13px; border-bottom:1px solid #f0f0f0; }
+.order-summary-table td:first-child { color:#999; width:45%; }
+.order-summary-table td:last-child  { font-weight:600; color:#333; }
+
+/* Payment options */
+.payment-options { display:flex; flex-direction:column; gap:10px; }
+.payment-option { border:1.5px solid #e0e0e0; border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:border-color .2s; }
+.payment-option:has(input:checked) { border-color:#156b1d; background:#f4fbf4; }
+.payment-option input[type=radio] { accent-color:#156b1d; width:16px; height:16px; }
+.payment-option-label { font-size:13px; font-weight:600; color:#333; }
+.payment-option-sub   { font-size:11px; color:#999; }
+
+/* Checkout field errors */
+.field-error { font-size:11px; color:#e53935; margin-top:4px; min-height:16px; font-weight:600; }
+input.input-invalid, select.input-invalid { border-color:#e53935 !important; background:#fff5f5 !important; }
+input.input-valid,   select.input-valid   { border-color:#43a047 !important; background:#f4fbf4 !important; }
+
+/* Checkbox styled */
+.check-group { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+.check-group input[type=checkbox] { width:18px; height:18px; accent-color:#156b1d; margin-top:2px; flex-shrink:0; }
+.check-group label { font-size:13px; color:#555; line-height:1.5; font-weight:400; }
+.check-group label a { color:#156b1d; font-weight:600; text-decoration:none; }
+
+/* ══════════════════════════════════════════
+   LOGISTICS PORTAL STYLES
+══════════════════════════════════════════ */
+.logi-screen { display:none; flex-direction:column; min-height:85vh; }
+.logi-screen.active { display:flex; }
+
+/* Logistics dashboard grid */
+.logi-grid { padding:0 20px 24px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; flex:1; }
+.logi-grid-btn {
+  background:#fff; border:1.5px solid #e9ecef; border-radius:16px; padding:22px 10px;
+  text-align:center; cursor:pointer; transition:all .25s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+.logi-grid-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 6px 14px rgba(21,107,29,.12); }
+.logi-icon-circle {
+  width:54px; height:54px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:12px; font-size:22px; transition:transform .25s;
+}
+.logi-grid-btn:hover .logi-icon-circle { transform:scale(1.1); }
+.logi-grid-btn span { font-size:11px; font-weight:700; color:#444; line-height:1.3; text-transform:uppercase; letter-spacing:.5px; }
+
+/* Form sections */
+.logi-form-body { padding:0 20px 24px; flex:1; overflow-y:auto; }
+.logi-section-title {
+  color:#156b1d; font-size:12px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.6px; margin:18px 0 10px; padding-bottom:6px;
+  border-bottom:2px solid #edf8ed; display:flex; align-items:center; gap:8px;
+}
+.logi-section-title:first-child { margin-top:0; }
+.logi-section-title i { font-size:13px; }
+.logi-field-group { margin-bottom:12px; }
+.logi-field-group label {
+  display:block; font-size:11px; font-weight:700; color:#555;
+  text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px;
+}
+.logi-field-group input,
+.logi-field-group select,
+.logi-field-group textarea {
+  width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:10px;
+  font-size:14px; color:#333; background:#fafafa; transition:.2s; outline:none;
+}
+.logi-field-group input:focus,
+.logi-field-group select:focus,
+.logi-field-group textarea:focus {
+  border-color:#156b1d; background:#fff; box-shadow:0 0 0 3px rgba(21,107,29,.08);
+}
+.logi-field-group textarea { resize:vertical; min-height:60px; }
+.logi-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.logi-actions { padding:15px 20px 25px; display:flex; flex-direction:column; gap:10px; }
+.logi-sys-field {
+  width:100%; padding:10px 12px; background:#f0f4f0; border:1.5px solid #dce8dc;
+  border-radius:10px; font-size:13px; color:#888; font-style:italic;
+}
+
+/* Status badge colours */
+.status-pending    { color:#e65100; }
+.status-transit    { color:#1565c0; }
+.status-delivered  { color:#2e7d32; }
+.status-cancelled  { color:#c62828; }
+
+/* Record cards for the list view */
+.logi-record-card {
+  border:1.5px solid #e9ecef; border-radius:16px; padding:14px 16px; margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; transition:box-shadow .2s,border-color .2s;
+}
+.logi-record-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); border-color:#b2d8b3; }
+.logi-record-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.logi-record-id   { font-size:13px; font-weight:700; color:#156b1d; }
+.logi-record-name { font-size:14px; font-weight:700; color:#222; margin-bottom:3px; }
+.logi-record-meta { font-size:12px; color:#888; }
+.logi-status-badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; }
+.logi-badge-pending   { background:#fff3e0; color:#e65100; }
+.logi-badge-transit   { background:#e3f2fd; color:#1565c0; }
+.logi-badge-delivered { background:#e8f5e9; color:#2e7d32; }
+.logi-badge-cancelled { background:#ffebee; color:#c62828; }
+.logi-badge-assigned  { background:#f3e5f5; color:#6a1b9a; }
+.logi-badge-pickup    { background:#fff8e1; color:#f57f17; }
+
 </style>
 </head>
 <body>
 
-<!-- ════════════════ LOGIN ════════════════ -->
-<div class="screen active" id="screen-login">
-  <div class="mobile">
-    <div class="header">
-      <h1>🌾 Farmer Marketplace</h1>
-      <p>Connecting farmers, buyers, and logistics.</p>
-    </div>
-    <div class="logo">🚜</div>
-
-    <div class="form">
-      <label>Username</label>
-      <div class="input-box">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" placeholder="Enter your username" id="username">
-      </div>
-      <label>Password</label>
-      <div class="input-box">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" placeholder="Enter your password" id="password">
-      </div>
-      <div class="links"><a href="#">Forgot Password?</a></div>
-      <button class="login-btn" onclick="login()">Login</button>
-      <div class="register">Don't have an account? <a href="#">Register</a></div>
-    </div>
-
-    <div class="features">
-      <button class="feature-btn" onclick="goTo('crops')">
-        <i class="fa-solid fa-seedling"></i><span>Crops</span>
-      </button>
-      <button class="feature-btn" onclick="goTo('market')">
-        <i class="fa-solid fa-store"></i><span>Market</span>
-      </button>
-      <button class="feature-btn" onclick="goTo('delivery')">
-        <i class="fa-solid fa-truck"></i><span>Delivery</span>
-      </button>
-    </div>
-
-    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+<!-- ═══════════════════════════════════════
+     PAGE: LOGIN
+═══════════════════════════════════════ -->
+<div class="page active" id="page-login">
+<div class="mobile">
+  <div class="header">
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
   </div>
+  <div class="logo">🚜</div>
+
+  <div class="login-wrap" style="margin-top:20px">
+    <label>Username</label>
+    <div class="input-box">
+      <i class="fa-solid fa-user"></i>
+      <input type="text" id="login-username" placeholder="Enter your username">
+    </div>
+    <label>Password</label>
+    <div class="input-box">
+      <i class="fa-solid fa-lock"></i>
+      <input type="password" id="login-password" placeholder="Enter your password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="links"><a href="#">Forgot Password?</a></div>
+    <button class="login-btn" onclick="doLogin()">
+      <i class="fa-solid fa-right-to-bracket"></i> &nbsp;Login
+    </button>
+    <div class="register">Don't have an account? <a href="#">Register</a></div>
+  </div>
+
+  <!-- Original 3 feature tabs -->
+  <div class="features">
+    <button class="feature-btn" onclick="goDirectTo('crops')">
+      <i class="fa-solid fa-seedling"></i><span>Crops</span>
+    </button>
+    <button class="feature-btn" onclick="goDirectTo('market')">
+      <i class="fa-solid fa-store"></i><span>Market</span>
+    </button>
+    <button class="feature-btn" onclick="goDirectTo('delivery')">
+      <i class="fa-solid fa-truck"></i><span>Delivery</span>
+    </button>
+  </div>
+
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
 </div>
 
-<!-- ════════════════ CROPS ════════════════ -->
-<div class="screen" id="screen-crops">
-  <div class="mobile">
-    <div class="header">
-      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
-      <h1>🌾 Farmer Marketplace</h1>
-      <p>Connecting farmers, buyers, and logistics.</p>
-    </div>
-    <div class="logo">🌱</div>
-    <div class="page-title"><h2>Crops</h2><p>Manage your crop inventory</p></div>
-
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="setTab(this,'crop-list')">List</button>
-      <button class="tab-btn" onclick="setTab(this,'crop-form')">Add New</button>
-    </div>
-
-    <div class="form-body" id="crop-list">
-      <div id="crops-container"></div>
-    </div>
-
-    <div class="form-body" id="crop-form" style="display:none">
-      <div class="section-label">Crop Details</div>
-      <div class="form-group">
-        <label>Crop ID</label>
-        <div class="sys-field" id="crop-id-field">Auto-generated on save</div>
-      </div>
-      <div class="form-group">
-        <label>Crop Name</label>
-        <input type="text" id="crop-name" placeholder="e.g. Tomatoes">
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <select id="crop-category">
-          <option value="">Select category</option>
-          <option>Vegetables</option><option>Fruits</option><option>Grains</option>
-          <option>Tubers</option><option>Legumes</option><option>Cash Crops</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Variety</label>
-        <input type="text" id="crop-variety" placeholder="e.g. Roma, Beefsteak">
-      </div>
-      <div class="form-group">
-        <label>Quantity Available</label>
-        <input type="number" id="crop-qty" placeholder="e.g. 50" min="0">
-      </div>
-      <div class="form-group">
-        <label>Unit</label>
-        <select id="crop-unit">
-          <option value="">Select unit</option>
-          <option>kg</option><option>bag</option><option>crate</option>
-          <option>bundle</option><option>litre</option><option>piece</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Price per Unit (Le)</label>
-        <input type="number" id="crop-price" placeholder="0.00" min="0">
-      </div>
-      <div class="form-group">
-        <label>Harvest Date</label>
-        <input type="date" id="crop-harvest">
-      </div>
-      <div class="form-group">
-        <label>Quality Grade</label>
-        <select id="crop-grade">
-          <option value="">Select grade</option>
-          <option>Grade A</option><option>Grade B</option><option>Grade C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Storage Location</label>
-        <input type="text" id="crop-storage" placeholder="e.g. Warehouse 1, Kenema">
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="crop-desc" placeholder="Describe the crop…"></textarea>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn-primary" onclick="saveCrop()"><i class="fa-solid fa-plus"></i> Add Crop</button>
-        <button class="btn-secondary" onclick="resetCropForm()">Reset</button>
-      </div>
-    </div>
-
-    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+<!-- ═══════════════════════════════════════
+     PAGE: CROPS
+═══════════════════════════════════════ -->
+<div class="page" id="page-crops">
+<div class="mobile">
+  <div class="header">
+    <button class="back-btn" onclick="switchPage('login')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
   </div>
+  <div class="logo">🌱</div>
+  <div class="page-title"><h2>Crops</h2><p>Manage your crop inventory</p></div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="setTab(this,'crop-list')">List</button>
+    <button class="tab-btn" onclick="setTab(this,'crop-form')">Add New</button>
+  </div>
+
+  <div class="form-body" id="crop-list">
+    <div id="crops-container"></div>
+  </div>
+
+  <div class="form-body" id="crop-form" style="display:none">
+    <div class="form-section-label">Crop Details</div>
+    <div class="form-group"><label>Crop ID</label><div class="sys-field">Auto-generated on save</div></div>
+    <div class="form-group"><label>Crop Name</label><input type="text" id="crop-name" placeholder="e.g. Tomatoes"></div>
+    <div class="form-group"><label>Category</label>
+      <select id="crop-category"><option value="">Select category</option>
+        <option>Vegetables</option><option>Fruits</option><option>Grains</option>
+        <option>Tubers</option><option>Legumes</option><option>Cash Crops</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Variety</label><input type="text" id="crop-variety" placeholder="e.g. Roma, Beefsteak"></div>
+    <div class="form-group"><label>Quantity Available</label><input type="number" id="crop-qty" placeholder="e.g. 50" min="0"></div>
+    <div class="form-group"><label>Unit</label>
+      <select id="crop-unit"><option value="">Select unit</option>
+        <option>kg</option><option>bag</option><option>crate</option>
+        <option>bundle</option><option>litre</option><option>piece</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Price per Unit (Le)</label><input type="number" id="crop-price" placeholder="0.00" min="0"></div>
+    <div class="form-group"><label>Harvest Date</label><input type="date" id="crop-harvest"></div>
+    <div class="form-group"><label>Quality Grade</label>
+      <select id="crop-grade"><option value="">Select grade</option>
+        <option>Grade A</option><option>Grade B</option><option>Grade C</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Storage Location</label><input type="text" id="crop-storage" placeholder="e.g. Warehouse 1, Kenema"></div>
+    <div class="form-group"><label>Description</label><textarea id="crop-desc" placeholder="Describe the crop…"></textarea></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="saveCrop()"><i class="fa-solid fa-plus"></i> Add Crop</button>
+      <button class="btn-secondary" onclick="resetCropForm()">Reset</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
 </div>
 
-<!-- ════════════════ MARKET ════════════════ -->
-<div class="screen" id="screen-market">
-  <div class="mobile">
+<!-- ═══════════════════════════════════════
+     PAGE: MARKET
+═══════════════════════════════════════ -->
+<div class="page" id="page-market">
+<div class="mobile">
+  <div class="header">
+    <button class="back-btn" onclick="switchPage('login')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">🏪</div>
+  <div class="page-title"><h2>Market</h2><p>Manage your product listings</p></div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="setTab(this,'market-list')">Listings</button>
+    <button class="tab-btn" onclick="setTab(this,'market-form')">New Listing</button>
+  </div>
+
+  <div class="form-body" id="market-list"><div id="market-container"></div></div>
+
+  <div class="form-body" id="market-form" style="display:none">
+    <div class="form-section-label">Listing Details</div>
+    <div class="form-group"><label>Listing ID</label><div class="sys-field">Auto-generated on save</div></div>
+    <div class="form-group"><label>Seller Name</label><input type="text" id="listing-seller" placeholder="Your name"></div>
+    <div class="form-group"><label>Product Name</label><input type="text" id="listing-product" placeholder="e.g. Fresh Tomatoes"></div>
+    <div class="form-group"><label>Quantity</label><input type="number" id="listing-qty" placeholder="e.g. 20" min="0"></div>
+    <div class="form-group"><label>Unit Price (Le)</label><input type="number" id="listing-price" placeholder="0.00" min="0"></div>
+    <div class="form-group"><label>Market Location</label>
+      <select id="listing-location"><option value="">Select district</option>
+        <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
+        <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
+        <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
+        <option>Pujehun</option><option>Tonkolili</option><option>Western Area Rural</option>
+        <option>Western Area Urban (Freetown)</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Listing Date</label><div class="sys-field" id="listing-date-field"></div></div>
+    <div class="form-group"><label>Status</label>
+      <select id="listing-status"><option>Active</option><option>Pending</option><option>Sold</option></select>
+    </div>
+    <div class="form-group"><label>Contact Information</label>
+      <input type="tel" id="listing-contact" placeholder="0XXXXXXXX" maxlength="9"
+             oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+      <div class="input-hint">9-digit phone number starting with 0</div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="listing-notes" placeholder="Additional notes…"></textarea></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="saveListing()"><i class="fa-solid fa-plus"></i> Add Listing</button>
+      <button class="btn-secondary" onclick="resetListingForm()">Reset</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE: DELIVERY
+═══════════════════════════════════════ -->
+<div class="page" id="page-delivery">
+<div class="mobile">
+  <div class="header">
+    <button class="back-btn" onclick="switchPage('login')"><i class="fa-solid fa-arrow-left"></i></button>
+    <h1>🌾 Farmer Marketplace</h1>
+    <p>Connecting farmers, buyers, and logistics.</p>
+  </div>
+  <div class="logo">🚚</div>
+  <div class="page-title"><h2>Delivery</h2><p>Track and manage deliveries</p></div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="setTab(this,'delivery-list')">Deliveries</button>
+    <button class="tab-btn" onclick="setTab(this,'delivery-form')">New Delivery</button>
+  </div>
+
+  <div class="form-body" id="delivery-list"><div id="delivery-container"></div></div>
+
+  <div class="form-body" id="delivery-form" style="display:none">
+    <div class="form-section-label">Delivery Details</div>
+    <div class="form-group"><label>Delivery ID</label><div class="sys-field">Auto-generated on save</div></div>
+    <div class="form-group"><label>Order ID</label><input type="text" id="delivery-order" placeholder="e.g. ORD-20260011"></div>
+    <div class="form-group"><label>Recipient Name</label>
+      <input type="text" id="delivery-recipient" placeholder="Full name"
+             oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')">
+      <div class="input-hint">Letters only</div>
+    </div>
+    <div class="form-group"><label>Phone Number</label>
+      <input type="tel" id="delivery-phone" placeholder="0XXXXXXXX" maxlength="9"
+             oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+      <div class="input-hint">9-digit phone number starting with 0</div>
+    </div>
+    <div class="form-group"><label>Delivery Address</label><input type="text" id="delivery-address" placeholder="Street / Landmark"></div>
+    <div class="form-group"><label>Product(s)</label><input type="text" id="delivery-products" placeholder="e.g. Fresh Tomatoes, Groundnuts"></div>
+    <div class="form-group"><label>Quantity</label><input type="text" id="delivery-qty" placeholder="e.g. 3 crates, 2 bags"></div>
+    <div class="form-group"><label>Dispatch Date</label><input type="date" id="delivery-dispatch"></div>
+    <div class="form-group"><label>Expected Delivery Date</label><input type="date" id="delivery-expected"></div>
+    <div class="form-group"><label>Delivery Status</label>
+      <select id="delivery-status"><option>Pending</option><option>Dispatched</option><option>In Transit</option><option>Delivered</option></select>
+    </div>
+    <div class="form-group"><label>Courier / Driver</label><input type="text" id="delivery-courier" placeholder="Driver name"></div>
+    <div class="form-group"><label>Remarks</label><textarea id="delivery-remarks" placeholder="Additional remarks…"></textarea></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="saveDelivery()"><i class="fa-solid fa-plus"></i> Add Delivery</button>
+      <button class="btn-secondary" onclick="resetDeliveryForm()">Reset</button>
+    </div>
+  </div>
+  <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE: FARMER PORTAL
+═══════════════════════════════════════ -->
+<div class="page" id="page-farmer">
+
+  <!-- DASHBOARD -->
+  <div class="mobile sub-screen active" id="sub-dashboard">
     <div class="header">
-      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
       <h1>🌾 Farmer Marketplace</h1>
       <p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
-    <div class="logo">🏪</div>
-    <div class="page-title"><h2>Market</h2><p>Manage your product listings</p></div>
-
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="setTab(this,'market-list')">Listings</button>
-      <button class="tab-btn" onclick="setTab(this,'market-form')">New Listing</button>
+    <div class="logo" id="dashboard-logo-wrap">🚜</div>
+    <div class="page-title">
+      <h2>Farmer Portal</h2>
+      <p id="farmer-welcome">Manage your farming business</p>
+      <div id="farmer-role-badge"></div>
     </div>
-
-    <div class="form-body" id="market-list">
-      <div id="market-container"></div>
+    <div class="dashboard-grid">
+      <button class="grid-btn" onclick="subShow('create-profile')"><i class="fa-solid fa-user-plus"></i><span>Create Profile</span></button>
+      <button class="grid-btn" onclick="subShow('manage-profile')"><i class="fa-solid fa-user-gear"></i><span>Manage Profile</span></button>
+      <button class="grid-btn" onclick="subShow('add-product')"><i class="fa-solid fa-box-open"></i><span>Add Products</span></button>
+      <button class="grid-btn" onclick="subShow('edit-product')"><i class="fa-solid fa-pen-to-square"></i><span>Edit Products</span></button>
+      <button class="grid-btn" onclick="subShow('delete-product')"><i class="fa-solid fa-trash-can"></i><span>Delete Products</span></button>
+      <button class="grid-btn" onclick="subShow('set-prices')"><i class="fa-solid fa-tags"></i><span>Set Prices &amp; Stock</span></button>
+      <button class="grid-btn" onclick="subShow('view-orders')"><i class="fa-solid fa-eye"></i><span>View Orders</span></button>
+      <button class="grid-btn" onclick="subShow('manage-orders')"><i class="fa-solid fa-boxes-packing"></i><span>Manage Orders</span></button>
     </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
 
-    <div class="form-body" id="market-form" style="display:none">
-      <div class="section-label">Listing Details</div>
+  <!-- CREATE PROFILE -->
+  <div class="mobile sub-screen" id="sub-create-profile">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">👤</div>
+    <div class="page-title"><h2>Create Profile</h2><p>Set up your farmer account</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Personal Information</div>
+      <div class="form-group"><label>Full Name</label><input type="text" id="cp-fullname" placeholder="Enter your full name"></div>
+      <div class="form-group"><label>Farmer ID</label><div class="sys-field"><i class="fa-solid fa-wand-magic-sparkles"></i> &nbsp;Auto-generated by system</div></div>
+
+      <!-- PHOTO UPLOAD -->
       <div class="form-group">
-        <label>Listing ID</label>
-        <div class="sys-field" id="listing-id-field">Auto-generated on save</div>
+        <label>Profile Photo</label>
+        <input type="file" id="cp-photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this,'cp-photo-preview','cp-photo-status','dashboard-logo-wrap')">
+        <div class="photo-upload-area" onclick="document.getElementById('cp-photo-input').click()">
+          <div class="photo-preview" id="cp-photo-preview">📷</div>
+          <div class="photo-upload-info">
+            <strong>Upload Profile Photo</strong>
+            <span id="cp-photo-status">JPG, PNG or GIF · Max 5MB</span>
+            <div class="photo-upload-btn-inner"><i class="fa-solid fa-camera"></i> Choose Photo</div>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Seller Name</label>
-        <input type="text" id="listing-seller" placeholder="Your name">
+
+      <div class="form-group"><label>Gender</label>
+        <select><option value="">Select gender</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select>
       </div>
-      <div class="form-group">
-        <label>Product Name</label>
-        <input type="text" id="listing-product" placeholder="e.g. Fresh Tomatoes">
+      <div class="form-group"><label>Date of Birth</label><input type="date"></div>
+      <div class="form-group"><label>National ID <span style="color:#aaa;font-weight:400">(Optional)</span></label><input type="text" placeholder="Enter national ID"></div>
+
+      <div class="form-section-label">Contact Information</div>
+      <div class="form-group"><label>Phone Number</label>
+        <input type="tel" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+        <div class="input-hint">9-digit number starting with 0</div>
       </div>
-      <div class="form-group">
-        <label>Quantity</label>
-        <input type="number" id="listing-qty" placeholder="e.g. 20" min="0">
-      </div>
-      <div class="form-group">
-        <label>Unit Price (Le)</label>
-        <input type="number" id="listing-price" placeholder="0.00" min="0">
-      </div>
-      <div class="form-group">
-        <label>Market Location</label>
-        <select id="listing-location">
-          <option value="">Select district</option>
+      <div class="form-group"><label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label><input type="email" placeholder="you@example.com"></div>
+
+      <div class="form-section-label">Location</div>
+      <div class="form-group"><label>District</label>
+        <select><option value="">Select district</option>
           <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
           <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
           <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
@@ -290,136 +764,919 @@ textarea { resize:vertical; min-height:70px; }
           <option>Western Area Urban (Freetown)</option>
         </select>
       </div>
+      <div class="form-group"><label>Region</label><input type="text" placeholder="e.g. Eastern Province"></div>
+      <div class="form-group"><label>Chiefdom</label><input type="text" placeholder="Enter chiefdom"></div>
+      <div class="form-group"><label>Community</label><input type="text" placeholder="Enter community"></div>
+      <div class="form-group"><label>Residential Address</label><input type="text" placeholder="Street / House number"></div>
+
+      <!-- GPS AUTO-DETECT -->
       <div class="form-group">
-        <label>Listing Date</label>
-        <div class="sys-field" id="listing-date-field"></div>
+        <label>GPS Coordinates</label>
+        <div class="gps-field">
+          <input type="text" id="cp-gps" placeholder="Click Detect to auto-locate" readonly>
+          <button class="gps-detect-btn" onclick="detectGPS('cp-gps','cp-gps-status')">
+            <i class="fa-solid fa-location-crosshairs"></i> Detect
+          </button>
+        </div>
+        <div class="gps-status" id="cp-gps-status"></div>
       </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="listing-status">
-          <option>Active</option>
-          <option>Pending</option>
-          <option>Sold</option>
-        </select>
+
+      <div class="form-section-label">Farm Information</div>
+      <div class="form-group"><label>Farm Name <span style="color:#aaa;font-weight:400">(Optional)</span></label><input type="text" placeholder="Enter farm name"></div>
+      <div class="form-group"><label>Farm Size</label><input type="text" placeholder="e.g. 2 hectares / 5 acres"></div>
+      <div class="form-group"><label>Type of Farming</label>
+        <select><option value="">Select type</option><option>Crop</option><option>Livestock</option><option>Poultry</option><option>Mixed</option><option>Fisheries</option></select>
       </div>
-      <div class="form-group">
-        <label>Contact Information</label>
-        <input type="tel" id="listing-contact" placeholder="0XXXXXXXX" maxlength="9"
-               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
-        <div class="input-hint">9-digit phone number starting with 0</div>
+      <div class="form-group"><label>Years of Experience</label><input type="number" placeholder="e.g. 5" min="0"></div>
+      <div class="form-group"><label>Membership</label>
+        <select><option value="">Select membership</option><option>Cooperative</option><option>Individual</option><option>Farmer Group</option></select>
       </div>
-      <div class="form-group">
-        <label>Notes</label>
-        <textarea id="listing-notes" placeholder="Additional notes…"></textarea>
+
+      <div class="form-section-label">Emergency Contact</div>
+      <div class="form-group"><label>Contact Name</label><input type="text" placeholder="Full name"></div>
+      <div class="form-group"><label>Relationship</label><input type="text" placeholder="e.g. Spouse, Parent"></div>
+      <div class="form-group"><label>Phone Number</label>
+        <input type="tel" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
       </div>
+
+      <div class="form-section-label">Account</div>
+      <div class="form-group"><label>Username</label><input type="text" placeholder="Choose a username"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a password"></div>
 
       <div class="btn-row">
-        <button class="btn-primary" onclick="saveListing()"><i class="fa-solid fa-plus"></i> Add Listing</button>
-        <button class="btn-secondary" onclick="resetListingForm()">Reset</button>
+        <button class="btn-primary" onclick="showToast('✅ Profile created successfully!')"><i class="fa-solid fa-user-plus"></i> Create Profile</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
       </div>
     </div>
-
     <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
   </div>
-</div>
 
-<!-- ════════════════ DELIVERY ════════════════ -->
-<div class="screen" id="screen-delivery">
-  <div class="mobile">
+  <!-- MANAGE PROFILE -->
+  <div class="mobile sub-screen" id="sub-manage-profile">
     <div class="header">
-      <button class="back-btn" onclick="goTo('login')"><i class="fa-solid fa-arrow-left"></i></button>
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">⚙️</div>
+    <div class="page-title"><h2>Manage Profile</h2><p>Update your information</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Personal Information</div>
+      <div class="form-group"><label>Full Name</label><input type="text" placeholder="John Farmer"></div>
+
+      <!-- PHOTO UPLOAD -->
+      <div class="form-group">
+        <label>Profile Photo</label>
+        <input type="file" id="mp-photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this,'mp-photo-preview','mp-photo-status',null)">
+        <div class="photo-upload-area" onclick="document.getElementById('mp-photo-input').click()">
+          <div class="photo-preview" id="mp-photo-preview">📷</div>
+          <div class="photo-upload-info">
+            <strong>Update Profile Photo</strong>
+            <span id="mp-photo-status">JPG, PNG or GIF · Max 5MB</span>
+            <div class="photo-upload-btn-inner"><i class="fa-solid fa-upload"></i> Choose Photo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"><label>Gender</label><select><option>Male</option><option>Female</option><option>Prefer not to say</option></select></div>
+      <div class="form-group"><label>Date of Birth</label><input type="date"></div>
+
+      <div class="form-section-label">Contact</div>
+      <div class="form-group"><label>Phone Number</label>
+        <input type="tel" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Address</label><input type="text" placeholder="Street / House number"></div>
+
+      <div class="form-section-label">Location</div>
+      <div class="form-group"><label>Country</label><input type="text" placeholder="Sierra Leone"></div>
+      <div class="form-group"><label>District</label>
+        <select><option value="">Select district</option>
+          <option>Bo</option><option>Bombali</option><option>Kenema</option><option>Kono</option>
+          <option>Port Loko</option><option>Western Area Urban (Freetown)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Town / Village</label><input type="text" placeholder="Enter town or village"></div>
+
+      <!-- GPS UPDATE -->
+      <div class="form-group">
+        <label>GPS Coordinates</label>
+        <div class="gps-field">
+          <input type="text" id="mp-gps" placeholder="Click Detect to update location" readonly>
+          <button class="gps-detect-btn" onclick="detectGPS('mp-gps','mp-gps-status')">
+            <i class="fa-solid fa-location-crosshairs"></i> Detect
+          </button>
+        </div>
+        <div class="gps-status" id="mp-gps-status"></div>
+      </div>
+
+      <div class="form-section-label">Farm Information</div>
+      <div class="form-group"><label>Farm Name</label><input type="text" placeholder="My Farm"></div>
+      <div class="form-group"><label>Farm Size</label><input type="text" placeholder="e.g. 2 hectares"></div>
+      <div class="form-group"><label>Farming Type</label><select><option>Crop</option><option>Livestock</option><option>Poultry</option><option>Mixed</option><option>Fisheries</option></select></div>
+      <div class="form-group"><label>Main Crops</label><input type="text" placeholder="e.g. Rice, Cassava"></div>
+      <div class="form-group"><label>Years of Experience</label><input type="number" placeholder="5" min="0"></div>
+
+      <div class="form-section-label">Account</div>
+      <div class="form-group"><label>Username</label><input type="text" placeholder="my_username"></div>
+      <div class="form-group"><label>Change Password</label><input type="password" placeholder="New password"></div>
+
+      <div class="form-section-label">Payment (Optional)</div>
+      <div class="form-group"><label>Mobile Money</label><input type="tel" placeholder="Mobile money number"></div>
+      <div class="form-group"><label>Bank Name</label><input type="text" placeholder="Enter bank name"></div>
+      <div class="form-group"><label>Account Number</label><input type="text" placeholder="Enter account number"></div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="showToast('💾 Profile saved!')"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- ADD PRODUCT -->
+  <div class="mobile sub-screen" id="sub-add-product">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📦</div>
+    <div class="page-title"><h2>Add Products</h2><p>List a new product for sale</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Product Details</div>
+      <div class="form-group"><label>Product Name</label><input type="text" placeholder="e.g. Fresh Tomatoes"></div>
+      <div class="form-group"><label>Category</label>
+        <select><option value="">Select category</option><option>Vegetables</option><option>Fruits</option>
+          <option>Grains</option><option>Livestock</option><option>Poultry</option><option>Fisheries</option><option>Dairy</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Description</label><textarea placeholder="Describe your product…"></textarea></div>
+
+      <!-- PRODUCT IMAGE UPLOAD -->
+      <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" id="prod-photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this,'prod-photo-preview','prod-photo-status',null)">
+        <div class="photo-upload-area" onclick="document.getElementById('prod-photo-input').click()">
+          <div class="photo-preview" id="prod-photo-preview">🖼️</div>
+          <div class="photo-upload-info">
+            <strong>Upload Product Image</strong>
+            <span id="prod-photo-status">JPG or PNG · Max 5MB</span>
+            <div class="photo-upload-btn-inner"><i class="fa-solid fa-image"></i> Choose Image</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-label">Pricing &amp; Quantity</div>
+      <div class="form-group"><label>Unit of Measure</label>
+        <select><option value="">Select unit</option><option>kg</option><option>bag</option>
+          <option>crate</option><option>litre</option><option>piece</option><option>bundle</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Price per Unit (Le)</label><input type="number" placeholder="0.00" min="0"></div>
+      <div class="form-group"><label>Available Quantity</label><input type="number" placeholder="e.g. 50" min="0"></div>
+      <div class="form-group"><label>Minimum Order Quantity</label><input type="number" placeholder="e.g. 5" min="1"></div>
+
+      <div class="form-section-label">Dates</div>
+      <div class="form-group"><label>Harvest Date</label><input type="date"></div>
+      <div class="form-group"><label>Expiry Date <span style="color:#aaa;font-weight:400">(Optional)</span></label><input type="date"></div>
+
+      <div class="form-section-label">Availability</div>
+      <div class="form-group"><label>Farm Location</label><input type="text" placeholder="Where can buyers collect?"></div>
+      <div class="form-group">
+        <!-- GPS for product location -->
+        <label>Farm GPS Location</label>
+        <div class="gps-field">
+          <input type="text" id="prod-gps" placeholder="Click Detect to auto-locate" readonly>
+          <button class="gps-detect-btn" onclick="detectGPS('prod-gps','prod-gps-status')">
+            <i class="fa-solid fa-location-crosshairs"></i> Detect
+          </button>
+        </div>
+        <div class="gps-status" id="prod-gps-status"></div>
+      </div>
+      <div class="form-group"><label>Delivery Available?</label>
+        <div class="radio-row"><label><input type="radio" name="delivery" value="yes"> Yes</label><label><input type="radio" name="delivery" value="no" checked> No</label></div>
+      </div>
+      <div class="form-group"><label>Pickup Available?</label>
+        <div class="radio-row"><label><input type="radio" name="pickup" value="yes" checked> Yes</label><label><input type="radio" name="pickup" value="no"> No</label></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="showToast('✅ Product added!')"><i class="fa-solid fa-plus"></i> Add Product</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- EDIT PRODUCT -->
+  <div class="mobile sub-screen" id="sub-edit-product">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">✏️</div>
+    <div class="page-title"><h2>Edit Products</h2><p>Update your product listings</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Select Product</div>
+      <div class="form-group"><label>Select Product</label>
+        <select><option value="">Choose a product…</option><option>Fresh Tomatoes</option><option>Groundnuts (5kg bag)</option><option>Cassava Leaves</option></select>
+      </div>
+      <div class="form-section-label">Product Information</div>
+      <div class="form-group"><label>Product Name</label><input type="text" placeholder="Product name"></div>
+      <div class="form-group"><label>Category</label>
+        <select><option value="">Select category</option><option>Vegetables</option><option>Fruits</option><option>Grains</option><option>Livestock</option><option>Poultry</option><option>Fisheries</option><option>Dairy</option><option>Other</option></select>
+      </div>
+      <div class="form-group"><label>Description</label><textarea placeholder="Product description…"></textarea></div>
+      <div class="form-group">
+        <label>Update Image</label>
+        <input type="file" id="ep-photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this,'ep-photo-preview','ep-photo-status',null)">
+        <div class="photo-upload-area" onclick="document.getElementById('ep-photo-input').click()">
+          <div class="photo-preview" id="ep-photo-preview">🖼️</div>
+          <div class="photo-upload-info">
+            <strong>Update Product Image</strong>
+            <span id="ep-photo-status">JPG or PNG · Max 5MB</span>
+            <div class="photo-upload-btn-inner"><i class="fa-solid fa-upload"></i> Upload</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group"><label>Price (Le)</label><input type="number" placeholder="0.00" min="0"></div>
+      <div class="form-group"><label>Quantity Available</label><input type="number" placeholder="0" min="0"></div>
+      <div class="form-group"><label>Status</label>
+        <select><option value="">Select status</option><option>Available</option><option>Out of Stock</option><option>Archived</option></select>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="showToast('💾 Changes saved!')"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- DELETE PRODUCT -->
+  <div class="mobile sub-screen" id="sub-delete-product">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🗑️</div>
+    <div class="page-title"><h2>Delete Products</h2><p>Remove a listing permanently</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Select Product</div>
+      <div class="form-group"><label>Select Product</label>
+        <select><option value="">Choose a product to delete…</option><option>Fresh Tomatoes</option><option>Groundnuts (5kg bag)</option><option>Cassava Leaves</option></select>
+      </div>
+      <div class="warning-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Warning:</strong> Deleting this product will permanently remove it from your listings. This action cannot be undone.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn-danger" onclick="showToast('🗑️ Product deleted')"><i class="fa-solid fa-trash-can"></i> Delete Product</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- SET PRICES & STOCK -->
+  <div class="mobile sub-screen" id="sub-set-prices">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🏷️</div>
+    <div class="page-title"><h2>Set Prices &amp; Stock</h2><p>Update pricing and inventory</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Product</div>
+      <div class="form-group"><label>Select Product</label>
+        <select><option value="">Choose a product…</option><option>Fresh Tomatoes</option><option>Groundnuts (5kg bag)</option><option>Cassava Leaves</option></select>
+      </div>
+      <div class="form-section-label">Pricing</div>
+      <div class="form-group"><label>Current Price (Le)</label><div class="sys-field">Le 25,000</div></div>
+      <div class="form-group"><label>New Price (Le)</label><input type="number" placeholder="Enter new price" min="0"></div>
+      <div class="form-section-label">Stock</div>
+      <div class="form-group"><label>Available Stock</label><input type="number" placeholder="Enter quantity" min="0"></div>
+      <div class="form-group"><label>Low Stock Alert Level</label>
+        <input type="number" placeholder="e.g. 10" min="0">
+        <div class="input-hint">Get notified when stock falls below this number</div>
+      </div>
+      <div class="form-section-label">Discount (Optional)</div>
+      <div class="form-group"><label>Discount (%)</label><input type="number" placeholder="e.g. 10" min="0" max="100"></div>
+      <div class="form-group"><label>Sale Start Date</label><input type="date"></div>
+      <div class="form-group"><label>Sale End Date</label><input type="date"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="showToast('✅ Price &amp; stock updated!')"><i class="fa-solid fa-rotate"></i> Update Price &amp; Stock</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Reset</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- VIEW ORDERS -->
+  <div class="mobile sub-screen" id="sub-view-orders">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">👁️</div>
+    <div class="page-title"><h2>View Orders</h2><p>All incoming orders at a glance</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Recent Orders</div>
+      <div class="order-card">
+        <div class="order-card-header"><span class="order-id-label">#ORD-20260011</span><span class="order-badge badge-confirmed">Confirmed</span></div>
+        <div class="order-row"><span>Customer</span><span>Aminata Kamara</span></div>
+        <div class="order-row"><span>Product(s)</span><span>Fresh Tomatoes</span></div>
+        <div class="order-row"><span>Quantity</span><span>3 crates</span></div>
+        <div class="order-row"><span>Total Amount</span><span>Le 75,000</span></div>
+        <div class="order-row"><span>Payment Status</span><span>✅ Paid</span></div>
+        <div class="order-row"><span>Order Status</span><span>Confirmed</span></div>
+        <div class="order-row"><span>Date &amp; Time</span><span>11 Jun 2026 · 09:14 AM</span></div>
+      </div>
+      <div class="order-card">
+        <div class="order-card-header"><span class="order-id-label">#ORD-20260012</span><span class="order-badge badge-pending">Pending</span></div>
+        <div class="order-row"><span>Customer</span><span>Ibrahim Sesay</span></div>
+        <div class="order-row"><span>Product(s)</span><span>Groundnuts</span></div>
+        <div class="order-row"><span>Quantity</span><span>2 bags</span></div>
+        <div class="order-row"><span>Total Amount</span><span>Le 50,000</span></div>
+        <div class="order-row"><span>Payment Status</span><span>⏳ Pending</span></div>
+        <div class="order-row"><span>Order Status</span><span>Pending</span></div>
+        <div class="order-row"><span>Date &amp; Time</span><span>11 Jun 2026 · 10:30 AM</span></div>
+      </div>
+      <div class="order-card">
+        <div class="order-card-header"><span class="order-id-label">#ORD-20260010</span><span class="order-badge badge-shipped">Shipped</span></div>
+        <div class="order-row"><span>Customer</span><span>Fatmata Conteh</span></div>
+        <div class="order-row"><span>Product(s)</span><span>Cassava Leaves</span></div>
+        <div class="order-row"><span>Quantity</span><span>5 bundles</span></div>
+        <div class="order-row"><span>Total Amount</span><span>Le 30,000</span></div>
+        <div class="order-row"><span>Payment Status</span><span>✅ Paid</span></div>
+        <div class="order-row"><span>Order Status</span><span>Shipped</span></div>
+        <div class="order-row"><span>Date &amp; Time</span><span>10 Jun 2026 · 03:45 PM</span></div>
+      </div>
+      <div style="text-align:center;color:#aaa;font-size:12px;margin-top:8px">Showing 3 of 3 orders</div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- MANAGE ORDERS -->
+  <div class="mobile sub-screen" id="sub-manage-orders">
+    <div class="header">
+      <button class="back-btn" onclick="subShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📋</div>
+    <div class="page-title"><h2>Manage Orders</h2><p>Update order fulfillment status</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Select Order</div>
+      <div class="form-group"><label>Order ID</label>
+        <select><option value="">Choose an order…</option>
+          <option>#ORD-20260011 – Aminata Kamara (Confirmed)</option>
+          <option>#ORD-20260012 – Ibrahim Sesay (Pending)</option>
+          <option>#ORD-20260010 – Fatmata Conteh (Shipped)</option>
+        </select>
+      </div>
+      <div class="form-section-label">Order Actions</div>
+      <div class="form-group"><label>Update Status</label>
+        <select><option value="">Select new status</option><option>Confirmed</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select>
+      </div>
+      <div class="form-group"><label>Notes / Remarks</label><textarea placeholder="Add a note for this order…"></textarea></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="showToast('💾 Order updated!')"><i class="fa-solid fa-floppy-disk"></i> Update Order</button>
+        <button class="btn-secondary" onclick="subShow('dashboard')">Cancel</button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+</div><!-- end page-farmer -->
+
+
+<!-- ═══════════════════════════════════════
+     PAGE: BUYER PORTAL
+═══════════════════════════════════════ -->
+<div class="page" id="page-buyer">
+
+  <!-- BUYER DASHBOARD -->
+  <div class="mobile buyer-screen active" id="bsub-dashboard">
+    <div class="header">
       <h1>🌾 Farmer Marketplace</h1>
       <p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
-    <div class="logo">🚚</div>
-    <div class="page-title"><h2>Delivery</h2><p>Track and manage deliveries</p></div>
-
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="setTab(this,'delivery-list')">Deliveries</button>
-      <button class="tab-btn" onclick="setTab(this,'delivery-form')">New Delivery</button>
+    <div class="logo">🛒</div>
+    <div class="page-title">
+      <h2>Buyer Portal</h2>
+      <p id="buyer-welcome">Shop fresh farm products</p>
+      <div id="buyer-role-badge"></div>
     </div>
-
-    <div class="form-body" id="delivery-list">
-      <div id="delivery-container"></div>
+    <div class="buyer-grid">
+      <button class="buyer-grid-btn browse" onclick="bSubShow('browse');bRenderBrowse('all')">
+        <div class="buyer-icon-circle"><i class="fa-solid fa-basket-shopping"></i></div>
+        <span>Browse Products</span>
+      </button>
+      <button class="buyer-grid-btn search" onclick="bSubShow('search');bRunSearch()">
+        <div class="buyer-icon-circle"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+        <span>Search &amp; Filter</span>
+      </button>
+      <button class="buyer-grid-btn cart" onclick="bSubShow('cart');bRenderCart()">
+        <div class="buyer-icon-circle" style="position:relative">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="b-dash-badge">0</span>
+        </div>
+        <span>My Cart</span>
+      </button>
+      <button class="buyer-grid-btn order" onclick="bSubShow('checkout');bRenderCheckout()">
+        <div class="buyer-icon-circle"><i class="fa-solid fa-truck-fast"></i></div>
+        <span>Place Order</span>
+      </button>
     </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
 
-    <div class="form-body" id="delivery-form" style="display:none">
-      <div class="section-label">Delivery Details</div>
-      <div class="form-group">
-        <label>Delivery ID</label>
-        <div class="sys-field" id="delivery-id-field">Auto-generated on save</div>
+  <!-- BROWSE PRODUCTS -->
+  <div class="mobile buyer-screen" id="bsub-browse">
+    <div class="header">
+      <button class="back-btn" onclick="bSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🏪</div>
+    <div class="page-title"><h2>Browse Products</h2><p>Fresh from the farm, straight to you</p></div>
+    <div class="form-body">
+      <div class="chip-row" id="b-browse-chips">
+        <span class="chip active" onclick="bFilterCat(this,'all')">All</span>
+        <span class="chip" onclick="bFilterCat(this,'vegetables')">Vegetables</span>
+        <span class="chip" onclick="bFilterCat(this,'grains')">Grains</span>
+        <span class="chip" onclick="bFilterCat(this,'fruits')">Fruits</span>
+        <span class="chip" onclick="bFilterCat(this,'livestock')">Livestock</span>
       </div>
-      <div class="form-group">
-        <label>Order ID</label>
-        <input type="text" id="delivery-order" placeholder="e.g. ORD-20260011">
+      <div id="b-product-list"></div>
+    </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- SEARCH AND FILTER -->
+  <div class="mobile buyer-screen" id="bsub-search">
+    <div class="header">
+      <button class="back-btn" onclick="bSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🔍</div>
+    <div class="page-title"><h2>Search &amp; Filter</h2><p>Find exactly what you need</p></div>
+    <div class="form-body">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="b-search-keyword" placeholder="Search products..." oninput="bRunSearch()">
       </div>
-      <div class="form-group">
-        <label>Recipient Name</label>
-        <input type="text" id="delivery-recipient" placeholder="Full name"
-               oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')">
-        <div class="input-hint">Letters only</div>
-      </div>
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" id="delivery-phone" placeholder="0XXXXXXXX" maxlength="9"
-               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
-        <div class="input-hint">9-digit phone number starting with 0</div>
-      </div>
-      <div class="form-group">
-        <label>Delivery Address</label>
-        <input type="text" id="delivery-address" placeholder="Street / Landmark">
-      </div>
-      <div class="form-group">
-        <label>Product(s)</label>
-        <input type="text" id="delivery-products" placeholder="e.g. Fresh Tomatoes, Groundnuts">
-      </div>
-      <div class="form-group">
-        <label>Quantity</label>
-        <input type="text" id="delivery-qty" placeholder="e.g. 3 crates, 2 bags">
-      </div>
-      <div class="form-group">
-        <label>Dispatch Date</label>
-        <input type="date" id="delivery-dispatch">
-      </div>
-      <div class="form-group">
-        <label>Expected Delivery Date</label>
-        <input type="date" id="delivery-expected">
-      </div>
-      <div class="form-group">
-        <label>Delivery Status</label>
-        <select id="delivery-status">
-          <option>Pending</option>
-          <option>Dispatched</option>
-          <option>In Transit</option>
-          <option>Delivered</option>
+      <div class="form-section-label">Filters</div>
+      <div class="form-group"><label>Category</label>
+        <select id="b-filter-category" onchange="bRunSearch()">
+          <option value="">All Categories</option>
+          <option>Vegetables</option><option>Fruits</option><option>Grains</option><option>Livestock</option><option>Fisheries</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Courier / Driver</label>
-        <input type="text" id="delivery-courier" placeholder="Driver name">
+      <div class="form-group"><label>Location (District)</label>
+        <select id="b-filter-location" onchange="bRunSearch()">
+          <option value="">All Districts</option>
+          <option>Bo</option><option>Bombali</option><option>Kenema</option><option>Kono</option>
+          <option>Port Loko</option><option>Western Area Urban (Freetown)</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label>Remarks</label>
-        <textarea id="delivery-remarks" placeholder="Additional remarks…"></textarea>
+      <div class="form-group"><label>Price Range (Le)</label>
+        <div class="price-row">
+          <input type="number" id="b-filter-min" placeholder="Min" min="0" oninput="bRunSearch()">
+          <input type="number" id="b-filter-max" placeholder="Max" min="0" oninput="bRunSearch()">
+        </div>
       </div>
+      <div class="form-group"><label>Availability</label>
+        <select id="b-filter-status" onchange="bRunSearch()">
+          <option value="">Any</option><option value="available">Available</option><option value="limited">Limited Stock</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Seller / Farmer Name</label>
+        <input type="text" id="b-filter-seller" placeholder="e.g. Kamara Farms" oninput="bRunSearch()">
+      </div>
+      <div class="form-group"><label>Sort By</label>
+        <select id="b-filter-sort" onchange="bRunSearch()">
+          <option value="">Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest</option>
+          <option value="popular">Popularity</option>
+        </select>
+      </div>
+      <div class="form-section-label">Results</div>
+      <div id="b-search-results"></div>
+    </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
 
-      <div class="btn-row">
-        <button class="btn-primary" onclick="saveDelivery()"><i class="fa-solid fa-plus"></i> Add Delivery</button>
-        <button class="btn-secondary" onclick="resetDeliveryForm()">Reset</button>
+  <!-- CART -->
+  <div class="mobile buyer-screen" id="bsub-cart">
+    <div class="header">
+      <button class="back-btn" onclick="bSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🛒</div>
+    <div class="page-title"><h2>Your Cart</h2><p>Review items before checkout</p></div>
+    <div class="form-body">
+      <div id="b-cart-items-container"></div>
+      <div id="b-cart-summary-section" style="display:none">
+        <div class="cart-summary" id="b-cart-summary"></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn-primary" onclick="bSubShow('checkout');bRenderCheckout()"><i class="fa-solid fa-bag-shopping"></i> Checkout</button>
+          <button class="btn-secondary" onclick="bSubShow('browse');bRenderBrowse('all')">Add More</button>
+        </div>
       </div>
     </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
 
+  <!-- CHECKOUT -->
+  <div class="mobile buyer-screen" id="bsub-checkout">
+    <div class="header">
+      <button class="back-btn" onclick="bSubShow('cart');bRenderCart()"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📦</div>
+    <div class="page-title"><h2>Place Order</h2><p>Complete your purchase</p></div>
+    <div class="form-body">
+      <div class="form-section-label">Buyer Information</div>
+      <div class="form-group"><label>Full Name</label>
+        <input type="text" id="co-name" placeholder="Your full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')" onblur="bValidateName(this)">
+        <div class="field-error" id="co-err-name"></div>
+        <div class="input-hint">Letters only</div>
+      </div>
+      <div class="form-group"><label>Phone Number</label>
+        <input type="tel" id="co-phone" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)" onblur="bValidatePhone(this)">
+        <div class="field-error" id="co-err-phone"></div>
+        <div class="input-hint">Must start with 0 and be exactly 9 digits</div>
+      </div>
+      <div class="form-group"><label>Email <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="email" id="co-email" placeholder="you@example.com">
+      </div>
+      <div class="form-section-label">Delivery Information</div>
+      <div class="form-group"><label>Delivery Address</label>
+        <input type="text" id="co-address" placeholder="Street / Landmark">
+      </div>
+      <div class="form-group"><label>District</label>
+        <select id="co-district">
+          <option value="">Select District</option>
+          <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
+          <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
+          <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
+          <option>Pujehun</option><option>Tonkolili</option><option>Western Area Rural</option>
+          <option>Western Area Urban (Freetown)</option>
+        </select>
+        <div class="field-error" id="co-err-district"></div>
+      </div>
+      <div class="form-group"><label>Town / Village</label>
+        <input type="text" id="co-town" placeholder="Enter town or village">
+      </div>
+      <div class="form-section-label">Order Details</div>
+      <div class="cart-summary" id="co-order-summary" style="margin-bottom:14px"></div>
+      <div class="form-group"><label>Preferred Delivery Date</label>
+        <input type="date" id="co-date">
+      </div>
+      <div class="form-group"><label>Payment Method</label>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="b-payment" value="mobile-money" checked>
+            <div><div class="payment-option-label">📱 Mobile Money</div><div class="payment-option-sub">Orange Money, Africell Money</div></div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="b-payment" value="cash">
+            <div><div class="payment-option-label">💵 Cash on Delivery</div><div class="payment-option-sub">Pay when you receive your order</div></div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="b-payment" value="bank">
+            <div><div class="payment-option-label">🏦 Bank Transfer</div><div class="payment-option-sub">Direct bank payment</div></div>
+          </label>
+        </div>
+      </div>
+      <div class="form-group"><label>Additional Notes</label>
+        <textarea id="co-notes" placeholder="Any special instructions..."></textarea>
+      </div>
+      <div class="form-section-label">Confirmation</div>
+      <div class="check-group">
+        <input type="checkbox" id="co-terms">
+        <label for="co-terms">I agree to the <a href="#">Terms and Conditions</a> of Farmer Marketplace.</label>
+      </div>
+      <div class="form-group"><label>Buyer Signature <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="text" id="co-signature" placeholder="Type your full name as signature">
+      </div>
+      <div class="form-group"><label>Order Date</label>
+        <div class="sys-field" id="co-order-date"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="bPlaceOrder()"><i class="fa-solid fa-check-circle"></i> Confirm Order</button>
+        <button class="btn-secondary" onclick="bSubShow('cart');bRenderCart()">Back</button>
+      </div>
+    </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- ORDER SUCCESS -->
+  <div class="mobile buyer-screen" id="bsub-success">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">✅</div>
+    <div class="page-title"><h2>Order Placed!</h2><p>Your order is on its way</p></div>
+    <div class="form-body">
+      <div class="success-banner">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3>Order Confirmed</h3>
+        <p id="b-success-msg">Your order has been received and will be processed shortly.</p>
+      </div>
+      <div class="form-section-label">Order Summary</div>
+      <div id="b-success-order-table" style="margin-bottom:16px"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="bSubShow('dashboard');bClearCart()"><i class="fa-solid fa-house"></i> Back to Home</button>
+      </div>
+    </div>
+    <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+</div><!-- end page-buyer -->
+
+
+<!-- ═══════════════════════════════════════
+     PAGE: LOGISTICS PORTAL
+═══════════════════════════════════════ -->
+<div class="page" id="page-logistics">
+
+  <!-- LOGISTICS DASHBOARD -->
+  <div class="mobile logi-screen active" id="lsub-dashboard">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🚚</div>
+    <div class="page-title">
+      <h2>Logistics Portal</h2>
+      <p id="logi-welcome">Manage pickup, delivery and tracking</p>
+      <div id="logi-role-badge"></div>
+    </div>
+    <div class="logi-grid">
+      <button class="logi-grid-btn" onclick="lSubShow('new-request')" style="--c:#e8f5e9;--i:#2e7d32">
+        <div class="logi-icon-circle" style="background:#e8f5e9;color:#2e7d32"><i class="fa-solid fa-plus"></i></div>
+        <span>New Logistics Request</span>
+      </button>
+      <button class="logi-grid-btn" onclick="lSubShow('view-requests')">
+        <div class="logi-icon-circle" style="background:#e3f2fd;color:#1565c0"><i class="fa-solid fa-list"></i></div>
+        <span>View Requests</span>
+      </button>
+      <button class="logi-grid-btn" onclick="lSubShow('track')">
+        <div class="logi-icon-circle" style="background:#fff3e0;color:#e65100"><i class="fa-solid fa-location-dot"></i></div>
+        <span>Track Delivery</span>
+      </button>
+      <button class="logi-grid-btn" onclick="lSubShow('driver')">
+        <div class="logi-icon-circle" style="background:#fce4ec;color:#c62828"><i class="fa-solid fa-id-card"></i></div>
+        <span>Driver Management</span>
+      </button>
+    </div>
     <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
   </div>
-</div>
 
-<!-- ════════════════ DETAIL PANELS ════════════════ -->
+  <!-- NEW LOGISTICS REQUEST -->
+  <div class="mobile logi-screen" id="lsub-new-request">
+    <div class="header">
+      <button class="back-btn" onclick="lSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📋</div>
+    <div class="page-title"><h2>New Request</h2><p>Create a logistics delivery request</p></div>
+    <div class="logi-form-body">
+
+      <div class="logi-section-title"><i class="fa-solid fa-clipboard-list"></i> Logistics Information</div>
+      <div class="logi-field-group">
+        <label>Logistics Request ID</label>
+        <div class="logi-sys-field" id="l-request-id-display">Auto-generated on save</div>
+      </div>
+      <div class="logi-row-2">
+        <div class="logi-field-group">
+          <label>Request Date</label>
+          <div class="logi-sys-field" id="l-request-date-display"></div>
+        </div>
+        <div class="logi-field-group">
+          <label>Delivery Status</label>
+          <select id="l-delivery-status">
+            <option value="Pending" selected>Pending</option>
+            <option>Assigned</option><option>Picked Up</option>
+            <option>In Transit</option><option>Delivered</option><option>Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-user"></i> Sender Information</div>
+      <div class="logi-field-group"><label>Sender Name</label><input type="text" id="l-sender-name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"></div>
+      <div class="logi-field-group">
+        <label>Sender Phone</label>
+        <input type="tel" id="l-sender-phone" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+        <div style="font-size:11px;color:#aaa;margin-top:3px">9-digit number starting with 0</div>
+      </div>
+      <div class="logi-field-group"><label>Pickup Address</label><input type="text" id="l-pickup-address" placeholder="Street / area"></div>
+      <div class="logi-field-group"><label>Sender District</label>
+        <select id="l-sender-district"><option value="">Select district</option>
+          <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
+          <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
+          <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
+          <option>Pujehun</option><option>Tonkolili</option><option>Western Area Rural</option><option>Western Area Urban</option>
+        </select>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-user-check"></i> Receiver Information</div>
+      <div class="logi-field-group"><label>Receiver Name</label><input type="text" id="l-receiver-name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"></div>
+      <div class="logi-field-group">
+        <label>Receiver Phone</label>
+        <input type="tel" id="l-receiver-phone" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+        <div style="font-size:11px;color:#aaa;margin-top:3px">9-digit number starting with 0</div>
+      </div>
+      <div class="logi-field-group"><label>Delivery Address</label><input type="text" id="l-delivery-address" placeholder="Street / area"></div>
+      <div class="logi-field-group"><label>Receiver District</label>
+        <select id="l-receiver-district"><option value="">Select district</option>
+          <option>Bo</option><option>Bombali</option><option>Bonthe</option><option>Falaba</option>
+          <option>Kailahun</option><option>Kambia</option><option>Karene</option><option>Kenema</option>
+          <option>Koinadugu</option><option>Kono</option><option>Moyamba</option><option>Port Loko</option>
+          <option>Pujehun</option><option>Tonkolili</option><option>Western Area Rural</option><option>Western Area Urban</option>
+        </select>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-box"></i> Shipment Details</div>
+      <div class="logi-field-group"><label>Order ID</label><input type="text" id="l-order-id" placeholder="e.g. ORD-1042"></div>
+      <div class="logi-field-group"><label>Product Name</label><input type="text" id="l-product-name" placeholder="e.g. Cassava"></div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Category</label>
+          <select id="l-product-cat"><option value="">Select category</option>
+            <option>Grains</option><option>Vegetables</option><option>Fruits</option>
+            <option>Tubers</option><option>Livestock</option><option>Other</option>
+          </select>
+        </div>
+        <div class="logi-field-group"><label>Quantity</label><input type="number" id="l-quantity" min="0" placeholder="0"></div>
+      </div>
+      <div class="logi-field-group"><label>Weight (kg)</label><input type="number" id="l-weight" min="0" step="0.1" placeholder="0.0"></div>
+      <div class="logi-field-group"><label>Package Description</label><textarea id="l-pkg-desc" placeholder="Describe the package"></textarea></div>
+      <div class="logi-field-group"><label>Special Handling Instructions</label><textarea id="l-special" placeholder="e.g. Keep upright, fragile"></textarea></div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-truck-fast"></i> Vehicle & Driver</div>
+      <div class="logi-field-group"><label>Driver Name</label><input type="text" id="l-driver-name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"></div>
+      <div class="logi-field-group">
+        <label>Driver Phone</label>
+        <input type="tel" id="l-driver-phone" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+      </div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Vehicle Reg.</label><input type="text" id="l-vehicle-reg" placeholder="e.g. AEK 1234"></div>
+        <div class="logi-field-group"><label>Vehicle Type</label>
+          <select id="l-vehicle-type"><option value="">Select type</option>
+            <option>Motorbike</option><option>Tricycle (Keke)</option><option>Pickup Truck</option><option>Van</option><option>Truck</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-calendar-days"></i> Delivery Schedule</div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Pickup Date</label><input type="date" id="l-pickup-date"></div>
+        <div class="logi-field-group"><label>Pickup Time</label><input type="time" id="l-pickup-time"></div>
+      </div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Expected Delivery Date</label><input type="date" id="l-delivery-date"></div>
+        <div class="logi-field-group"><label>Expected Delivery Time</label><input type="time" id="l-delivery-time"></div>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-money-bill-wave"></i> Payment Information</div>
+      <div class="logi-field-group"><label>Delivery Fee (SLE)</label><input type="number" id="l-delivery-fee" min="0" step="0.01" placeholder="0.00"></div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Payment Method</label>
+          <select id="l-pay-method"><option value="">Select method</option>
+            <option>Cash</option><option>Mobile Money</option><option>Bank Transfer</option><option>In-App Wallet</option>
+          </select>
+        </div>
+        <div class="logi-field-group"><label>Payment Status</label>
+          <select id="l-pay-status"><option value="">Select status</option>
+            <option>Unpaid</option><option>Paid</option><option>Refunded</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="logi-section-title"><i class="fa-solid fa-location-dot"></i> Tracking & Confirmation</div>
+      <div class="logi-field-group">
+        <label>Tracking Number</label>
+        <div class="logi-sys-field" id="l-tracking-display">Auto-generated on save</div>
+      </div>
+      <div class="logi-field-group"><label>Delivery Confirmation Status</label>
+        <select id="l-confirm-status"><option value="">Select status</option>
+          <option>Awaiting Confirmation</option><option>Confirmed by Receiver</option><option>Disputed</option>
+        </select>
+      </div>
+      <div class="logi-field-group"><label>Receiver Signature (type name)</label><input type="text" id="l-receiver-sig" placeholder="Receiver's full name"></div>
+      <div class="logi-field-group"><label>Delivery Completion Date</label><input type="date" id="l-completion-date"></div>
+      <div class="logi-field-group"><label>Additional Notes</label><textarea id="l-notes" placeholder="Any extra notes"></textarea></div>
+
+      <div class="logi-actions">
+        <button style="width:100%;padding:13px;background:#156b1d;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 10px rgba(21,107,29,0.3);" onclick="lSaveRequest()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Logistics Record
+        </button>
+        <button style="width:100%;padding:13px;background:#fff;color:#156b1d;border:1.5px solid #156b1d;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;" onclick="lPrintForm()">
+          <i class="fa-solid fa-print"></i> Print / Export
+        </button>
+        <button style="width:100%;padding:13px;background:#fff;color:#c0392b;border:1.5px solid #f1c5c0;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;" onclick="lResetRequest()">
+          <i class="fa-solid fa-trash"></i> Clear Form
+        </button>
+      </div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- VIEW REQUESTS -->
+  <div class="mobile logi-screen" id="lsub-view-requests">
+    <div class="header">
+      <button class="back-btn" onclick="lSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📦</div>
+    <div class="page-title"><h2>Logistics Requests</h2><p>All delivery records</p></div>
+    <div class="logi-form-body">
+      <div id="l-requests-container"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- TRACK DELIVERY -->
+  <div class="mobile logi-screen" id="lsub-track">
+    <div class="header">
+      <button class="back-btn" onclick="lSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">📍</div>
+    <div class="page-title"><h2>Track Delivery</h2><p>Search by tracking or request ID</p></div>
+    <div class="logi-form-body">
+      <div class="logi-field-group">
+        <label>Enter Tracking Number or Request ID</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="l-track-input" placeholder="e.g. TRK-998877 or LR-2026-0001" style="flex:1;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;outline:none">
+          <button onclick="lTrackSearch()" style="padding:11px 16px;background:#156b1d;color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap"><i class="fa-solid fa-search"></i> Search</button>
+        </div>
+      </div>
+      <div id="l-track-result"></div>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- DRIVER MANAGEMENT -->
+  <div class="mobile logi-screen" id="lsub-driver">
+    <div class="header">
+      <button class="back-btn" onclick="lSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🚗</div>
+    <div class="page-title"><h2>Driver Management</h2><p>Available drivers and vehicles</p></div>
+    <div class="logi-form-body">
+      <div class="logi-section-title"><i class="fa-solid fa-users"></i> Active Drivers</div>
+      <div id="l-drivers-container"></div>
+      <div class="logi-section-title" style="margin-top:20px"><i class="fa-solid fa-user-plus"></i> Add Driver</div>
+      <div class="logi-field-group"><label>Driver Name</label><input type="text" id="l-new-driver-name" placeholder="Full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"></div>
+      <div class="logi-field-group">
+        <label>Phone Number</label>
+        <input type="tel" id="l-new-driver-phone" placeholder="0XXXXXXXX" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+      </div>
+      <div class="logi-row-2">
+        <div class="logi-field-group"><label>Vehicle Reg.</label><input type="text" id="l-new-vehicle-reg" placeholder="e.g. AEK 1234"></div>
+        <div class="logi-field-group"><label>Vehicle Type</label>
+          <select id="l-new-vehicle-type"><option value="">Select type</option>
+            <option>Motorbike</option><option>Tricycle (Keke)</option><option>Pickup Truck</option><option>Van</option><option>Truck</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="lAddDriver()" style="width:100%;padding:13px;background:#156b1d;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px">
+        <i class="fa-solid fa-plus"></i> Add Driver
+      </button>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+</div><!-- end page-logistics -->
+
+<!-- DETAIL PANELS -->
 <div class="detail-panel" id="panel-crop">
   <div class="detail-sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-title"><i class="fa-solid fa-seedling" style="margin-right:8px;color:#156b1d"></i>Crop Details</div>
+    <div class="sheet-title"><i class="fa-solid fa-seedling" style="margin-right:8px"></i>Crop Details</div>
     <div id="panel-crop-body"></div>
-    <div class="btn-row">
+    <div class="btn-row" style="margin-top:16px">
       <button class="btn-danger" id="panel-crop-delete"><i class="fa-solid fa-trash-can"></i> Remove</button>
       <button class="btn-secondary" onclick="closePanel('panel-crop')">Close</button>
     </div>
@@ -429,7 +1686,7 @@ textarea { resize:vertical; min-height:70px; }
 <div class="detail-panel" id="panel-listing">
   <div class="detail-sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-title"><i class="fa-solid fa-store" style="margin-right:8px;color:#156b1d"></i>Listing Details</div>
+    <div class="sheet-title"><i class="fa-solid fa-store" style="margin-right:8px"></i>Listing Details</div>
     <div id="panel-listing-body"></div>
     <div style="margin-top:14px">
       <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Status</label>
@@ -448,7 +1705,7 @@ textarea { resize:vertical; min-height:70px; }
 <div class="detail-panel" id="panel-delivery">
   <div class="detail-sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-title"><i class="fa-solid fa-truck" style="margin-right:8px;color:#156b1d"></i>Delivery Details</div>
+    <div class="sheet-title"><i class="fa-solid fa-truck" style="margin-right:8px"></i>Delivery Details</div>
     <div id="panel-delivery-body"></div>
     <div style="margin-top:14px">
       <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Delivery Status</label>
@@ -467,343 +1724,867 @@ textarea { resize:vertical; min-height:70px; }
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════════
-   DATA
-══════════════════════════════════════════ */
-let crops = [
-  { id:'CRP-001', name:'Fresh Tomatoes', category:'Vegetables', variety:'Roma', qty:80, unit:'crate', price:25000, harvest:'2026-06-05', grade:'Grade A', storage:'Warehouse 1, Kenema', desc:'Sun-ripened tomatoes harvested this week.' },
-  { id:'CRP-002', name:'Groundnuts',     category:'Legumes',    variety:'Local Red', qty:120, unit:'bag', price:22000, harvest:'2026-05-28', grade:'Grade A', storage:'Store Room B, Bo', desc:'Roasted-ready groundnuts, clean and dry.' },
-  { id:'CRP-003', name:'Local Rice',     category:'Grains',     variety:'Lowland Rice', qty:30, unit:'bag', price:180000, harvest:'2026-05-15', grade:'Grade B', storage:'Main Warehouse, Kenema', desc:'Premium local rice direct from the paddy.' },
+/* ══ CREDENTIALS ══ */
+const USERS = [
+  { username:'Farmer001', password:'123',    role:'Farmer',        page:'farmer' },
+  { username:'Buyer001',  password:'1234',   role:'Buyer',         page:'buyer'  },
+  { username:'Logistics', password:'12345',  role:'Logistics',     page:'logistics' },
+  { username:'Admin',     password:'123456', role:'Admin',         page:'admin'  },
+  { username:'Chat',      password:'1231',   role:'Chat Agent',    page:'chat'   },
+  { username:'Payment',   password:'1232',   role:'Payment Agent', page:'payment'},
 ];
+let currentUser = null;
 
+/* ══ DATA ══ */
+let crops = [
+  { id:'CRP-001', name:'Fresh Tomatoes', category:'Vegetables', variety:'Roma',         qty:80,  unit:'crate', price:25000,  harvest:'2026-06-05', grade:'Grade A', storage:'Warehouse 1, Kenema',    desc:'Sun-ripened tomatoes harvested this week.' },
+  { id:'CRP-002', name:'Groundnuts',     category:'Legumes',    variety:'Local Red',    qty:120, unit:'bag',   price:22000,  harvest:'2026-05-28', grade:'Grade A', storage:'Store Room B, Bo',        desc:'Roasted-ready groundnuts, clean and dry.' },
+  { id:'CRP-003', name:'Local Rice',     category:'Grains',     variety:'Lowland Rice', qty:30,  unit:'bag',   price:180000, harvest:'2026-05-15', grade:'Grade B', storage:'Main Warehouse, Kenema',  desc:'Premium local rice direct from the paddy.' },
+];
 let listings = [
-  { id:'LST-001', seller:'Aminata Kamara', product:'Fresh Tomatoes', qty:30, price:25000, location:'Kenema', date:autoDate(), status:'Active', contact:'076123456', notes:'Available for pickup or delivery.' },
+  { id:'LST-001', seller:'Aminata Kamara', product:'Fresh Tomatoes', qty:30, price:25000, location:'Kenema', date:autoDate(), status:'Active',  contact:'076123456', notes:'Available for pickup or delivery.' },
   { id:'LST-002', seller:'Ibrahim Sesay',  product:'Groundnuts',     qty:50, price:22000, location:'Bo',     date:autoDate(), status:'Pending', contact:'077334455', notes:'Awaiting buyer confirmation.' },
 ];
-
 let deliveries = [
   { id:'DLV-001', orderId:'ORD-20260011', recipient:'Mariama Koroma', phone:'078990011', address:'12 Lumley Beach Rd, Freetown', products:'Fresh Tomatoes', qty:'3 crates', dispatch:'2026-06-11', expected:'2026-06-12', status:'In Transit', courier:'Samuel Turay', remarks:'Handle with care.' },
-  { id:'DLV-002', orderId:'ORD-20260012', recipient:'John Jalloh',    phone:'079223344', address:'5 Wallace Johnson St, Bo', products:'Groundnuts', qty:'2 bags', dispatch:'', expected:'2026-06-13', status:'Pending', courier:'', remarks:'' },
+  { id:'DLV-002', orderId:'ORD-20260012', recipient:'John Jalloh',    phone:'079223344', address:'5 Wallace Johnson St, Bo',      products:'Groundnuts',     qty:'2 bags',   dispatch:'',           expected:'2026-06-13', status:'Pending',    courier:'',            remarks:'' },
 ];
+let cropCounter=crops.length, listingCounter=listings.length, deliveryCounter=deliveries.length;
 
-let cropCounter = crops.length;
-let listingCounter = listings.length;
-let deliveryCounter = deliveries.length;
+/* ══ LOGIN / LOGOUT ══ */
+function doLogin() {
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value.trim();
+  if (!u || !p) { showToast('⚠️ Please enter username and password'); return; }
+  const user = USERS.find(x => x.username.toLowerCase()===u.toLowerCase() && x.password===p);
+  if (!user) { showToast('❌ Invalid username or password'); return; }
+  currentUser = user;
+  if (user.page === 'farmer') {
+    document.getElementById('farmer-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('farmer-role-badge').innerHTML =
+      `<span class="role-badge">🌾 ${user.role}</span>`;
+    switchPage('farmer');
+    subShow('dashboard');
+  } else if (user.page === 'buyer') {
+    document.getElementById('buyer-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('buyer-role-badge').innerHTML =
+      `<span class="role-badge">🛒 ${user.role}</span>`;
+    switchPage('buyer');
+    bSubShow('dashboard');
+    bUpdateBadge();
+  } else if (user.page === 'buyer') {
+    document.getElementById('buyer-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('buyer-role-badge').innerHTML =
+      `<span class="role-badge">🛒 ${user.role}</span>`;
+    switchPage('buyer');
+    bSubShow('dashboard');
+    bUpdateBadge();
+  } else if (user.page === 'logistics') {
+    document.getElementById('logi-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('logi-role-badge').innerHTML =
+      `<span class="role-badge">🚚 ${user.role}</span>`;
+    switchPage('logistics');
+    lSubShow('dashboard');
+    lRenderDrivers();
+  } else {
+    showToast(`👋 Welcome ${user.username} (${user.role}) — portal coming soon`);
+  }
+}
+function doLogout() {
+  currentUser = null;
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+  switchPage('login');
+  showToast('👋 Logged out successfully');
+}
 
-/* ══════════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════════ */
-function goTo(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+/* ══ PAGE / SUB-SCREEN NAV ══ */
+function switchPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
   window.scrollTo(0,0);
   closeAllPanels();
-  if (id === 'crops')    renderCrops();
-  if (id === 'market')   renderListings();
-  if (id === 'delivery') renderDeliveries();
-  if (id === 'market')   document.getElementById('listing-date-field').textContent = autoDate();
+  if (id==='crops')    { renderCrops(); }
+  if (id==='market')   { renderListings(); document.getElementById('listing-date-field').textContent=autoDate(); }
+  if (id==='delivery') { renderDeliveries(); }
 }
+function goDirectTo(id) { switchPage(id); }
 
+function subShow(id) {
+  document.querySelectorAll('#page-farmer .sub-screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById('sub-'+id);
+  if (t) { t.classList.add('active'); window.scrollTo(0,0); }
+}
 function setTab(btn, targetId) {
-  const screen = btn.closest('.mobile');
-  screen.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const wrap = btn.closest('.mobile');
+  wrap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  screen.querySelectorAll('.form-body').forEach(f => f.style.display = 'none');
-  document.getElementById(targetId).style.display = 'block';
-  if (targetId === 'listing-date-field') {} // n/a
-  if (targetId === 'market-form') document.getElementById('listing-date-field').textContent = autoDate();
+  wrap.querySelectorAll('.form-body').forEach(f => f.style.display='none');
+  document.getElementById(targetId).style.display='block';
+  if (targetId==='market-form') document.getElementById('listing-date-field').textContent=autoDate();
 }
 
-/* ══════════════════════════════════════════
-   LOGIN
-══════════════════════════════════════════ */
-function login() {
-  let username = document.getElementById("username").value.trim();
-  let password = document.getElementById("password").value.trim();
-  if (username === "" || password === "") {
-    showToast("⚠️ Please enter your username and password.");
+/* ══ PHOTO UPLOAD ══ */
+function previewPhoto(input, previewId, statusId, logoWrapperId) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('⚠️ File too large. Max 5MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+    document.getElementById(statusId).textContent = `✅ ${file.name}`;
+    // Also update dashboard logo if uploading profile photo
+    if (logoWrapperId) {
+      const logoWrap = document.getElementById(logoWrapperId);
+      if (logoWrap) logoWrap.innerHTML = `<img src="${e.target.result}" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ══ GPS AUTO-DETECT ══ */
+function detectGPS(inputId, statusId) {
+  const input  = document.getElementById(inputId);
+  const status = document.getElementById(statusId);
+  if (!navigator.geolocation) {
+    status.className='gps-status err';
+    status.textContent='⚠️ Geolocation is not supported by your browser.';
     return;
   }
-  showToast(`👋 Welcome, ${username}!`);
+  const btn = document.querySelector(`button[onclick="detectGPS('${inputId}','${statusId}')"]`);
+  if (btn) { btn.classList.add('loading'); btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Detecting…'; }
+  status.className='gps-status spin';
+  status.textContent='📡 Detecting your location…';
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      const acc = Math.round(pos.coords.accuracy);
+      input.value = `${lat}, ${lng}`;
+      status.className='gps-status ok';
+      status.textContent = `✅ Location detected (±${acc}m accuracy)`;
+      if (btn) { btn.classList.remove('loading'); btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Re-Detect'; }
+    },
+    err => {
+      status.className='gps-status err';
+      const msgs = { 1:'Location permission denied. Please allow access.', 2:'Location unavailable. Try again.', 3:'Request timed out. Try again.' };
+      status.textContent = '⚠️ ' + (msgs[err.code] || 'Could not detect location.');
+      if (btn) { btn.classList.remove('loading'); btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Detect'; }
+    },
+    { enableHighAccuracy:true, timeout:10000, maximumAge:0 }
+  );
 }
 
-/* ══════════════════════════════════════════
-   CROPS
-══════════════════════════════════════════ */
+/* ══ CROPS ══ */
 function renderCrops() {
   const el = document.getElementById('crops-container');
-  if (!crops.length) { el.innerHTML = emptyState('fa-seedling','No crops added yet.'); return; }
-  el.innerHTML = crops.map(c => `
+  if (!crops.length) { el.innerHTML=emptyState('fa-seedling','No crops added yet.'); return; }
+  el.innerHTML = crops.map(c=>`
     <div class="record-card" onclick="openCropPanel('${c.id}')">
-      <div class="record-card-header">
-        <span class="record-id">${c.id}</span>
-        <span class="badge badge-available">${c.grade || 'Ungraded'}</span>
-      </div>
-      <div class="record-name">${c.name} <span style="font-weight:400;color:#888">(${c.variety || '—'})</span></div>
-      <div class="record-meta">
-        <i class="fa-solid fa-tag" style="color:#b2d8b3;margin-right:4px"></i>${c.category || '—'}
-        &nbsp;·&nbsp; <i class="fa-solid fa-warehouse" style="color:#b2d8b3;margin-right:4px"></i>${c.storage || '—'}
-      </div>
-      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px;">
+      <div class="record-card-header"><span class="record-id">${c.id}</span><span class="order-badge badge-available">${c.grade||'Ungraded'}</span></div>
+      <div class="record-name">${c.name} <span style="font-weight:400;color:#888">(${c.variety||'—'})</span></div>
+      <div class="record-meta"><i class="fa-solid fa-tag" style="color:#b2d8b3;margin-right:4px"></i>${c.category||'—'} &nbsp;·&nbsp; <i class="fa-solid fa-warehouse" style="color:#b2d8b3;margin-right:4px"></i>${c.storage||'—'}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px">
         <span style="font-weight:800;color:#156b1d">Le ${c.price.toLocaleString()} / ${c.unit}</span>
         <span style="color:#888">${c.qty} ${c.unit}s available</span>
       </div>
     </div>`).join('');
 }
-
 function saveCrop() {
-  const name = document.getElementById('crop-name').value.trim();
-  const category = document.getElementById('crop-category').value;
-  const variety = document.getElementById('crop-variety').value.trim();
-  const qty = parseFloat(document.getElementById('crop-qty').value);
-  const unit = document.getElementById('crop-unit').value;
-  const price = parseFloat(document.getElementById('crop-price').value);
-  const harvest = document.getElementById('crop-harvest').value;
-  const grade = document.getElementById('crop-grade').value;
-  const storage = document.getElementById('crop-storage').value.trim();
-  const desc = document.getElementById('crop-desc').value.trim();
-
-  if (!name || !category || isNaN(qty) || !unit || isNaN(price)) {
-    showToast('⚠️ Please fill in all required fields'); return;
-  }
-
+  const name=document.getElementById('crop-name').value.trim();
+  const category=document.getElementById('crop-category').value;
+  const variety=document.getElementById('crop-variety').value.trim();
+  const qty=parseFloat(document.getElementById('crop-qty').value);
+  const unit=document.getElementById('crop-unit').value;
+  const price=parseFloat(document.getElementById('crop-price').value);
+  const harvest=document.getElementById('crop-harvest').value;
+  const grade=document.getElementById('crop-grade').value;
+  const storage=document.getElementById('crop-storage').value.trim();
+  const desc=document.getElementById('crop-desc').value.trim();
+  if (!name||!category||isNaN(qty)||!unit||isNaN(price)){showToast('⚠️ Please fill in all required fields');return;}
   cropCounter++;
-  const id = 'CRP-' + String(cropCounter).padStart(3,'0');
-  crops.push({ id, name, category, variety, qty, unit, price, harvest, grade, storage, desc });
+  const id='CRP-'+String(cropCounter).padStart(3,'0');
+  crops.push({id,name,category,variety,qty,unit,price,harvest,grade,storage,desc});
   showToast(`✅ ${name} added as ${id}`);
   resetCropForm();
-  document.querySelector('#screen-crops .tab-btn').click();
+  document.querySelector('#page-crops .tab-btn').click();
 }
-
 function resetCropForm() {
-  ['crop-name','crop-variety','crop-qty','crop-price','crop-harvest','crop-storage','crop-desc'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('crop-category').value = '';
-  document.getElementById('crop-unit').value = '';
-  document.getElementById('crop-grade').value = '';
+  ['crop-name','crop-variety','crop-qty','crop-price','crop-harvest','crop-storage','crop-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['crop-category','crop-unit','crop-grade'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
 }
-
 function openCropPanel(id) {
-  const c = crops.find(x => x.id === id);
-  if (!c) return;
-  document.getElementById('panel-crop-body').innerHTML = `
+  const c=crops.find(x=>x.id===id);if(!c)return;
+  document.getElementById('panel-crop-body').innerHTML=`
     <div class="sheet-row"><span>Crop ID</span><span>${c.id}</span></div>
     <div class="sheet-row"><span>Crop Name</span><span>${c.name}</span></div>
-    <div class="sheet-row"><span>Category</span><span>${c.category || '—'}</span></div>
-    <div class="sheet-row"><span>Variety</span><span>${c.variety || '—'}</span></div>
-    <div class="sheet-row"><span>Quantity Available</span><span>${c.qty} ${c.unit}</span></div>
+    <div class="sheet-row"><span>Category</span><span>${c.category||'—'}</span></div>
+    <div class="sheet-row"><span>Variety</span><span>${c.variety||'—'}</span></div>
+    <div class="sheet-row"><span>Qty Available</span><span>${c.qty} ${c.unit}</span></div>
     <div class="sheet-row"><span>Price per Unit</span><span>Le ${c.price.toLocaleString()}</span></div>
-    <div class="sheet-row"><span>Harvest Date</span><span>${c.harvest || '—'}</span></div>
-    <div class="sheet-row"><span>Quality Grade</span><span>${c.grade || '—'}</span></div>
-    <div class="sheet-row"><span>Storage Location</span><span>${c.storage || '—'}</span></div>
-    <div class="sheet-row"><span>Description</span><span>${c.desc || '—'}</span></div>`;
-  document.getElementById('panel-crop-delete').onclick = () => {
-    crops = crops.filter(x => x.id !== id);
-    closePanel('panel-crop');
-    renderCrops();
-    showToast(`🗑️ ${c.name} removed`);
-  };
+    <div class="sheet-row"><span>Harvest Date</span><span>${c.harvest||'—'}</span></div>
+    <div class="sheet-row"><span>Quality Grade</span><span>${c.grade||'—'}</span></div>
+    <div class="sheet-row"><span>Storage</span><span>${c.storage||'—'}</span></div>
+    <div class="sheet-row"><span>Description</span><span>${c.desc||'—'}</span></div>`;
+  document.getElementById('panel-crop-delete').onclick=()=>{ crops=crops.filter(x=>x.id!==id); closePanel('panel-crop'); renderCrops(); showToast(`🗑️ ${c.name} removed`); };
   openPanel('panel-crop');
 }
 
-/* ══════════════════════════════════════════
-   MARKET
-══════════════════════════════════════════ */
+/* ══ MARKET ══ */
 function renderListings() {
-  const el = document.getElementById('market-container');
-  if (!listings.length) { el.innerHTML = emptyState('fa-store','No listings yet.'); return; }
-  const badgeClass = s => s === 'Active' ? 'badge-active' : s === 'Sold' ? 'badge-sold' : 'badge-pending';
-  el.innerHTML = listings.map(l => `
+  const el=document.getElementById('market-container');
+  if (!listings.length){el.innerHTML=emptyState('fa-store','No listings yet.');return;}
+  const bc=s=>s==='Active'?'badge-active':s==='Sold'?'badge-sold':'badge-pending';
+  el.innerHTML=listings.map(l=>`
     <div class="record-card" onclick="openListingPanel('${l.id}')">
-      <div class="record-card-header">
-        <span class="record-id">${l.id}</span>
-        <span class="badge ${badgeClass(l.status)}">${l.status}</span>
-      </div>
+      <div class="record-card-header"><span class="record-id">${l.id}</span><span class="order-badge ${bc(l.status)}">${l.status}</span></div>
       <div class="record-name">${l.product} <span style="font-weight:400;color:#888">× ${l.qty}</span></div>
-      <div class="record-meta">
-        <i class="fa-solid fa-user" style="color:#b2d8b3;margin-right:4px"></i>${l.seller}
-        &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${l.location}
-      </div>
+      <div class="record-meta"><i class="fa-solid fa-user" style="color:#b2d8b3;margin-right:4px"></i>${l.seller} &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${l.location}</div>
       <div style="margin-top:6px;font-size:12px;font-weight:800;color:#156b1d">Le ${l.price.toLocaleString()} / unit</div>
     </div>`).join('');
 }
-
 function saveListing() {
-  const seller = document.getElementById('listing-seller').value.trim();
-  const product = document.getElementById('listing-product').value.trim();
-  const qty = parseFloat(document.getElementById('listing-qty').value);
-  const price = parseFloat(document.getElementById('listing-price').value);
-  const location = document.getElementById('listing-location').value;
-  const status = document.getElementById('listing-status').value;
-  const contact = document.getElementById('listing-contact').value.trim();
-  const notes = document.getElementById('listing-notes').value.trim();
-
-  if (!seller || !product || isNaN(qty) || isNaN(price) || !location) {
-    showToast('⚠️ Please fill in all required fields'); return;
-  }
-  if (contact && !/^0\d{8}$/.test(contact)) {
-    showToast('⚠️ Contact number must start with 0 and be 9 digits'); return;
-  }
-
+  const seller=document.getElementById('listing-seller').value.trim();
+  const product=document.getElementById('listing-product').value.trim();
+  const qty=parseFloat(document.getElementById('listing-qty').value);
+  const price=parseFloat(document.getElementById('listing-price').value);
+  const location=document.getElementById('listing-location').value;
+  const status=document.getElementById('listing-status').value;
+  const contact=document.getElementById('listing-contact').value.trim();
+  const notes=document.getElementById('listing-notes').value.trim();
+  if (!seller||!product||isNaN(qty)||isNaN(price)||!location){showToast('⚠️ Please fill in all required fields');return;}
+  if (contact&&!/^0\d{8}$/.test(contact)){showToast('⚠️ Contact must start with 0 and be 9 digits');return;}
   listingCounter++;
-  const id = 'LST-' + String(listingCounter).padStart(3,'0');
-  listings.push({ id, seller, product, qty, price, location, date: autoDate(), status, contact, notes });
+  const id='LST-'+String(listingCounter).padStart(3,'0');
+  listings.push({id,seller,product,qty,price,location,date:autoDate(),status,contact,notes});
   showToast(`✅ Listing ${id} created`);
   resetListingForm();
-  document.querySelector('#screen-market .tab-btn').click();
+  document.querySelector('#page-market .tab-btn').click();
 }
-
 function resetListingForm() {
-  ['listing-seller','listing-product','listing-qty','listing-price','listing-contact','listing-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('listing-location').value = '';
-  document.getElementById('listing-status').value = 'Active';
-  document.getElementById('listing-date-field').textContent = autoDate();
+  ['listing-seller','listing-product','listing-qty','listing-price','listing-contact','listing-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const loc=document.getElementById('listing-location');if(loc)loc.value='';
+  const st=document.getElementById('listing-status');if(st)st.value='Active';
+  const df=document.getElementById('listing-date-field');if(df)df.textContent=autoDate();
 }
-
 function openListingPanel(id) {
-  const l = listings.find(x => x.id === id);
-  if (!l) return;
-  const badgeClass = s => s === 'Active' ? 'badge-active' : s === 'Sold' ? 'badge-sold' : 'badge-pending';
-  document.getElementById('panel-listing-body').innerHTML = `
+  const l=listings.find(x=>x.id===id);if(!l)return;
+  const bc=s=>s==='Active'?'badge-active':s==='Sold'?'badge-sold':'badge-pending';
+  document.getElementById('panel-listing-body').innerHTML=`
     <div class="sheet-row"><span>Listing ID</span><span>${l.id}</span></div>
-    <div class="sheet-row"><span>Seller Name</span><span>${l.seller}</span></div>
-    <div class="sheet-row"><span>Product Name</span><span>${l.product}</span></div>
+    <div class="sheet-row"><span>Seller</span><span>${l.seller}</span></div>
+    <div class="sheet-row"><span>Product</span><span>${l.product}</span></div>
     <div class="sheet-row"><span>Quantity</span><span>${l.qty}</span></div>
     <div class="sheet-row"><span>Unit Price</span><span>Le ${l.price.toLocaleString()}</span></div>
-    <div class="sheet-row"><span>Market Location</span><span>${l.location}</span></div>
-    <div class="sheet-row"><span>Listing Date</span><span>${l.date}</span></div>
-    <div class="sheet-row"><span>Status</span><span><span class="badge ${badgeClass(l.status)}">${l.status}</span></span></div>
-    <div class="sheet-row"><span>Contact</span><span>${l.contact || '—'}</span></div>
-    <div class="sheet-row"><span>Notes</span><span>${l.notes || '—'}</span></div>`;
-  document.getElementById('listing-status-update').value = l.status;
-  document.getElementById('panel-listing-save').onclick = () => {
-    l.status = document.getElementById('listing-status-update').value;
-    closePanel('panel-listing');
-    renderListings();
-    showToast(`💾 ${l.id} updated to ${l.status}`);
-  };
-  document.getElementById('panel-listing-delete').onclick = () => {
-    listings = listings.filter(x => x.id !== id);
-    closePanel('panel-listing');
-    renderListings();
-    showToast(`🗑️ ${l.id} removed`);
-  };
+    <div class="sheet-row"><span>Location</span><span>${l.location}</span></div>
+    <div class="sheet-row"><span>Date</span><span>${l.date}</span></div>
+    <div class="sheet-row"><span>Status</span><span><span class="order-badge ${bc(l.status)}">${l.status}</span></span></div>
+    <div class="sheet-row"><span>Contact</span><span>${l.contact||'—'}</span></div>
+    <div class="sheet-row"><span>Notes</span><span>${l.notes||'—'}</span></div>`;
+  document.getElementById('listing-status-update').value=l.status;
+  document.getElementById('panel-listing-save').onclick=()=>{ l.status=document.getElementById('listing-status-update').value; closePanel('panel-listing'); renderListings(); showToast(`💾 ${l.id} updated to ${l.status}`); };
+  document.getElementById('panel-listing-delete').onclick=()=>{ listings=listings.filter(x=>x.id!==id); closePanel('panel-listing'); renderListings(); showToast(`🗑️ ${l.id} removed`); };
   openPanel('panel-listing');
 }
 
-/* ══════════════════════════════════════════
-   DELIVERY
-══════════════════════════════════════════ */
+/* ══ DELIVERY ══ */
 function renderDeliveries() {
-  const el = document.getElementById('delivery-container');
-  if (!deliveries.length) { el.innerHTML = emptyState('fa-truck','No deliveries yet.'); return; }
-  const badgeClass = s => s === 'Delivered' ? 'badge-delivered' : s === 'Pending' ? 'badge-pending' : 'badge-dispatched';
-  el.innerHTML = deliveries.map(d => `
+  const el=document.getElementById('delivery-container');
+  if (!deliveries.length){el.innerHTML=emptyState('fa-truck','No deliveries yet.');return;}
+  const bc=s=>s==='Delivered'?'badge-delivered':s==='Pending'?'badge-pending':'badge-dispatched';
+  el.innerHTML=deliveries.map(d=>`
     <div class="record-card" onclick="openDeliveryPanel('${d.id}')">
-      <div class="record-card-header">
-        <span class="record-id">${d.id}</span>
-        <span class="badge ${badgeClass(d.status)}">${d.status}</span>
-      </div>
+      <div class="record-card-header"><span class="record-id">${d.id}</span><span class="order-badge ${bc(d.status)}">${d.status}</span></div>
       <div class="record-name">${d.recipient}</div>
-      <div class="record-meta">
-        <i class="fa-solid fa-box" style="color:#b2d8b3;margin-right:4px"></i>${d.products} (${d.qty})
-        &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${d.address}
-      </div>
-      <div style="margin-top:6px;font-size:11px;color:#aaa">Order: ${d.orderId} &nbsp;·&nbsp; ETA: ${d.expected || '—'}</div>
+      <div class="record-meta"><i class="fa-solid fa-box" style="color:#b2d8b3;margin-right:4px"></i>${d.products} (${d.qty}) &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${d.address}</div>
+      <div style="margin-top:6px;font-size:11px;color:#aaa">Order: ${d.orderId} &nbsp;·&nbsp; ETA: ${d.expected||'—'}</div>
     </div>`).join('');
 }
-
 function saveDelivery() {
-  const orderId = document.getElementById('delivery-order').value.trim();
-  const recipient = document.getElementById('delivery-recipient').value.trim();
-  const phone = document.getElementById('delivery-phone').value.trim();
-  const address = document.getElementById('delivery-address').value.trim();
-  const products = document.getElementById('delivery-products').value.trim();
-  const qty = document.getElementById('delivery-qty').value.trim();
-  const dispatch = document.getElementById('delivery-dispatch').value;
-  const expected = document.getElementById('delivery-expected').value;
-  const status = document.getElementById('delivery-status').value;
-  const courier = document.getElementById('delivery-courier').value.trim();
-  const remarks = document.getElementById('delivery-remarks').value.trim();
-
-  if (!orderId || !recipient || !address || !products) {
-    showToast('⚠️ Please fill in all required fields'); return;
-  }
-  if (!/^[a-zA-Z\s'-]+$/.test(recipient)) {
-    showToast('⚠️ Recipient name must contain letters only'); return;
-  }
-  if (phone && !/^0\d{8}$/.test(phone)) {
-    showToast('⚠️ Phone must start with 0 and be 9 digits'); return;
-  }
-
+  const orderId=document.getElementById('delivery-order').value.trim();
+  const recipient=document.getElementById('delivery-recipient').value.trim();
+  const phone=document.getElementById('delivery-phone').value.trim();
+  const address=document.getElementById('delivery-address').value.trim();
+  const products=document.getElementById('delivery-products').value.trim();
+  const qty=document.getElementById('delivery-qty').value.trim();
+  const dispatch=document.getElementById('delivery-dispatch').value;
+  const expected=document.getElementById('delivery-expected').value;
+  const status=document.getElementById('delivery-status').value;
+  const courier=document.getElementById('delivery-courier').value.trim();
+  const remarks=document.getElementById('delivery-remarks').value.trim();
+  if (!orderId||!recipient||!address||!products){showToast('⚠️ Please fill in all required fields');return;}
+  if (!/^[a-zA-Z\s'-]+$/.test(recipient)){showToast('⚠️ Recipient name must contain letters only');return;}
+  if (phone&&!/^0\d{8}$/.test(phone)){showToast('⚠️ Phone must start with 0 and be 9 digits');return;}
   deliveryCounter++;
-  const id = 'DLV-' + String(deliveryCounter).padStart(3,'0');
-  deliveries.push({ id, orderId, recipient, phone, address, products, qty, dispatch, expected, status, courier, remarks });
+  const id='DLV-'+String(deliveryCounter).padStart(3,'0');
+  deliveries.push({id,orderId,recipient,phone,address,products,qty,dispatch,expected,status,courier,remarks});
   showToast(`✅ Delivery ${id} created`);
   resetDeliveryForm();
-  document.querySelector('#screen-delivery .tab-btn').click();
+  document.querySelector('#page-delivery .tab-btn').click();
 }
-
 function resetDeliveryForm() {
-  ['delivery-order','delivery-recipient','delivery-phone','delivery-address','delivery-products','delivery-qty','delivery-dispatch','delivery-expected','delivery-courier','delivery-remarks'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('delivery-status').value = 'Pending';
+  ['delivery-order','delivery-recipient','delivery-phone','delivery-address','delivery-products','delivery-qty','delivery-dispatch','delivery-expected','delivery-courier','delivery-remarks'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const s=document.getElementById('delivery-status');if(s)s.value='Pending';
 }
-
 function openDeliveryPanel(id) {
-  const d = deliveries.find(x => x.id === id);
-  if (!d) return;
-  const badgeClass = s => s === 'Delivered' ? 'badge-delivered' : s === 'Pending' ? 'badge-pending' : 'badge-dispatched';
-  document.getElementById('panel-delivery-body').innerHTML = `
+  const d=deliveries.find(x=>x.id===id);if(!d)return;
+  const bc=s=>s==='Delivered'?'badge-delivered':s==='Pending'?'badge-pending':'badge-dispatched';
+  document.getElementById('panel-delivery-body').innerHTML=`
     <div class="sheet-row"><span>Delivery ID</span><span>${d.id}</span></div>
     <div class="sheet-row"><span>Order ID</span><span>${d.orderId}</span></div>
-    <div class="sheet-row"><span>Recipient Name</span><span>${d.recipient}</span></div>
-    <div class="sheet-row"><span>Phone Number</span><span>${d.phone || '—'}</span></div>
-    <div class="sheet-row"><span>Delivery Address</span><span>${d.address}</span></div>
+    <div class="sheet-row"><span>Recipient</span><span>${d.recipient}</span></div>
+    <div class="sheet-row"><span>Phone</span><span>${d.phone||'—'}</span></div>
+    <div class="sheet-row"><span>Address</span><span>${d.address}</span></div>
     <div class="sheet-row"><span>Product(s)</span><span>${d.products}</span></div>
-    <div class="sheet-row"><span>Quantity</span><span>${d.qty || '—'}</span></div>
-    <div class="sheet-row"><span>Dispatch Date</span><span>${d.dispatch || '—'}</span></div>
-    <div class="sheet-row"><span>Expected Delivery</span><span>${d.expected || '—'}</span></div>
-    <div class="sheet-row"><span>Status</span><span><span class="badge ${badgeClass(d.status)}">${d.status}</span></span></div>
-    <div class="sheet-row"><span>Courier / Driver</span><span>${d.courier || '—'}</span></div>
-    <div class="sheet-row"><span>Remarks</span><span>${d.remarks || '—'}</span></div>`;
-  document.getElementById('delivery-status-update').value = d.status;
-  document.getElementById('panel-delivery-save').onclick = () => {
-    d.status = document.getElementById('delivery-status-update').value;
-    if (d.status === 'Dispatched' && !d.dispatch) d.dispatch = new Date().toISOString().split('T')[0];
-    closePanel('panel-delivery');
-    renderDeliveries();
-    showToast(`💾 ${d.id} updated to ${d.status}`);
-  };
-  document.getElementById('panel-delivery-delete').onclick = () => {
-    deliveries = deliveries.filter(x => x.id !== id);
-    closePanel('panel-delivery');
-    renderDeliveries();
-    showToast(`🗑️ ${d.id} removed`);
-  };
+    <div class="sheet-row"><span>Quantity</span><span>${d.qty||'—'}</span></div>
+    <div class="sheet-row"><span>Dispatch Date</span><span>${d.dispatch||'—'}</span></div>
+    <div class="sheet-row"><span>Expected</span><span>${d.expected||'—'}</span></div>
+    <div class="sheet-row"><span>Status</span><span><span class="order-badge ${bc(d.status)}">${d.status}</span></span></div>
+    <div class="sheet-row"><span>Courier</span><span>${d.courier||'—'}</span></div>
+    <div class="sheet-row"><span>Remarks</span><span>${d.remarks||'—'}</span></div>`;
+  document.getElementById('delivery-status-update').value=d.status;
+  document.getElementById('panel-delivery-save').onclick=()=>{ d.status=document.getElementById('delivery-status-update').value; if(d.status==='Dispatched'&&!d.dispatch)d.dispatch=new Date().toISOString().split('T')[0]; closePanel('panel-delivery'); renderDeliveries(); showToast(`💾 ${d.id} updated to ${d.status}`); };
+  document.getElementById('panel-delivery-delete').onclick=()=>{ deliveries=deliveries.filter(x=>x.id!==id); closePanel('panel-delivery'); renderDeliveries(); showToast(`🗑️ ${d.id} removed`); };
   openPanel('panel-delivery');
 }
 
-/* ══════════════════════════════════════════
-   PANEL HELPERS
-══════════════════════════════════════════ */
-function openPanel(id) { document.getElementById(id).classList.add('open'); }
-function closePanel(id) { document.getElementById(id).classList.remove('open'); }
-function closeAllPanels() { document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open')); }
-document.querySelectorAll('.detail-panel').forEach(panel => {
-  panel.addEventListener('click', e => { if (e.target === panel) closePanel(panel.id); });
-});
+/* ══ PANEL HELPERS ══ */
+function openPanel(id){document.getElementById(id).classList.add('open');}
+function closePanel(id){document.getElementById(id).classList.remove('open');}
+function closeAllPanels(){document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('open'));}
+document.querySelectorAll('.detail-panel').forEach(p=>{ p.addEventListener('click',e=>{if(e.target===p)closePanel(p.id);}); });
+
+/* ══ UTILS ══ */
+function autoDate(){return new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'GMT'})+' GMT';}
+function emptyState(icon,msg){return`<div class="empty-state"><i class="fa-solid ${icon}"></i><p>${msg}</p></div>`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2700);}
+
 
 /* ══════════════════════════════════════════
-   UTILS
+   BUYER PORTAL JS
 ══════════════════════════════════════════ */
-function autoDate() {
-  return new Date().toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'GMT' }) + ' GMT';
+const B_PRODUCTS = [
+  { id:1, name:'Fresh Tomatoes',      farmer:'Kamara Farms',    desc:'Sun-ripened tomatoes, harvested this week.',      price:25000,  qty:80,  unit:'crate',  cat:'vegetables', emoji:'🍅', location:'Kenema',   popular:5 },
+  { id:2, name:'Groundnuts (5kg bag)',farmer:'Sesay Agro',      desc:'Roasted-ready groundnuts, clean and dry.',        price:22000,  qty:120, unit:'bag',    cat:'grains',     emoji:'🥜', location:'Bo',       popular:8 },
+  { id:3, name:'Cassava Leaves',      farmer:'Conteh Harvest',  desc:'Fresh cassava leaves, bundle of 5.',              price:6000,   qty:200, unit:'bundle', cat:'vegetables', emoji:'🌿', location:'Makeni',   popular:3 },
+  { id:4, name:'Local Rice (50kg)',   farmer:'Bangura Rice Co', desc:'Premium local rice, direct from the paddy.',      price:180000, qty:30,  unit:'bag',    cat:'grains',     emoji:'🌾', location:'Kenema',   popular:9 },
+  { id:5, name:'Ripe Plantain',       farmer:'Koroma Fruits',   desc:'Sweet yellow plantains, sold per bunch.',         price:15000,  qty:60,  unit:'bunch',  cat:'fruits',     emoji:'🍌', location:'Freetown', popular:6 },
+  { id:6, name:'Live Chicken',        farmer:'Jalloh Poultry',  desc:'Free-range farm chicken, average 1.5-2 kg.',      price:65000,  qty:20,  unit:'piece',  cat:'livestock',  emoji:'🐔', location:'Bo',       popular:4 },
+];
+let bCart = [];
+
+/* Sub-screen nav */
+function bSubShow(id) {
+  document.querySelectorAll('#page-buyer .buyer-screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById('bsub-' + id);
+  if (t) { t.classList.add('active'); window.scrollTo(0,0); }
 }
-function emptyState(icon, msg) { return `<div class="empty-state"><i class="fa-solid ${icon}"></i><p>${msg}</p></div>`; }
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2600);
+
+/* Badge */
+function bUpdateBadge() {
+  const count = bCart.reduce((a,c) => a + c.qty, 0);
+  const el = document.getElementById('b-dash-badge');
+  if (el) el.textContent = count;
 }
+
+/* Browse */
+function bFilterCat(chip, cat) {
+  document.querySelectorAll('#b-browse-chips .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  bRenderBrowse(cat);
+}
+function bRenderBrowse(cat) {
+  const list = cat === 'all' ? B_PRODUCTS : B_PRODUCTS.filter(p => p.cat === cat);
+  const el = document.getElementById('b-product-list');
+  if (!list.length) { el.innerHTML = emptyState('fa-box-open', 'No products in this category.'); return; }
+  el.innerHTML = list.map(p => bProductCardHTML(p)).join('');
+}
+function bProductCardHTML(p) {
+  const status = p.qty > 20 ? '🟢 Available' : p.qty > 0 ? '🟡 Limited Stock' : '🔴 Out of Stock';
+  return `<div class="product-card">
+    <div class="product-img">${p.emoji}</div>
+    <div class="product-info">
+      <span class="tag-chip">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
+      <div class="product-name">${p.name}</div>
+      <div class="product-farmer"><i class="fa-solid fa-user-tie" style="color:#b2d8b3;margin-right:4px"></i>${p.farmer} &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${p.location}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="product-meta">
+        <div>
+          <div class="product-price">Le ${p.price.toLocaleString()} <span style="font-size:11px;color:#888;font-weight:400">/ ${p.unit}</span></div>
+          <div class="product-qty">${status} &nbsp;·&nbsp; ${p.qty} ${p.unit}s left</div>
+        </div>
+        <button class="add-cart-btn" onclick="bAddToCart(${p.id})"><i class="fa-solid fa-plus"></i> Add</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Search */
+function bRunSearch() {
+  let results = [...B_PRODUCTS];
+  const kw   = (document.getElementById('b-search-keyword')?.value||'').toLowerCase();
+  const cat  = (document.getElementById('b-filter-category')?.value||'').toLowerCase();
+  const loc  = (document.getElementById('b-filter-location')?.value||'').toLowerCase();
+  const minP = parseFloat(document.getElementById('b-filter-min')?.value)||0;
+  const maxP = parseFloat(document.getElementById('b-filter-max')?.value)||Infinity;
+  const st   = document.getElementById('b-filter-status')?.value||'';
+  const sel  = (document.getElementById('b-filter-seller')?.value||'').toLowerCase();
+  const sort = document.getElementById('b-filter-sort')?.value||'';
+  if (kw)  results = results.filter(p => p.name.toLowerCase().includes(kw) || p.desc.toLowerCase().includes(kw));
+  if (cat) results = results.filter(p => p.cat === cat);
+  if (loc) results = results.filter(p => p.location.toLowerCase().includes(loc));
+  if (minP) results = results.filter(p => p.price >= minP);
+  if (maxP !== Infinity) results = results.filter(p => p.price <= maxP);
+  if (st === 'available') results = results.filter(p => p.qty > 20);
+  if (st === 'limited')   results = results.filter(p => p.qty > 0 && p.qty <= 20);
+  if (sel) results = results.filter(p => p.farmer.toLowerCase().includes(sel));
+  if (sort === 'price-asc')  results.sort((a,b) => a.price - b.price);
+  if (sort === 'price-desc') results.sort((a,b) => b.price - a.price);
+  if (sort === 'newest')     results.reverse();
+  if (sort === 'popular')    results.sort((a,b) => b.popular - a.popular);
+  const el = document.getElementById('b-search-results');
+  if (!results.length) { el.innerHTML = emptyState('fa-magnifying-glass', 'No products match your search.'); return; }
+  el.innerHTML = results.map(p => bProductCardHTML(p)).join('');
+}
+
+/* Cart */
+function bAddToCart(id) {
+  const p = B_PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const existing = bCart.find(c => c.product.id === id);
+  if (existing) { existing.qty++; }
+  else { bCart.push({ product:p, qty:1, date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) }); }
+  showToast(`${p.emoji} ${p.name} added to cart`);
+  bUpdateBadge();
+}
+function bChangeQty(id, delta) {
+  const item = bCart.find(c => c.product.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) bCart = bCart.filter(c => c.product.id !== id);
+  bRenderCart(); bUpdateBadge();
+}
+function bRemoveFromCart(id) {
+  bCart = bCart.filter(c => c.product.id !== id);
+  bRenderCart(); bUpdateBadge();
+}
+function bCartTotal() { return bCart.reduce((a,c) => a + c.product.price * c.qty, 0); }
+function bClearCart() { bCart = []; bUpdateBadge(); }
+function bRenderCart() {
+  const el = document.getElementById('b-cart-items-container');
+  const sec = document.getElementById('b-cart-summary-section');
+  if (!bCart.length) {
+    el.innerHTML = emptyState('fa-cart-shopping', 'Your cart is empty. Browse products to add items.');
+    if (sec) sec.style.display = 'none'; return;
+  }
+  el.innerHTML = bCart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.product.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.product.name}</div>
+        <div class="cart-item-unit">Le ${item.product.price.toLocaleString()} / ${item.product.unit}</div>
+        <div class="cart-item-row">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="bChangeQty(${item.product.id},-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="bChangeQty(${item.product.id},1)">+</button>
+          </div>
+          <span class="cart-item-price">Le ${(item.product.price*item.qty).toLocaleString()}</span>
+          <button class="remove-btn" onclick="bRemoveFromCart(${item.product.id})"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-date">Added: ${item.date}</div>
+      </div>
+    </div>`).join('');
+  if (sec) sec.style.display = 'block';
+  const sum = document.getElementById('b-cart-summary');
+  const fee = 10000; const total = bCartTotal();
+  sum.innerHTML = `
+    <div class="summary-row"><span>Subtotal</span><span>Le ${total.toLocaleString()}</span></div>
+    <div class="summary-row"><span>Delivery Fee</span><span>Le ${fee.toLocaleString()}</span></div>
+    <div class="summary-row total"><span>Total</span><span>Le ${(total+fee).toLocaleString()}</span></div>`;
+}
+
+/* Checkout */
+function bRenderCheckout() {
+  const today = new Date();
+  const el = document.getElementById('co-order-date');
+  if (el) el.textContent = today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const di = document.getElementById('co-date');
+  if (di) { const mn = new Date(today); mn.setDate(mn.getDate()+1); di.min = mn.toISOString().split('T')[0]; }
+  const sum = document.getElementById('co-order-summary');
+  if (!sum) return;
+  if (!bCart.length) { sum.innerHTML='<p style="color:#aaa;font-size:13px;text-align:center">Your cart is empty.</p>'; return; }
+  const fee=10000; const total=bCartTotal();
+  sum.innerHTML = bCart.map(item =>
+    `<div class="summary-row"><span>${item.product.name} x${item.qty}</span><span>Le ${(item.product.price*item.qty).toLocaleString()}</span></div>`
+  ).join('') +
+  `<div class="summary-row"><span>Delivery Fee</span><span>Le ${fee.toLocaleString()}</span></div>
+   <div class="summary-row total"><span>Total</span><span>Le ${(total+fee).toLocaleString()}</span></div>`;
+}
+
+/* Validators */
+function bValidateName(input) {
+  const val = input.value.trim();
+  const errEl = document.getElementById('co-err-name');
+  if (!val) { bSetField(input,errEl,'invalid','Full name is required.'); return false; }
+  if (!/^[a-zA-Z\s'\-]+$/.test(val)) { bSetField(input,errEl,'invalid','Name must contain letters only.'); return false; }
+  bSetField(input,errEl,'valid',''); return true;
+}
+function bValidatePhone(input) {
+  const val = input.value.trim();
+  const errEl = document.getElementById('co-err-phone');
+  if (!val) { bSetField(input,errEl,'invalid','Phone number is required.'); return false; }
+  if (!/^0\d{8}$/.test(val)) { bSetField(input,errEl,'invalid','Must start with 0 and be exactly 9 digits.'); return false; }
+  bSetField(input,errEl,'valid',''); return true;
+}
+function bSetField(input, errEl, state, msg) {
+  input.classList.remove('input-invalid','input-valid');
+  input.classList.add(state==='invalid'?'input-invalid':'input-valid');
+  if (errEl) errEl.textContent = msg;
+}
+
+/* Place order */
+function bPlaceOrder() {
+  const nameInput = document.getElementById('co-name');
+  const phoneInput= document.getElementById('co-phone');
+  const address   = document.getElementById('co-address')?.value.trim();
+  const distSel   = document.getElementById('co-district');
+  const district  = distSel?.value.trim();
+  const terms     = document.getElementById('co-terms')?.checked;
+  const nameOk  = bValidateName(nameInput);
+  const phoneOk = bValidatePhone(phoneInput);
+  const distEr  = document.getElementById('co-err-district');
+  let distOk = true;
+  if (!district) { distSel.classList.add('input-invalid'); if(distEr)distEr.textContent='Please select a district.'; distOk=false; }
+  else { distSel.classList.remove('input-invalid'); distSel.classList.add('input-valid'); if(distEr)distEr.textContent=''; }
+  if (!nameOk||!phoneOk||!address||!distOk) { showToast('⚠️ Please fix the errors above'); return; }
+  if (!bCart.length) { showToast('⚠️ Your cart is empty'); return; }
+  if (!terms) { showToast('⚠️ Please agree to Terms & Conditions'); return; }
+  const name  = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+  const fee   = 10000; const total = bCartTotal();
+  const orderNum = 'ORD-' + Date.now().toString().slice(-6);
+  const payVal = document.querySelector('input[name="b-payment"]:checked')?.value||'mobile-money';
+  const payLabel = {'mobile-money':'Mobile Money','cash':'Cash on Delivery','bank':'Bank Transfer'}[payVal];
+  document.getElementById('b-success-msg').textContent = `Order ${orderNum} confirmed. You will receive a confirmation via SMS.`;
+  document.getElementById('b-success-order-table').innerHTML = `
+    <table class="order-summary-table">
+      <tr><td>Order ID</td><td>${orderNum}</td></tr>
+      <tr><td>Customer</td><td>${name}</td></tr>
+      <tr><td>Phone</td><td>${phone}</td></tr>
+      <tr><td>District</td><td>${district}</td></tr>
+      <tr><td>Items</td><td>${bCart.length} product${bCart.length>1?'s':''}</td></tr>
+      <tr><td>Subtotal</td><td>Le ${total.toLocaleString()}</td></tr>
+      <tr><td>Delivery Fee</td><td>Le ${fee.toLocaleString()}</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>Le ${(total+fee).toLocaleString()}</strong></td></tr>
+      <tr><td>Payment</td><td>${payLabel}</td></tr>
+      <tr><td>Order Date</td><td>${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td></tr>
+    </table>`;
+  bSubShow('success');
+}
+
+
+/* ══════════════════════════════════════════
+   LOGISTICS PORTAL JS
+══════════════════════════════════════════ */
+let lRequests = [
+  { id:'LR-2026-0001', tracking:'TRK-112233', date:'14 Jun 2026', status:'In Transit', senderName:'Aminata Kamara', senderPhone:'076123456', pickupAddr:'12 Cotton Tree St', senderDistrict:'Kenema', receiverName:'Ibrahim Sesay', receiverPhone:'077334455', deliveryAddr:'5 Wallace Johnson St', receiverDistrict:'Bo', orderId:'ORD-1041', product:'Fresh Tomatoes', category:'Vegetables', qty:'3', weight:'15', pkgDesc:'3 crates of tomatoes', special:'Handle with care', driverName:'Samuel Turay', driverPhone:'078556677', vehicleReg:'SL 4521', vehicleType:'Pickup Truck', pickupDate:'2026-06-13', pickupTime:'08:00', deliveryDate:'2026-06-14', deliveryTime:'14:00', fee:'85000', payMethod:'Mobile Money', payStatus:'Paid', confirmStatus:'Awaiting Confirmation', sig:'', completionDate:'', notes:'' },
+  { id:'LR-2026-0002', tracking:'TRK-445566', date:'13 Jun 2026', status:'Pending',    senderName:'Fatmata Conteh', senderPhone:'079112233', pickupAddr:'Market St, Bo', senderDistrict:'Bo', receiverName:'John Jalloh', receiverPhone:'076998877', deliveryAddr:'New England Ville', receiverDistrict:'Western Area Urban', orderId:'ORD-1042', product:'Groundnuts', category:'Grains', qty:'2', weight:'10', pkgDesc:'2 bags groundnuts', special:'', driverName:'', driverPhone:'', vehicleReg:'', vehicleType:'', pickupDate:'2026-06-15', pickupTime:'09:00', deliveryDate:'2026-06-16', deliveryTime:'', fee:'50000', payMethod:'Cash', payStatus:'Unpaid', confirmStatus:'Awaiting Confirmation', sig:'', completionDate:'', notes:'Call before pickup' },
+];
+let lReqCounter = lRequests.length;
+
+let lDrivers = [
+  { name:'Samuel Turay', phone:'078556677', reg:'SL 4521', type:'Pickup Truck', status:'On Delivery' },
+  { name:'Alhaji Koroma', phone:'076778899', reg:'SL 1198', type:'Motorbike',   status:'Available' },
+  { name:'Mariatu Bangura', phone:'077223344', reg:'SL 2203', type:'Van',       status:'Available' },
+];
+
+function lSubShow(id) {
+  document.querySelectorAll('#page-logistics .logi-screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById('lsub-' + id);
+  if (t) {
+    t.classList.add('active');
+    window.scrollTo(0,0);
+    if (id === 'new-request') lInitNewRequest();
+    if (id === 'view-requests') lRenderRequests();
+    if (id === 'driver') lRenderDrivers();
+  }
+}
+
+function lInitNewRequest() {
+  // Set auto-generated values
+  const newId = 'LR-2026-' + String(lReqCounter + 1).padStart(4, '0');
+  const today = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+  const el1 = document.getElementById('l-request-id-display');
+  const el2 = document.getElementById('l-request-date-display');
+  if (el1) el1.textContent = newId;
+  if (el2) el2.textContent = today;
+  const trk = document.getElementById('l-tracking-display');
+  if (trk) trk.textContent = 'TRK-' + Math.random().toString().slice(2,8).toUpperCase();
+}
+
+function lStatusBadgeClass(s) {
+  if (s === 'Pending')    return 'logi-badge-pending';
+  if (s === 'In Transit') return 'logi-badge-transit';
+  if (s === 'Delivered')  return 'logi-badge-delivered';
+  if (s === 'Cancelled')  return 'logi-badge-cancelled';
+  if (s === 'Assigned')   return 'logi-badge-assigned';
+  if (s === 'Picked Up')  return 'logi-badge-pickup';
+  return 'logi-badge-pending';
+}
+
+function lRenderRequests() {
+  const el = document.getElementById('l-requests-container');
+  if (!el) return;
+  if (!lRequests.length) { el.innerHTML = emptyState('fa-truck','No logistics requests yet.'); return; }
+  el.innerHTML = lRequests.map(r => `
+    <div class="logi-record-card" onclick="lOpenDetail('${r.id}')">
+      <div class="logi-record-header">
+        <span class="logi-record-id">${r.id}</span>
+        <span class="logi-status-badge ${lStatusBadgeClass(r.status)}">${r.status}</span>
+      </div>
+      <div class="logi-record-name">${r.receiverName || '—'}</div>
+      <div class="logi-record-meta">
+        <i class="fa-solid fa-box" style="color:#b2d8b3;margin-right:4px"></i>${r.product || '—'} (${r.qty || '0'} units)
+        &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${r.receiverDistrict || '—'}
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:#aaa">
+        <span>📡 ${r.tracking}</span>
+        <span>Order: ${r.orderId || '—'}</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <select onchange="lUpdateStatus('${r.id}',this.value);this.blur()" onclick="event.stopPropagation()"
+          style="flex:1;padding:7px 10px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:12px;font-weight:700;color:#156b1d;background:#f8fdf8;outline:none;cursor:pointer">
+          <option value="">Update Status</option>
+          <option>Pending</option><option>Assigned</option><option>Picked Up</option>
+          <option>In Transit</option><option>Delivered</option><option>Cancelled</option>
+        </select>
+        <button onclick="event.stopPropagation();lDeleteRequest('${r.id}')"
+          style="padding:7px 12px;background:#fff;border:1.5px solid #ffcdd2;border-radius:10px;color:#c62828;font-size:12px;font-weight:700;cursor:pointer">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function lOpenDetail(id) {
+  const r = lRequests.find(x => x.id === id);
+  if (!r) return;
+  showToast('📦 ' + r.id + ' · ' + r.status);
+}
+
+function lUpdateStatus(id, status) {
+  if (!status) return;
+  const r = lRequests.find(x => x.id === id);
+  if (!r) return;
+  r.status = status;
+  lRenderRequests();
+  showToast('✅ ' + id + ' updated to ' + status);
+}
+
+function lDeleteRequest(id) {
+  lRequests = lRequests.filter(x => x.id !== id);
+  lRenderRequests();
+  showToast('🗑️ Request removed');
+}
+
+function lSaveRequest() {
+  const senderName    = document.getElementById('l-sender-name')?.value.trim();
+  const senderPhone   = document.getElementById('l-sender-phone')?.value.trim();
+  const receiverName  = document.getElementById('l-receiver-name')?.value.trim();
+  const receiverPhone = document.getElementById('l-receiver-phone')?.value.trim();
+  const driverPhone   = document.getElementById('l-driver-phone')?.value.trim();
+  const product       = document.getElementById('l-product-name')?.value.trim();
+  const orderId       = document.getElementById('l-order-id')?.value.trim();
+
+  if (!senderName || !receiverName || !product) {
+    showToast('⚠️ Sender name, receiver name and product are required'); return;
+  }
+  const phoneRe = /^0\d{8}$/;
+  if (senderPhone && !phoneRe.test(senderPhone))   { showToast('⚠️ Sender phone must start with 0 and be 9 digits'); return; }
+  if (receiverPhone && !phoneRe.test(receiverPhone)){ showToast('⚠️ Receiver phone must start with 0 and be 9 digits'); return; }
+  if (driverPhone && !phoneRe.test(driverPhone))    { showToast('⚠️ Driver phone must start with 0 and be 9 digits'); return; }
+
+  lReqCounter++;
+  const newId   = 'LR-2026-' + String(lReqCounter).padStart(4,'0');
+  const tracking = 'TRK-' + Math.random().toString().slice(2,8).toUpperCase();
+  const today   = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+
+  const rec = {
+    id: newId, tracking, date: today,
+    status:          document.getElementById('l-delivery-status')?.value || 'Pending',
+    senderName,      senderPhone,
+    pickupAddr:      document.getElementById('l-pickup-address')?.value.trim() || '',
+    senderDistrict:  document.getElementById('l-sender-district')?.value || '',
+    receiverName,    receiverPhone,
+    deliveryAddr:    document.getElementById('l-delivery-address')?.value.trim() || '',
+    receiverDistrict:document.getElementById('l-receiver-district')?.value || '',
+    orderId:         orderId,
+    product,
+    category:        document.getElementById('l-product-cat')?.value || '',
+    qty:             document.getElementById('l-quantity')?.value || '',
+    weight:          document.getElementById('l-weight')?.value || '',
+    pkgDesc:         document.getElementById('l-pkg-desc')?.value.trim() || '',
+    special:         document.getElementById('l-special')?.value.trim() || '',
+    driverName:      document.getElementById('l-driver-name')?.value.trim() || '',
+    driverPhone:     driverPhone || '',
+    vehicleReg:      document.getElementById('l-vehicle-reg')?.value.trim() || '',
+    vehicleType:     document.getElementById('l-vehicle-type')?.value || '',
+    pickupDate:      document.getElementById('l-pickup-date')?.value || '',
+    pickupTime:      document.getElementById('l-pickup-time')?.value || '',
+    deliveryDate:    document.getElementById('l-delivery-date')?.value || '',
+    deliveryTime:    document.getElementById('l-delivery-time')?.value || '',
+    fee:             document.getElementById('l-delivery-fee')?.value || '',
+    payMethod:       document.getElementById('l-pay-method')?.value || '',
+    payStatus:       document.getElementById('l-pay-status')?.value || '',
+    confirmStatus:   document.getElementById('l-confirm-status')?.value || '',
+    sig:             document.getElementById('l-receiver-sig')?.value.trim() || '',
+    completionDate:  document.getElementById('l-completion-date')?.value || '',
+    notes:           document.getElementById('l-notes')?.value.trim() || '',
+  };
+  lRequests.push(rec);
+  showToast('✅ ' + newId + ' saved — Tracking: ' + tracking);
+  lResetRequest();
+  lSubShow('view-requests');
+}
+
+function lResetRequest() {
+  const ids = ['l-sender-name','l-sender-phone','l-pickup-address','l-receiver-name','l-receiver-phone',
+    'l-delivery-address','l-order-id','l-product-name','l-quantity','l-weight','l-pkg-desc','l-special',
+    'l-driver-name','l-driver-phone','l-vehicle-reg','l-pickup-date','l-pickup-time','l-delivery-date',
+    'l-delivery-time','l-delivery-fee','l-receiver-sig','l-completion-date','l-notes'];
+  ids.forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+  ['l-delivery-status','l-sender-district','l-receiver-district','l-product-cat','l-vehicle-type','l-pay-method','l-pay-status','l-confirm-status'].forEach(id => {
+    const e = document.getElementById(id); if (e) e.selectedIndex = 0;
+  });
+  lInitNewRequest();
+  showToast('🗑️ Form cleared');
+}
+
+function lPrintForm() {
+  const g = id => { const e = document.getElementById(id); if (!e) return '—'; return e.tagName === 'SELECT' ? (e.options[e.selectedIndex]?.text || '—') : (e.value || '—'); };
+  const rid  = document.getElementById('l-request-id-display')?.textContent || '—';
+  const rdate= document.getElementById('l-request-date-display')?.textContent || '—';
+  const trk  = document.getElementById('l-tracking-display')?.textContent || '—';
+  const rows = [
+    ['Logistics Request ID', rid],   ['Request Date', rdate],        ['Delivery Status', g('l-delivery-status')],
+    ['Sender Name', g('l-sender-name')], ['Sender Phone', g('l-sender-phone')], ['Pickup Address', g('l-pickup-address')], ['Sender District', g('l-sender-district')],
+    ['Receiver Name', g('l-receiver-name')], ['Receiver Phone', g('l-receiver-phone')], ['Delivery Address', g('l-delivery-address')], ['Receiver District', g('l-receiver-district')],
+    ['Order ID', g('l-order-id')], ['Product Name', g('l-product-name')], ['Category', g('l-product-cat')], ['Quantity', g('l-quantity')], ['Weight (kg)', g('l-weight')],
+    ['Package Description', g('l-pkg-desc')], ['Special Instructions', g('l-special')],
+    ['Driver Name', g('l-driver-name')], ['Driver Phone', g('l-driver-phone')], ['Vehicle Reg', g('l-vehicle-reg')], ['Vehicle Type', g('l-vehicle-type')],
+    ['Pickup Date', g('l-pickup-date')], ['Pickup Time', g('l-pickup-time')], ['Delivery Date', g('l-delivery-date')], ['Delivery Time', g('l-delivery-time')],
+    ['Delivery Fee (SLE)', g('l-delivery-fee')], ['Payment Method', g('l-pay-method')], ['Payment Status', g('l-pay-status')],
+    ['Tracking Number', trk], ['Confirmation Status', g('l-confirm-status')], ['Receiver Signature', g('l-receiver-sig')], ['Completion Date', g('l-completion-date')], ['Additional Notes', g('l-notes')],
+  ];
+  const tableRows = rows.map(([k,v]) => `<tr><td style="padding:6px 10px;color:#666;border-bottom:1px solid #eee;width:45%;font-size:13px">${k}</td><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #eee;font-size:13px">${v}</td></tr>`).join('');
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Logistics Record – ${rid}</title>
+  <style>body{font-family:'Segoe UI',sans-serif;padding:30px;max-width:640px;margin:auto;color:#222}
+  h2{color:#156b1d;margin-bottom:4px}p{color:#888;font-size:13px;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse}
+  @media print{button{display:none!important}}</style></head>
+  <body>
+  <h2>🌾 Farmer Marketplace — Logistics Record</h2>
+  <p>Generated on ${new Date().toLocaleString('en-GB')}</p>
+  <table>${tableRows}</table>
+  <br><button onclick="window.print()" style="padding:10px 24px;background:#156b1d;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-weight:700">🖨️ Print</button>
+  </body></html>`);
+  w.document.close();
+}
+
+/* Tracking search */
+function lTrackSearch() {
+  const q = (document.getElementById('l-track-input')?.value || '').trim().toUpperCase();
+  const el = document.getElementById('l-track-result');
+  if (!q) { showToast('⚠️ Enter a tracking number or request ID'); return; }
+  const r = lRequests.find(x => x.id.toUpperCase() === q || x.tracking.toUpperCase() === q);
+  if (!r) { el.innerHTML = `<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><p>No record found for <strong>${q}</strong></p></div>`; return; }
+  el.innerHTML = `
+    <div class="logi-record-card" style="margin-top:12px;cursor:default">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:32px;margin-bottom:6px">📡</div>
+        <div style="font-size:16px;font-weight:800;color:#156b1d">${r.tracking}</div>
+        <span class="logi-status-badge ${lStatusBadgeClass(r.status)}" style="margin-top:6px;display:inline-block">${r.status}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Request ID</span><span style="font-weight:600">${r.id}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Product</span><span style="font-weight:600">${r.product} (${r.qty} units)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Sender</span><span style="font-weight:600">${r.senderName} · ${r.senderDistrict}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Receiver</span><span style="font-weight:600">${r.receiverName} · ${r.receiverDistrict}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Pickup</span><span style="font-weight:600">${r.pickupDate || '—'} ${r.pickupTime || ''}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Est. Delivery</span><span style="font-weight:600">${r.deliveryDate || '—'} ${r.deliveryTime || ''}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0"><span style="color:#aaa">Driver</span><span style="font-weight:600">${r.driverName || '—'} · ${r.vehicleType || '—'}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="color:#aaa">Payment</span><span style="font-weight:600">${r.payStatus || '—'} · ${r.payMethod || '—'}</span></div>
+      </div>
+    </div>`;
+}
+
+/* Driver management */
+function lRenderDrivers() {
+  const el = document.getElementById('l-drivers-container');
+  if (!el) return;
+  if (!lDrivers.length) { el.innerHTML = emptyState('fa-car','No drivers registered yet.'); return; }
+  el.innerHTML = lDrivers.map((d,i) => `
+    <div class="logi-record-card" style="cursor:default">
+      <div class="logi-record-header">
+        <span class="logi-record-name">${d.name}</span>
+        <span class="logi-status-badge ${d.status==='Available'?'logi-badge-delivered':'logi-badge-transit'}">${d.status}</span>
+      </div>
+      <div class="logi-record-meta">
+        <i class="fa-solid fa-phone" style="color:#b2d8b3;margin-right:4px"></i>${d.phone}
+        &nbsp;·&nbsp; <i class="fa-solid fa-car" style="color:#b2d8b3;margin-right:4px"></i>${d.type} (${d.reg})
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <select onchange="lToggleDriverStatus(${i},this.value);this.blur()"
+          style="flex:1;padding:7px 10px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:12px;font-weight:700;color:#156b1d;background:#f8fdf8;outline:none;cursor:pointer">
+          <option value="">Change Status</option>
+          <option value="Available">Available</option>
+          <option value="On Delivery">On Delivery</option>
+          <option value="Off Duty">Off Duty</option>
+        </select>
+        <button onclick="lRemoveDriver(${i})"
+          style="padding:7px 12px;background:#fff;border:1.5px solid #ffcdd2;border-radius:10px;color:#c62828;font-size:12px;font-weight:700;cursor:pointer">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function lToggleDriverStatus(idx, status) {
+  if (!status) return;
+  lDrivers[idx].status = status;
+  lRenderDrivers();
+  showToast('✅ ' + lDrivers[idx].name + ' → ' + status);
+}
+
+function lRemoveDriver(idx) {
+  const name = lDrivers[idx].name;
+  lDrivers.splice(idx, 1);
+  lRenderDrivers();
+  showToast('🗑️ ' + name + ' removed');
+}
+
+function lAddDriver() {
+  const name  = document.getElementById('l-new-driver-name')?.value.trim();
+  const phone = document.getElementById('l-new-driver-phone')?.value.trim();
+  const reg   = document.getElementById('l-new-vehicle-reg')?.value.trim();
+  const type  = document.getElementById('l-new-vehicle-type')?.value;
+  if (!name) { showToast('⚠️ Driver name is required'); return; }
+  if (phone && !/^0\d{8}$/.test(phone)) { showToast('⚠️ Phone must start with 0 and be 9 digits'); return; }
+  lDrivers.push({ name, phone: phone || '—', reg: reg || '—', type: type || '—', status:'Available' });
+  document.getElementById('l-new-driver-name').value = '';
+  document.getElementById('l-new-driver-phone').value = '';
+  document.getElementById('l-new-vehicle-reg').value = '';
+  document.getElementById('l-new-vehicle-type').selectedIndex = 0;
+  lRenderDrivers();
+  showToast('✅ ' + name + ' added as driver');
+}
+
+/* Init */
+renderCrops(); renderListings(); renderDeliveries();
 </script>
 </body>
 </html>
