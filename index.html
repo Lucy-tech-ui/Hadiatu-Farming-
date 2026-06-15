@@ -465,6 +465,108 @@ input.input-valid,   select.input-valid   { border-color:#43a047 !important; bac
 .logi-badge-assigned  { background:#f3e5f5; color:#6a1b9a; }
 .logi-badge-pickup    { background:#fff8e1; color:#f57f17; }
 
+
+/* ══════════════════════════════════════════
+   PAYMENT (ORANGE MONEY) STYLES
+══════════════════════════════════════════ */
+.pm-section-label {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.8px; color:#FF7900;
+  margin:18px 0 10px; padding-bottom:6px;
+  border-bottom:1.5px solid #ffe6cc;
+  display:flex; align-items:center; gap:6px;
+}
+.pm-label { display:block; margin-bottom:8px; color:#444; font-weight:600; font-size:13px; }
+.pm-input-box {
+  display:flex; align-items:center; background:#fdfdfd;
+  border:2px solid #e9ecef; border-radius:12px;
+  padding:0 15px; margin-bottom:16px; transition:.25s;
+}
+.pm-input-box:focus-within { border-color:#FF7900; background:#fff; }
+.pm-input-box i { color:#bbb; margin-right:10px; width:16px; text-align:center; }
+.pm-input-box input, .pm-input-box select, .pm-input-box textarea {
+  width:100%; padding:13px 0; border:none; outline:none;
+  background:transparent; font-size:14px; font-family:inherit;
+}
+.pm-input-box.pm-invalid { border-color:#e53935 !important; background:#fff5f5 !important; }
+.pm-input-box.pm-valid   { border-color:#43a047 !important; background:#f4fbf4 !important; }
+.pm-field-error { font-size:11px; color:#e53935; font-weight:600; margin:-10px 0 14px 4px; min-height:14px; }
+.pm-sys-field {
+  display:flex; align-items:center; gap:10px;
+  background:#fff7ef; border:2px solid #ffe6cc; border-radius:12px;
+  padding:12px 15px; margin-bottom:16px; font-size:13px; color:#a16a35; font-style:italic;
+}
+.pm-sys-field i { color:#FF7900; }
+.pm-sum-item {
+  display:flex; justify-content:space-between; margin:8px 0;
+  font-size:13px; text-align:left; padding-bottom:6px;
+  border-bottom:1px solid #e8f5e9; gap:10px;
+}
+.pm-sum-item:last-of-type { border-bottom:none; }
+.pm-sum-item span:first-child { color:#888; flex-shrink:0; }
+.pm-sum-item b { color:#222; text-align:right; word-break:break-word; }
+
+/* ══════════════════════════════════════════
+   ADMIN PORTAL STYLES
+══════════════════════════════════════════ */
+.admin-screen { display:none; flex-direction:column; min-height:85vh; }
+.admin-screen.active { display:flex; }
+
+.admin-stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:0 20px 16px; }
+.admin-stat-card { background:#f4fbf4; border:1.5px solid #b2d8b3; border-radius:14px; padding:12px 8px; text-align:center; }
+.admin-stat-num   { font-size:22px; font-weight:800; color:#156b1d; }
+.admin-stat-label { font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+.admin-grid { padding:0 20px 20px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.admin-grid-btn {
+  background:#fff; border:1.5px solid #e9ecef; border-radius:16px; padding:24px 10px;
+  text-align:center; cursor:pointer; transition:all .25s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+.admin-grid-btn:hover { background:#edf8ed; border-color:#156b1d; transform:translateY(-3px); box-shadow:0 6px 14px rgba(21,107,29,.12); }
+.admin-icon-circle { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:12px; font-size:24px; transition:transform .25s; }
+.admin-grid-btn:hover .admin-icon-circle { transform:scale(1.1); }
+.admin-grid-btn.verify  .admin-icon-circle { background:#e8f5e9; color:#2e7d32; }
+.admin-grid-btn.ausers  .admin-icon-circle { background:#e3f2fd; color:#1565c0; }
+.admin-grid-btn.monitor .admin-icon-circle { background:#fff3e0; color:#e65100; }
+.admin-grid-btn span { font-size:11px; font-weight:700; color:#444; line-height:1.3; text-transform:uppercase; letter-spacing:.5px; }
+
+.admin-tab-bar { display:flex; gap:6px; padding:0 20px 12px; flex-shrink:0; }
+.admin-tab-btn { flex:1; padding:8px 4px; border-radius:10px; border:1.5px solid #e0e0e0; background:#fff; font-size:11px; font-weight:700; color:#777; cursor:pointer; text-transform:uppercase; letter-spacing:.4px; transition:all .2s; }
+.admin-tab-btn.active { background:#156b1d; color:#fff; border-color:#156b1d; }
+
+.admin-search { display:flex; align-items:center; background:#fafafa; border:1.5px solid #e0e0e0; border-radius:14px; padding:0 14px; margin:0 20px 12px; gap:10px; flex-shrink:0; }
+.admin-search i { color:#aaa; font-size:15px; }
+.admin-search input { border:none; background:transparent; padding:11px 0; font-size:14px; flex:1; outline:none; }
+
+.admin-record-card { border:1.5px solid #e9ecef; border-radius:16px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; transition:box-shadow .2s,border-color .2s; }
+.admin-record-card:hover { box-shadow:0 6px 16px rgba(21,107,29,.1); border-color:#b2d8b3; }
+.admin-record-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.admin-record-id { font-size:13px; font-weight:700; color:#156b1d; }
+.admin-record-name { font-size:14px; font-weight:700; color:#222; margin-bottom:3px; }
+.admin-record-meta { font-size:12px; color:#888; }
+
+/* Admin detail panel */
+.admin-panel { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:300; align-items:flex-end; justify-content:center; }
+.admin-panel.open { display:flex; }
+.admin-sheet { background:#fff; width:100%; max-width:420px; border-radius:24px 24px 0 0; padding:24px 22px 32px; max-height:88vh; overflow-y:auto; }
+.admin-handle { width:40px; height:4px; background:#e0e0e0; border-radius:2px; margin:0 auto 18px; }
+.admin-sheet-title { font-size:17px; font-weight:700; color:#156b1d; margin-bottom:16px; }
+.admin-sheet-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
+.admin-sheet-row:last-child { border-bottom:none; }
+.admin-sheet-row span:first-child { color:#aaa; width:45%; flex-shrink:0; }
+.admin-sheet-row span:last-child { font-weight:600; color:#333; text-align:right; }
+
+.abadge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; }
+.abadge-pending   { background:#fff3e0; color:#e65100; }
+.abadge-approved  { background:#e8f5e9; color:#2e7d32; }
+.abadge-rejected  { background:#ffebee; color:#c62828; }
+.abadge-active    { background:#e8f5e9; color:#2e7d32; }
+.abadge-suspended { background:#ffebee; color:#c62828; }
+.abadge-paid      { background:#e8f5e9; color:#2e7d32; }
+.abadge-unpaid    { background:#fff3e0; color:#e65100; }
+.abadge-delivered { background:#e3f2fd; color:#1565c0; }
 </style>
 </head>
 <body>
@@ -709,6 +811,12 @@ input.input-valid,   select.input-valid   { border-color:#43a047 !important; bac
       <button class="grid-btn" onclick="subShow('set-prices')"><i class="fa-solid fa-tags"></i><span>Set Prices &amp; Stock</span></button>
       <button class="grid-btn" onclick="subShow('view-orders')"><i class="fa-solid fa-eye"></i><span>View Orders</span></button>
       <button class="grid-btn" onclick="subShow('manage-orders')"><i class="fa-solid fa-boxes-packing"></i><span>Manage Orders</span></button>
+    </div>
+    <!-- Payment shortcut -->
+    <div style="padding:0 20px 4px">
+      <button onclick="pmCallerPage='farmer';switchPage('payment');pmInitForm();pmResetForm()" style="width:100%;padding:12px;background:#FF7900;color:#fff;border:none;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 10px rgba(255,121,0,.3)">
+        <i class="fa-solid fa-mobile-screen-button"></i> Orange Money Payment
+      </button>
     </div>
     <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
   </div>
@@ -1772,13 +1880,6 @@ function doLogin() {
     switchPage('buyer');
     bSubShow('dashboard');
     bUpdateBadge();
-  } else if (user.page === 'buyer') {
-    document.getElementById('buyer-welcome').textContent = `Welcome, ${user.username}!`;
-    document.getElementById('buyer-role-badge').innerHTML =
-      `<span class="role-badge">🛒 ${user.role}</span>`;
-    switchPage('buyer');
-    bSubShow('dashboard');
-    bUpdateBadge();
   } else if (user.page === 'logistics') {
     document.getElementById('logi-welcome').textContent = `Welcome, ${user.username}!`;
     document.getElementById('logi-role-badge').innerHTML =
@@ -1786,8 +1887,19 @@ function doLogin() {
     switchPage('logistics');
     lSubShow('dashboard');
     lRenderDrivers();
+  } else if (user.page === 'admin') {
+    document.getElementById('admin-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('admin-role-badge').innerHTML =
+      `<span class="role-badge">🛡️ ${user.role}</span>`;
+    switchPage('admin');
+    aSubShow('dashboard');
   } else {
-    showToast(`👋 Welcome ${user.username} (${user.role}) — portal coming soon`);
+    // Chat & Payment roles → Orange Money payment portal
+    pmCallerPage = 'login';
+    switchPage('payment');
+    pmInitForm();
+    pmResetForm();
+    showToast(`👋 Welcome, ${user.username}! Opening Payment portal.`);
   }
 }
 function doLogout() {
@@ -2583,8 +2695,750 @@ function lAddDriver() {
   showToast('✅ ' + name + ' added as driver');
 }
 
+
+/* ══════════════════════════════════════════
+   PAYMENT (ORANGE MONEY) JS
+══════════════════════════════════════════ */
+// Back from payment — return to caller portal
+let pmCallerPage = 'login';
+function pGoBack() {
+  switchPage(pmCallerPage);
+  if (pmCallerPage === 'farmer') subShow('dashboard');
+  else if (pmCallerPage === 'buyer') bSubShow('dashboard');
+  else if (pmCallerPage === 'logistics') lSubShow('dashboard');
+}
+
+function pmValidate(input, errId, testFn, msg) {
+  const val = input.value.trim();
+  const box = input.closest('.pm-input-box');
+  const errEl = document.getElementById(errId);
+  const ok = testFn(val);
+  if (box) { box.classList.remove('pm-invalid','pm-valid'); box.classList.add(ok ? 'pm-valid' : 'pm-invalid'); }
+  if (errEl) errEl.textContent = ok ? '' : msg;
+  return ok;
+}
+
+function pmGenTxnRef()     { return 'TXN' + Date.now().toString().slice(-9); }
+function pmGenConfirmCode() { return 'OM-' + Math.random().toString(36).substring(2,8).toUpperCase(); }
+function pmFormatDate()    { return new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+let pmLiveConfirmCode = pmGenConfirmCode();
+
+function pmUpdateLiveDate() {
+  const el = document.getElementById('pm-pay-date-field');
+  if (el) el.textContent = pmFormatDate();
+}
+function pmUpdateConfirmCode(regen) {
+  if (regen) pmLiveConfirmCode = pmGenConfirmCode();
+  const el = document.getElementById('pm-confirm-code-field');
+  if (el) el.textContent = pmLiveConfirmCode;
+}
+
+function pmInitForm() {
+  pmUpdateLiveDate();
+  pmUpdateConfirmCode(false);
+}
+setInterval(pmUpdateLiveDate, 1000);
+
+function pmResetForm() {
+  const form = document.getElementById('om-payment-form');
+  if (form) { form.reset(); form.style.display = 'block'; }
+  document.querySelectorAll('.pm-input-box').forEach(b => b.classList.remove('pm-invalid','pm-valid'));
+  document.querySelectorAll('.pm-field-error').forEach(e => e.textContent = '');
+  ['pm-sum-order-row','pm-sum-product-row','pm-sum-qty-row'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  const sc = document.getElementById('pm-summary-card');
+  if (sc) sc.style.display = 'none';
+  pmUpdateConfirmCode(true);
+  window.scrollTo(0,0);
+}
+
+// Wire up form submit — done via event delegation since form is inside the page div
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('om-payment-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nameEl   = document.getElementById('pm-full-name');
+      const phoneEl  = document.getElementById('pm-cust-phone');
+      const amountEl = document.getElementById('pm-amount');
+      const merchEl  = document.getElementById('pm-merchant-name');
+      const mphEl    = document.getElementById('pm-merchant-phone');
+      const pinEl    = document.getElementById('pm-pin');
+
+      const ok = [
+        pmValidate(nameEl,  'pm-full-name-err',     v=>v!==''&&/^[a-zA-Z\s\'-]+$/.test(v), 'Name must contain letters only'),
+        pmValidate(phoneEl, 'pm-cust-phone-err',    v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits'),
+        pmValidate(amountEl,'pm-amount-err',         v=>v!==''&&parseFloat(v)>0, 'Enter a valid amount greater than 0'),
+        pmValidate(merchEl, 'pm-merchant-name-err', v=>v.trim()!=='', 'Merchant name is required'),
+        pmValidate(mphEl,   'pm-merchant-phone-err',v=>/^0\d{8}$/.test(v), 'Must start with 0 and be 9 digits'),
+        pmValidate(pinEl,   'pm-pin-err',             v=>/^[0-9]{4}$/.test(v), 'PIN must be exactly 4 digits'),
+      ].every(Boolean);
+
+      if (!ok) return;
+
+      const currency    = document.getElementById('pm-currency').value;
+      const purpose     = document.getElementById('pm-purpose').value || '—';
+      const orderId     = document.getElementById('pm-order-id').value.trim();
+      const productDesc = document.getElementById('pm-product-desc').value.trim();
+      const qty         = document.getElementById('pm-order-qty').value;
+      const txnRef      = pmGenTxnRef();
+      const confirmCode = pmLiveConfirmCode;
+      const payDate     = pmFormatDate();
+
+      document.getElementById('pm-sum-name').textContent          = nameEl.value.trim();
+      document.getElementById('pm-sum-phone').textContent         = phoneEl.value.trim();
+      document.getElementById('pm-sum-ref').textContent           = txnRef;
+      document.getElementById('pm-sum-amount').textContent        = parseFloat(amountEl.value).toLocaleString() + ' ' + currency;
+      document.getElementById('pm-sum-purpose').textContent       = purpose;
+      document.getElementById('pm-sum-merchant').textContent      = merchEl.value.trim();
+      document.getElementById('pm-sum-merchant-phone').textContent= mphEl.value.trim();
+
+      if (orderId)     { document.getElementById('pm-sum-order-row').style.display='flex'; document.getElementById('pm-sum-order').textContent=orderId; }
+      if (productDesc) { document.getElementById('pm-sum-product-row').style.display='flex'; document.getElementById('pm-sum-product').textContent=productDesc; }
+      if (qty)         { document.getElementById('pm-sum-qty-row').style.display='flex'; document.getElementById('pm-sum-qty').textContent=qty; }
+
+      document.getElementById('pm-sum-date').textContent = payDate;
+      document.getElementById('pm-sum-code').textContent = confirmCode;
+
+      form.style.display = 'none';
+      document.getElementById('pm-summary-card').style.display = 'block';
+      window.scrollTo(0,0);
+    });
+  }
+});
+
+
+/* ══════════════════════════════════════════
+   ADMIN PORTAL JS
+══════════════════════════════════════════ */
+let aFarmerFilter = 'all';
+let aUserFilter   = 'all';
+let aTxnFilter    = 'all';
+
+const aFARMERS = [
+  { id:'FRM-001', name:'Aminata Kamara',  nationalId:'NID-4421', phone:'076123456', email:'aminata@mail.com', farm:'Kamara Farms',    district:'Kenema', docs:'NID, Farm Certificate', status:'Pending',  reviewedBy:'', reviewDate:'', remarks:'' },
+  { id:'FRM-002', name:'Ibrahim Sesay',   nationalId:'NID-3318', phone:'077334455', email:'ibrahim@mail.com', farm:'Sesay Agro',      district:'Bo',     docs:'NID, Land Title',       status:'Approved', reviewedBy:'Admin', reviewDate:new Date().toLocaleDateString('en-GB'), remarks:'All docs verified.' },
+  { id:'FRM-003', name:'Fatmata Conteh',  nationalId:'NID-9912', phone:'078556677', email:'fatmata@mail.com', farm:'Conteh Harvest',  district:'Makeni', docs:'NID',                   status:'Rejected', reviewedBy:'Admin', reviewDate:new Date().toLocaleDateString('en-GB'), remarks:'Incomplete documents.' },
+  { id:'FRM-004', name:'Mohamed Bangura', nationalId:'NID-6678', phone:'079112233', email:'',                 farm:'Bangura Rice Co', district:'Kenema', docs:'NID, Farm Certificate', status:'Pending',  reviewedBy:'', reviewDate:'', remarks:'' },
+];
+
+const aUSERS = [
+  { id:'USR-001', name:'Admin User',     username:'Admin',     email:'admin@market.com', phone:'076000001', role:'Admin',     status:'Active',    dateCreated:'01 Jan 2026', lastLogin:'11 Jun 2026', notes:'' },
+  { id:'USR-002', name:'Farmer User',    username:'Farmer001', email:'farmer@mail.com',  phone:'076123456', role:'Farmer',    status:'Active',    dateCreated:'05 Jan 2026', lastLogin:'10 Jun 2026', notes:'' },
+  { id:'USR-003', name:'Buyer User',     username:'Buyer001',  email:'buyer@mail.com',   phone:'077334455', role:'Buyer',     status:'Active',    dateCreated:'06 Jan 2026', lastLogin:'09 Jun 2026', notes:'' },
+  { id:'USR-004', name:'Logistics User', username:'Logistics', email:'logi@mail.com',    phone:'078990011', role:'Logistics', status:'Active',    dateCreated:'10 Jan 2026', lastLogin:'11 Jun 2026', notes:'' },
+  { id:'USR-005', name:'Chat Agent',     username:'Chat',      email:'chat@mail.com',    phone:'079223344', role:'Chat',      status:'Suspended', dateCreated:'15 Jan 2026', lastLogin:'01 Mar 2026', notes:'Under review.' },
+  { id:'USR-006', name:'Payment Agent',  username:'Payment',   email:'pay@mail.com',     phone:'078556677', role:'Payment',   status:'Active',    dateCreated:'20 Jan 2026', lastLogin:'08 Jun 2026', notes:'' },
+];
+
+const aTXNS = [
+  { id:'TXN-20260001', orderId:'ORD-20260011', buyer:'Mariama Koroma', farmer:'Aminata Kamara',  product:'Fresh Tomatoes',       qty:'3 crates',  amount:75000,  method:'Mobile Money',     payStatus:'Paid',   date:'11 Jun 2026 · 09:14', deliveryStatus:'Delivered',  remarks:'' },
+  { id:'TXN-20260002', orderId:'ORD-20260012', buyer:'John Jalloh',    farmer:'Ibrahim Sesay',   product:'Groundnuts (5kg bag)', qty:'2 bags',    amount:44000,  method:'Cash on Delivery', payStatus:'Unpaid', date:'11 Jun 2026 · 10:30', deliveryStatus:'Pending',    remarks:'Awaiting collection.' },
+  { id:'TXN-20260003', orderId:'ORD-20260010', buyer:'Mariama Koroma', farmer:'Fatmata Conteh',  product:'Cassava Leaves',       qty:'5 bundles', amount:30000,  method:'Bank Transfer',    payStatus:'Paid',   date:'10 Jun 2026 · 15:45', deliveryStatus:'Delivered',  remarks:'' },
+  { id:'TXN-20260004', orderId:'ORD-20260009', buyer:'Mariama Koroma', farmer:'Mohamed Bangura', product:'Local Rice (50kg)',     qty:'1 bag',     amount:180000, method:'Mobile Money',     payStatus:'Paid',   date:'09 Jun 2026 · 12:00', deliveryStatus:'Delivered',  remarks:'' },
+  { id:'TXN-20260005', orderId:'ORD-20260013', buyer:'John Jalloh',    farmer:'Ibrahim Sesay',   product:'Ripe Plantain',        qty:'4 bunches', amount:60000,  method:'Cash on Delivery', payStatus:'Unpaid', date:'11 Jun 2026 · 14:10', deliveryStatus:'Processing', remarks:'' },
+];
+
+/* Sub-screen nav */
+function aSubShow(id) {
+  document.querySelectorAll('#page-admin .admin-screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById('asub-' + id);
+  if (t) { t.classList.add('active'); window.scrollTo(0,0); }
+  aUpdateStats();
+}
+
+function aUpdateStats() {
+  const fn = document.getElementById('astat-farmers'); if(fn) fn.textContent = aFARMERS.length;
+  const un = document.getElementById('astat-users');   if(un) un.textContent = aUSERS.length;
+  const tn = document.getElementById('astat-txn');     if(tn) tn.textContent = aTXNS.length;
+}
+
+/* Panel helpers */
+function aOpenPanel(id)  { const el = document.getElementById(id); if(el) el.classList.add('open'); }
+function aClosePanel(id) { const el = document.getElementById(id); if(el) el.classList.remove('open'); }
+function aCloseAllPanels() { document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('open')); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.admin-panel').forEach(panel => {
+    panel.addEventListener('click', e => { if (e.target === panel) aClosePanel(panel.id); });
+  });
+});
+
+/* ── VERIFY FARMERS ── */
+function aFilterFarmers(btn, filter) {
+  document.querySelectorAll('#asub-verify .admin-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  aFarmerFilter = filter;
+  aRenderFarmers();
+}
+
+function aRenderFarmers() {
+  const kw = (document.getElementById('a-verify-search')?.value || '').toLowerCase();
+  const list = aFARMERS.filter(f => {
+    const mf = aFarmerFilter === 'all' || f.status === aFarmerFilter;
+    const ms = !kw || f.name.toLowerCase().includes(kw) || f.id.toLowerCase().includes(kw);
+    return mf && ms;
+  });
+  const el = document.getElementById('a-farmer-list');
+  if (!el) return;
+  if (!list.length) { el.innerHTML = emptyState('fa-id-card','No farmers found.'); return; }
+  el.innerHTML = list.map(f => `
+    <div class="admin-record-card" onclick="aOpenFarmerPanel('${f.id}')">
+      <div class="admin-record-header">
+        <span class="admin-record-id">${f.id}</span>
+        <span class="abadge abadge-${f.status.toLowerCase()}">${f.status}</span>
+      </div>
+      <div class="admin-record-name">${f.name}</div>
+      <div class="admin-record-meta"><i class="fa-solid fa-tractor" style="color:#b2d8b3;margin-right:4px"></i>${f.farm} &nbsp;·&nbsp; <i class="fa-solid fa-location-dot" style="color:#b2d8b3;margin-right:4px"></i>${f.district}</div>
+      <div style="margin-top:6px;font-size:11px;color:#aaa"><i class="fa-solid fa-file-lines" style="margin-right:4px"></i>${f.docs}</div>
+    </div>`).join('');
+}
+
+function aOpenFarmerPanel(id) {
+  const f = aFARMERS.find(x => x.id === id); if (!f) return;
+  document.getElementById('apanel-farmer-body').innerHTML = `
+    <div class="admin-sheet-row"><span>Farmer ID</span><span>${f.id}</span></div>
+    <div class="admin-sheet-row"><span>Full Name</span><span>${f.name}</span></div>
+    <div class="admin-sheet-row"><span>National ID</span><span>${f.nationalId}</span></div>
+    <div class="admin-sheet-row"><span>Phone</span><span>${f.phone}</span></div>
+    <div class="admin-sheet-row"><span>Email</span><span>${f.email || '—'}</span></div>
+    <div class="admin-sheet-row"><span>Farm Name</span><span>${f.farm}</span></div>
+    <div class="admin-sheet-row"><span>District</span><span>${f.district}</span></div>
+    <div class="admin-sheet-row"><span>Documents</span><span>${f.docs}</span></div>
+    <div class="admin-sheet-row"><span>Status</span><span><span class="abadge abadge-${f.status.toLowerCase()}">${f.status}</span></span></div>
+    <div class="admin-sheet-row"><span>Reviewed By</span><span>${f.reviewedBy || '—'}</span></div>
+    <div class="admin-sheet-row"><span>Review Date</span><span>${f.reviewDate || '—'}</span></div>
+    <div class="admin-sheet-row"><span>Remarks</span><span>${f.remarks || '—'}</span></div>
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Remarks</label>
+      <textarea id="a-remark-${f.id}" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:64px;outline:none" placeholder="Add remarks…">${f.remarks}</textarea>
+    </div>`;
+  document.getElementById('apanel-farmer-actions').innerHTML = `
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" onclick="aUpdateFarmerStatus('${f.id}','Approved')"><i class="fa-solid fa-check"></i> Approve</button>
+      <button class="btn-danger"  onclick="aUpdateFarmerStatus('${f.id}','Rejected')"><i class="fa-solid fa-xmark"></i> Reject</button>
+    </div>
+    <button class="btn-secondary" onclick="aClosePanel('apanel-farmer')">Close</button>`;
+  aOpenPanel('apanel-farmer');
+}
+
+function aUpdateFarmerStatus(id, newStatus) {
+  const f = aFARMERS.find(x => x.id === id); if (!f) return;
+  const rv = document.getElementById('a-remark-' + id)?.value.trim();
+  f.status = newStatus; f.reviewedBy = currentUser?.username || 'Admin'; f.reviewDate = new Date().toLocaleDateString('en-GB');
+  if (rv) f.remarks = rv;
+  aClosePanel('apanel-farmer'); aRenderFarmers();
+  showToast(newStatus === 'Approved' ? `✅ ${f.name} approved` : `❌ ${f.name} rejected`);
+}
+
+/* ── MANAGE USERS ── */
+function aFilterUsers(btn, filter) {
+  document.querySelectorAll('#asub-users .admin-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); aUserFilter = filter; aRenderUsers();
+}
+
+function aRenderUsers() {
+  const kw = (document.getElementById('a-user-search')?.value || '').toLowerCase();
+  const list = aUSERS.filter(u => {
+    const mf = aUserFilter === 'all' || u.role === aUserFilter;
+    const ms = !kw || u.name.toLowerCase().includes(kw) || u.username.toLowerCase().includes(kw);
+    return mf && ms;
+  });
+  const roleIcon = { Admin:'fa-shield-halved', Farmer:'fa-tractor', Buyer:'fa-bag-shopping', Logistics:'fa-truck', Chat:'fa-comments', Payment:'fa-wallet' };
+  const el = document.getElementById('a-user-list'); if (!el) return;
+  if (!list.length) { el.innerHTML = emptyState('fa-users','No users found.'); return; }
+  el.innerHTML = list.map(u => `
+    <div class="admin-record-card" onclick="aOpenUserPanel('${u.id}')">
+      <div class="admin-record-header">
+        <span class="admin-record-id">${u.id}</span>
+        <span class="abadge abadge-${u.status.toLowerCase()}">${u.status}</span>
+      </div>
+      <div class="admin-record-name">${u.name}</div>
+      <div class="admin-record-meta">
+        <i class="fa-solid ${roleIcon[u.role]||'fa-user'}" style="color:#b2d8b3;margin-right:4px"></i>${u.role}
+        &nbsp;·&nbsp; @${u.username}
+        &nbsp;·&nbsp; Last: ${u.lastLogin}
+      </div>
+    </div>`).join('');
+}
+
+function aOpenUserPanel(id) {
+  const u = aUSERS.find(x => x.id === id); if (!u) return;
+  document.getElementById('apanel-user-body').innerHTML = `
+    <div class="admin-sheet-row"><span>User ID</span><span>${u.id}</span></div>
+    <div class="admin-sheet-row"><span>Full Name</span><span>${u.name}</span></div>
+    <div class="admin-sheet-row"><span>Username</span><span>@${u.username}</span></div>
+    <div class="admin-sheet-row"><span>Email</span><span>${u.email}</span></div>
+    <div class="admin-sheet-row"><span>Phone</span><span>${u.phone}</span></div>
+    <div class="admin-sheet-row"><span>Role</span><span>${u.role}</span></div>
+    <div class="admin-sheet-row"><span>Status</span><span><span class="abadge abadge-${u.status.toLowerCase()}">${u.status}</span></span></div>
+    <div class="admin-sheet-row"><span>Date Created</span><span>${u.dateCreated}</span></div>
+    <div class="admin-sheet-row"><span>Last Login</span><span>${u.lastLogin}</span></div>
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Notes</label>
+      <textarea id="a-note-${u.id}" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:64px;outline:none" placeholder="Add notes…">${u.notes}</textarea>
+    </div>`;
+  const tl = u.status === 'Active' ? 'Suspend User' : 'Activate User';
+  const tc = u.status === 'Active' ? 'btn-danger'   : 'btn-primary';
+  const ti = u.status === 'Active' ? 'fa-ban'       : 'fa-circle-check';
+  document.getElementById('apanel-user-actions').innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <button class="${tc}" style="flex:1;padding:13px;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px" onclick="aToggleUser('${u.id}')">
+        <i class="fa-solid ${ti}"></i> ${tl}
+      </button>
+      <button class="btn-primary" onclick="aSaveUserNote('${u.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+    </div>
+    <button class="btn-secondary" onclick="aClosePanel('apanel-user')">Close</button>`;
+  aOpenPanel('apanel-user');
+}
+
+function aToggleUser(id) {
+  const u = aUSERS.find(x => x.id === id); if (!u) return;
+  const nv = document.getElementById('a-note-' + id)?.value.trim();
+  u.status = u.status === 'Active' ? 'Suspended' : 'Active';
+  if (nv) u.notes = nv;
+  aClosePanel('apanel-user'); aRenderUsers();
+  showToast(u.status === 'Active' ? `✅ ${u.name} activated` : `🚫 ${u.name} suspended`);
+}
+function aSaveUserNote(id) {
+  const u = aUSERS.find(x => x.id === id);
+  const nv = document.getElementById('a-note-' + id)?.value.trim();
+  if (u) u.notes = nv || '';
+  showToast('📝 Notes saved'); aClosePanel('apanel-user');
+}
+
+/* ── MONITOR TRANSACTIONS ── */
+function aFilterTxn(btn, filter) {
+  document.querySelectorAll('#asub-monitor .admin-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); aTxnFilter = filter; aRenderTxn();
+}
+
+function aRenderTxn() {
+  const kw = (document.getElementById('a-txn-search')?.value || '').toLowerCase();
+  const list = aTXNS.filter(t => {
+    const mf = aTxnFilter === 'all' || t.payStatus === aTxnFilter || t.deliveryStatus === aTxnFilter;
+    const ms = !kw || t.id.toLowerCase().includes(kw) || t.buyer.toLowerCase().includes(kw) || t.farmer.toLowerCase().includes(kw) || t.product.toLowerCase().includes(kw);
+    return mf && ms;
+  });
+  const pc = s => s === 'Paid' ? 'abadge-paid' : 'abadge-unpaid';
+  const dc = s => s === 'Delivered' ? 'abadge-delivered' : 'abadge-pending';
+  const el = document.getElementById('a-txn-list'); if (!el) return;
+  if (!list.length) { el.innerHTML = emptyState('fa-money-bill-transfer','No transactions found.'); return; }
+  el.innerHTML = list.map(t => `
+    <div class="admin-record-card" onclick="aOpenTxnPanel('${t.id}')">
+      <div class="admin-record-header">
+        <span class="admin-record-id">${t.id}</span>
+        <span class="abadge ${pc(t.payStatus)}">${t.payStatus}</span>
+      </div>
+      <div class="admin-record-name">${t.product} <span style="font-weight:400;color:#888">× ${t.qty}</span></div>
+      <div class="admin-record-meta">
+        <i class="fa-solid fa-user" style="color:#b2d8b3;margin-right:4px"></i>${t.buyer}
+        &nbsp;→&nbsp;
+        <i class="fa-solid fa-tractor" style="color:#b2d8b3;margin-right:4px"></i>${t.farmer}
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px">
+        <span style="font-weight:800;color:#156b1d">Le ${t.amount.toLocaleString()}</span>
+        <span class="abadge ${dc(t.deliveryStatus)}" style="font-size:10px">${t.deliveryStatus}</span>
+      </div>
+    </div>`).join('');
+}
+
+function aOpenTxnPanel(id) {
+  const t = aTXNS.find(x => x.id === id); if (!t) return;
+  const pc = t.payStatus === 'Paid' ? 'abadge-paid' : 'abadge-unpaid';
+  const dc = t.deliveryStatus === 'Delivered' ? 'abadge-delivered' : 'abadge-pending';
+  document.getElementById('apanel-txn-body').innerHTML = `
+    <div class="admin-sheet-row"><span>Transaction ID</span><span>${t.id}</span></div>
+    <div class="admin-sheet-row"><span>Order ID</span><span>${t.orderId}</span></div>
+    <div class="admin-sheet-row"><span>Buyer</span><span>${t.buyer}</span></div>
+    <div class="admin-sheet-row"><span>Farmer</span><span>${t.farmer}</span></div>
+    <div class="admin-sheet-row"><span>Product</span><span>${t.product}</span></div>
+    <div class="admin-sheet-row"><span>Quantity</span><span>${t.qty}</span></div>
+    <div class="admin-sheet-row"><span>Total Amount</span><span style="color:#156b1d;font-weight:800">Le ${t.amount.toLocaleString()}</span></div>
+    <div class="admin-sheet-row"><span>Payment Method</span><span>${t.method}</span></div>
+    <div class="admin-sheet-row"><span>Payment Status</span><span><span class="abadge ${pc}">${t.payStatus}</span></span></div>
+    <div class="admin-sheet-row"><span>Date</span><span>${t.date}</span></div>
+    <div class="admin-sheet-row"><span>Delivery Status</span><span><span class="abadge ${dc}">${t.deliveryStatus}</span></span></div>
+    <div class="admin-sheet-row"><span>Remarks</span><span>${t.remarks || '—'}</span></div>
+    <div style="margin-top:14px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Update Delivery Status</label>
+      <select id="a-del-${t.id}" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;background:#fafafa;outline:none">
+        <option ${t.deliveryStatus==='Pending'   ?'selected':''}>Pending</option>
+        <option ${t.deliveryStatus==='Processing'?'selected':''}>Processing</option>
+        <option ${t.deliveryStatus==='Shipped'   ?'selected':''}>Shipped</option>
+        <option ${t.deliveryStatus==='Delivered' ?'selected':''}>Delivered</option>
+      </select>
+    </div>
+    <div style="margin-top:10px">
+      <label style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;display:block">Admin Remarks</label>
+      <textarea id="a-txn-rem-${t.id}" style="width:100%;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:12px;font-size:13px;resize:vertical;min-height:60px;outline:none" placeholder="Add remarks…">${t.remarks}</textarea>
+    </div>`;
+  document.getElementById('apanel-txn-actions').innerHTML = `
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="flex:1" onclick="aSaveTxn('${t.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="btn-secondary" style="flex:1" onclick="aClosePanel('apanel-txn')">Close</button>
+    </div>`;
+  aOpenPanel('apanel-txn');
+}
+
+function aSaveTxn(id) {
+  const t = aTXNS.find(x => x.id === id); if (!t) return;
+  const ds = document.getElementById('a-del-' + id)?.value;
+  const rm = document.getElementById('a-txn-rem-' + id)?.value.trim();
+  if (ds) t.deliveryStatus = ds;
+  if (rm !== undefined) t.remarks = rm;
+  aClosePanel('apanel-txn'); aRenderTxn();
+  showToast('💾 Transaction updated');
+}
+
 /* Init */
 renderCrops(); renderListings(); renderDeliveries();
 </script>
+
+<!-- ═══════════════════════════════════════
+     PAGE: PAYMENT PORTAL (Orange Money SL)
+     Accessible by ALL logged-in users
+═══════════════════════════════════════ -->
+<div class="page" id="page-payment">
+<div class="mobile" style="min-height:85vh">
+
+  <!-- HEADER -->
+  <div style="background:#FF7900;padding:36px 25px 30px;color:#fff;text-align:center;position:relative;flex-shrink:0;">
+    <button onclick="pGoBack()" style="position:absolute;top:18px;left:18px;color:#fff;font-size:18px;cursor:pointer;background:rgba(255,255,255,.22);border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;transition:all .2s">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h1 style="font-size:19px;margin-bottom:4px">🍊 Orange Money Sierra Leone</h1>
+    <p style="font-size:12px;opacity:.9">Mobile Payment Form</p>
+    <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </div>
+
+  <!-- LOGO -->
+  <div style="width:84px;height:84px;margin:-42px auto 8px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 4px 16px rgba(0,0,0,.12);border:4px solid #fff;flex-shrink:0;color:#FF7900;">
+    <i class="fa-solid fa-mobile-screen-button"></i>
+  </div>
+
+  <div style="padding:6px 24px 10px;flex:1;overflow-y:auto">
+    <form id="om-payment-form">
+
+      <!-- Customer Info -->
+      <div class="pm-section-label"><i class="fa-solid fa-user"></i> Customer Information</div>
+
+      <label class="pm-label">Full Name</label>
+      <div class="pm-input-box" id="pb-fullname-box">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="pm-full-name" placeholder="Enter your full name"
+               oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')"
+               onblur="pmValidate(this,'pm-full-name-err',v=>v.trim()!==''&&/^[a-zA-Z\s'-]+$/.test(v),'Name must contain letters only')">
+      </div>
+      <div class="pm-field-error" id="pm-full-name-err"></div>
+
+      <label class="pm-label">Phone Number (Orange Money Account)</label>
+      <div class="pm-input-box" id="pb-custphone-box">
+        <i class="fa-solid fa-phone"></i>
+        <input type="tel" id="pm-cust-phone" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"
+               onblur="pmValidate(this,'pm-cust-phone-err',v=>/^0\d{8}$/.test(v),'Must start with 0 and be 9 digits')">
+      </div>
+      <div style="font-size:11px;color:#aaa;margin:-10px 0 14px 4px">9 digits, starting with 0 (e.g. 076123456)</div>
+      <div class="pm-field-error" id="pm-cust-phone-err"></div>
+
+      <label class="pm-label">Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="pm-cust-email" placeholder="you@example.com">
+      </div>
+
+      <!-- Payment Details -->
+      <div class="pm-section-label"><i class="fa-solid fa-money-bill-wave"></i> Payment Details</div>
+
+      <div class="pm-sys-field">
+        <i class="fa-solid fa-hashtag"></i>
+        <span id="pm-txn-ref-field">Transaction Reference: will be generated on submit</span>
+      </div>
+
+      <label class="pm-label">Amount to Pay</label>
+      <div class="pm-input-box" id="pb-amount-box">
+        <i class="fa-solid fa-coins"></i>
+        <input type="number" id="pm-amount" placeholder="Enter amount" min="1" step="0.01"
+               onblur="pmValidate(this,'pm-amount-err',v=>v!==''&&parseFloat(v)>0,'Enter a valid amount greater than 0')">
+      </div>
+      <div class="pm-field-error" id="pm-amount-err"></div>
+
+      <label class="pm-label">Currency</label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-coins"></i>
+        <select id="pm-currency">
+          <option value="SLE">SLE — Sierra Leonean Leone</option>
+          <option value="USD">USD — US Dollar</option>
+          <option value="GBP">GBP — British Pound</option>
+        </select>
+      </div>
+
+      <label class="pm-label">Purpose of Payment</label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-circle-info"></i>
+        <select id="pm-purpose">
+          <option value="">Select purpose…</option>
+          <option>Product Purchase</option>
+          <option>Order Payment</option>
+          <option>Delivery Fee</option>
+          <option>Subscription / Membership</option>
+          <option>Service Fee</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Receiver Info -->
+      <div class="pm-section-label"><i class="fa-solid fa-store"></i> Receiver Information</div>
+
+      <label class="pm-label">Merchant / Business Name</label>
+      <div class="pm-input-box" id="pb-merchant-box">
+        <i class="fa-solid fa-shop"></i>
+        <input type="text" id="pm-merchant-name" placeholder="e.g. Farmer Marketplace"
+               onblur="pmValidate(this,'pm-merchant-name-err',v=>v.trim()!=='','Merchant name is required')">
+      </div>
+      <div class="pm-field-error" id="pm-merchant-name-err"></div>
+
+      <label class="pm-label">Merchant Orange Money Number</label>
+      <div class="pm-input-box" id="pb-merchantphone-box">
+        <i class="fa-solid fa-phone-volume"></i>
+        <input type="tel" id="pm-merchant-phone" placeholder="0XXXXXXXX" maxlength="9"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"
+               onblur="pmValidate(this,'pm-merchant-phone-err',v=>/^0\d{8}$/.test(v),'Must start with 0 and be 9 digits')">
+      </div>
+      <div style="font-size:11px;color:#aaa;margin:-10px 0 14px 4px">9 digits, starting with 0</div>
+      <div class="pm-field-error" id="pm-merchant-phone-err"></div>
+
+      <!-- Order Info (Optional) -->
+      <div class="pm-section-label"><i class="fa-solid fa-box"></i> Order Information <span style="color:#cfa483;font-weight:400;text-transform:none;font-size:11px">(Optional)</span></div>
+
+      <label class="pm-label">Order ID</label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-receipt"></i>
+        <input type="text" id="pm-order-id" placeholder="e.g. ORD-20260011">
+      </div>
+
+      <label class="pm-label">Product / Service Description</label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-pen"></i>
+        <textarea id="pm-product-desc" placeholder="Describe the product or service…" style="resize:vertical;min-height:60px;padding-top:12px"></textarea>
+      </div>
+
+      <label class="pm-label">Quantity</label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-cubes-stacked"></i>
+        <input type="number" id="pm-order-qty" placeholder="e.g. 3" min="0">
+      </div>
+
+      <!-- Confirmation -->
+      <div class="pm-section-label"><i class="fa-solid fa-clipboard-check"></i> Confirmation</div>
+
+      <div class="pm-sys-field">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Payment Date: <strong id="pm-pay-date-field"></strong></span>
+      </div>
+
+      <div class="pm-sys-field">
+        <i class="fa-solid fa-sms"></i>
+        <span>Confirmation Code: <strong id="pm-confirm-code-field"></strong></span>
+      </div>
+
+      <label class="pm-label">Customer Signature <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+      <div class="pm-input-box">
+        <i class="fa-solid fa-signature"></i>
+        <input type="text" id="pm-signature" placeholder="Draw or type your signature here">
+      </div>
+
+      <label class="pm-label">User PIN</label>
+      <div class="pm-input-box" id="pb-pin-box">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="pm-pin" placeholder="Enter 4-digit PIN" maxlength="4"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)"
+               onblur="pmValidate(this,'pm-pin-err',v=>/^[0-9]{4}$/.test(v),'PIN must be exactly 4 digits')">
+      </div>
+      <div class="pm-field-error" id="pm-pin-err"></div>
+
+      <button type="submit" style="width:100%;padding:16px;background:#FF7900;color:#fff;border:none;border-radius:12px;font-weight:bold;cursor:pointer;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px">
+        <i class="fa-solid fa-circle-check"></i> Confirm Payment
+      </button>
+    </form>
+
+    <!-- SUCCESS SUMMARY CARD -->
+    <div id="pm-summary-card" style="display:none;text-align:center;padding:24px 20px;border:2px solid #156b1d;border-radius:20px;background:#f9fff9;margin-top:6px">
+      <i class="fa-solid fa-circle-check" style="font-size:54px;color:#156b1d;margin-bottom:6px;display:block"></i>
+      <h3 style="color:#156b1d;font-size:17px;margin-bottom:14px">Payment Successful!</h3>
+
+      <div class="pm-sum-item"><span>Full Name</span><b id="pm-sum-name"></b></div>
+      <div class="pm-sum-item"><span>Phone Number</span><b id="pm-sum-phone"></b></div>
+      <div class="pm-sum-item"><span>Transaction Ref.</span><b id="pm-sum-ref"></b></div>
+      <div class="pm-sum-item"><span>Amount</span><b id="pm-sum-amount"></b></div>
+      <div class="pm-sum-item"><span>Purpose</span><b id="pm-sum-purpose"></b></div>
+      <div class="pm-sum-item"><span>Merchant</span><b id="pm-sum-merchant"></b></div>
+      <div class="pm-sum-item"><span>Merchant Number</span><b id="pm-sum-merchant-phone"></b></div>
+      <div class="pm-sum-item" id="pm-sum-order-row" style="display:none"><span>Order ID</span><b id="pm-sum-order"></b></div>
+      <div class="pm-sum-item" id="pm-sum-product-row" style="display:none"><span>Product/Service</span><b id="pm-sum-product"></b></div>
+      <div class="pm-sum-item" id="pm-sum-qty-row" style="display:none"><span>Quantity</span><b id="pm-sum-qty"></b></div>
+      <div class="pm-sum-item"><span>Payment Date</span><b id="pm-sum-date"></b></div>
+      <div class="pm-sum-item"><span>Confirmation Code</span><b id="pm-sum-code"></b></div>
+      <div class="pm-sum-item"><span>Status</span><b style="color:#156b1d">✅ Completed</b></div>
+
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button onclick="pGoBack()" style="flex:1;padding:14px;background:#fff;color:#156b1d;border:2px solid #156b1d;border-radius:12px;font-weight:700;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <button onclick="pmResetForm()" style="flex:1;padding:14px;background:#156b1d;color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i class="fa-solid fa-rotate-left"></i> New Payment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="text-align:center;padding:14px 20px;margin:20px 20px 20px;color:#fff;font-weight:600;font-size:12px;background:#FF7900;border-radius:16px;box-shadow:0 4px 10px rgba(255,121,0,.3);flex-shrink:0">Secured by Orange Money SL</div>
+</div>
+</div><!-- end page-payment -->
+
+
+<!-- ═══════════════════════════════════════
+     PAGE: ADMIN PORTAL
+═══════════════════════════════════════ -->
+<div class="page" id="page-admin">
+
+  <!-- DASHBOARD -->
+  <div class="mobile admin-screen active" id="asub-dashboard">
+    <div class="header">
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">🛡️</div>
+    <div class="page-title">
+      <h2>Admin Portal</h2>
+      <p id="admin-welcome">Manage and oversee platform operations</p>
+      <div id="admin-role-badge" style="margin-top:6px"></div>
+    </div>
+    <div class="admin-stats-row">
+      <div class="admin-stat-card"><div class="admin-stat-num" id="astat-farmers">4</div><div class="admin-stat-label">Farmers</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="astat-users">6</div><div class="admin-stat-label">Users</div></div>
+      <div class="admin-stat-card"><div class="admin-stat-num" id="astat-txn">5</div><div class="admin-stat-label">Transactions</div></div>
+    </div>
+    <div class="admin-grid">
+      <button class="admin-grid-btn verify" onclick="aSubShow('verify');aRenderFarmers()">
+        <div class="admin-icon-circle"><i class="fa-solid fa-user-shield"></i></div>
+        <span>Verify Farmers</span>
+      </button>
+      <button class="admin-grid-btn ausers" onclick="aSubShow('users');aRenderUsers()">
+        <div class="admin-icon-circle"><i class="fa-solid fa-users-gear"></i></div>
+        <span>Manage Users</span>
+      </button>
+      <button class="admin-grid-btn monitor" onclick="aSubShow('monitor');aRenderTxn()" style="grid-column:1/-1;padding:28px 10px">
+        <div class="admin-icon-circle"><i class="fa-solid fa-chart-line"></i></div>
+        <span>Monitor Transactions</span>
+      </button>
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- VERIFY FARMERS -->
+  <div class="mobile admin-screen" id="asub-verify">
+    <div class="header">
+      <button class="back-btn" onclick="aSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">✅</div>
+    <div class="page-title"><h2>Verify Farmers</h2><p>Review and approve farmer registrations</p></div>
+    <div class="admin-tab-bar">
+      <button class="admin-tab-btn active" onclick="aFilterFarmers(this,'all')">All</button>
+      <button class="admin-tab-btn" onclick="aFilterFarmers(this,'Pending')">Pending</button>
+      <button class="admin-tab-btn" onclick="aFilterFarmers(this,'Approved')">Approved</button>
+      <button class="admin-tab-btn" onclick="aFilterFarmers(this,'Rejected')">Rejected</button>
+    </div>
+    <div class="admin-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="a-verify-search" placeholder="Search by name or ID…" oninput="aRenderFarmers()">
+    </div>
+    <div class="form-body" style="padding-top:4px"><div id="a-farmer-list"></div></div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- MANAGE USERS -->
+  <div class="mobile admin-screen" id="asub-users">
+    <div class="header">
+      <button class="back-btn" onclick="aSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">👥</div>
+    <div class="page-title"><h2>Manage Users</h2><p>View, edit and control user accounts</p></div>
+    <div class="admin-tab-bar">
+      <button class="admin-tab-btn active" onclick="aFilterUsers(this,'all')">All</button>
+      <button class="admin-tab-btn" onclick="aFilterUsers(this,'Admin')">Admin</button>
+      <button class="admin-tab-btn" onclick="aFilterUsers(this,'Farmer')">Farmer</button>
+      <button class="admin-tab-btn" onclick="aFilterUsers(this,'Buyer')">Buyer</button>
+    </div>
+    <div class="admin-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="a-user-search" placeholder="Search by name or username…" oninput="aRenderUsers()">
+    </div>
+    <div class="form-body" style="padding-top:4px"><div id="a-user-list"></div></div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+  <!-- MONITOR TRANSACTIONS -->
+  <div class="mobile admin-screen" id="asub-monitor">
+    <div class="header">
+      <button class="back-btn" onclick="aSubShow('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1><p>Connecting farmers, buyers, and logistics.</p>
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    <div class="logo">💳</div>
+    <div class="page-title"><h2>Monitor Transactions</h2><p>Track all platform payments and orders</p></div>
+    <div class="admin-tab-bar">
+      <button class="admin-tab-btn active" onclick="aFilterTxn(this,'all')">All</button>
+      <button class="admin-tab-btn" onclick="aFilterTxn(this,'Paid')">Paid</button>
+      <button class="admin-tab-btn" onclick="aFilterTxn(this,'Unpaid')">Unpaid</button>
+      <button class="admin-tab-btn" onclick="aFilterTxn(this,'Delivered')">Delivered</button>
+    </div>
+    <div class="admin-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="a-txn-search" placeholder="Search by ID, buyer or farmer…" oninput="aRenderTxn()">
+    </div>
+    <div class="form-body" style="padding-top:4px"><div id="a-txn-list"></div></div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+</div><!-- end page-admin -->
+
+<!-- ADMIN DETAIL PANELS -->
+<div class="admin-panel" id="apanel-farmer">
+  <div class="admin-sheet">
+    <div class="admin-handle"></div>
+    <div class="admin-sheet-title"><i class="fa-solid fa-id-card-clip" style="margin-right:8px;color:#156b1d"></i>Farmer Verification</div>
+    <div id="apanel-farmer-body"></div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px" id="apanel-farmer-actions"></div>
+  </div>
+</div>
+
+<div class="admin-panel" id="apanel-user">
+  <div class="admin-sheet">
+    <div class="admin-handle"></div>
+    <div class="admin-sheet-title"><i class="fa-solid fa-user-gear" style="margin-right:8px;color:#156b1d"></i>User Account</div>
+    <div id="apanel-user-body"></div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px" id="apanel-user-actions"></div>
+  </div>
+</div>
+
+<div class="admin-panel" id="apanel-txn">
+  <div class="admin-sheet">
+    <div class="admin-handle"></div>
+    <div class="admin-sheet-title"><i class="fa-solid fa-receipt" style="margin-right:8px;color:#156b1d"></i>Transaction Detail</div>
+    <div id="apanel-txn-body"></div>
+    <div style="margin-top:18px" id="apanel-txn-actions"></div>
+  </div>
+</div>
+
 </body>
 </html>
