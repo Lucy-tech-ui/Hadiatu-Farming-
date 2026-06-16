@@ -567,6 +567,114 @@ input.input-valid,   select.input-valid   { border-color:#43a047 !important; bac
 .abadge-paid      { background:#e8f5e9; color:#2e7d32; }
 .abadge-unpaid    { background:#fff3e0; color:#e65100; }
 .abadge-delivered { background:#e3f2fd; color:#1565c0; }
+
+/* ══════════════════════════════════════════
+   AI CHATBOT PORTAL STYLES
+══════════════════════════════════════════ */
+.chat-portal-screen { display:none; flex-direction:column; min-height:85vh; }
+.chat-portal-screen.active { display:flex; }
+
+/* Chat window */
+.chatbot-window {
+  background:#f7faf7; border:1.5px solid #e6f4e6;
+  border-radius:16px; padding:14px; margin-bottom:14px;
+  max-height:300px; min-height:180px; overflow-y:auto;
+}
+.chatbot-bubble {
+  border-radius:14px; padding:10px 14px; margin-bottom:10px;
+  font-size:13px; line-height:1.5; max-width:88%;
+}
+.chatbot-bubble.user {
+  background:#156b1d; color:#fff;
+  margin-left:auto; border-bottom-right-radius:4px;
+}
+.chatbot-bubble.ai {
+  background:#fff; color:#333; border:1.5px solid #e6f4e6;
+  margin-right:auto; border-bottom-left-radius:4px;
+}
+.chatbot-bubble.ai i { color:#156b1d; margin-right:6px; }
+.chatbot-empty { text-align:center; color:#bbb; font-size:12px; padding:20px 0; }
+
+/* Typing animation */
+.chatbot-typing span {
+  display:inline-block; width:6px; height:6px; margin:0 1px;
+  background:#156b1d; border-radius:50%;
+  animation:cblink 1.2s infinite ease-in-out;
+}
+.chatbot-typing span:nth-child(2) { animation-delay:.2s; }
+.chatbot-typing span:nth-child(3) { animation-delay:.4s; }
+@keyframes cblink { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
+
+/* Category chips */
+.cb-chip-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:4px; }
+.cb-chip {
+  padding:8px 14px; border-radius:20px; font-size:12px; font-weight:600;
+  cursor:pointer; border:1.5px solid #e0e0e0; background:#fff; color:#555;
+  transition:all .2s;
+}
+.cb-chip.selected { background:#156b1d; color:#fff; border-color:#156b1d; }
+
+/* Priority chips */
+.cb-priority-row { display:flex; gap:8px; }
+.cb-priority {
+  flex:1; text-align:center; padding:10px 6px; border-radius:12px;
+  font-size:12px; font-weight:700; cursor:pointer;
+  border:1.5px solid #e0e0e0; background:#fff; color:#555;
+  transition:all .2s; text-transform:uppercase; letter-spacing:.4px;
+}
+.cb-priority.low.selected    { background:#e8f5e9; color:#2e7d32; border-color:#2e7d32; }
+.cb-priority.normal.selected { background:#e3f2fd; color:#1565c0; border-color:#1565c0; }
+.cb-priority.high.selected   { background:#ffebee; color:#c62828; border-color:#c62828; }
+
+/* Star rating */
+.cb-star-row { display:flex; gap:6px; font-size:26px; color:#e0e0e0; cursor:pointer; }
+.cb-star-row i.active { color:#FFB400; }
+
+/* Recent panel */
+.cb-recent-panel {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.45); z-index:400;
+  align-items:flex-end; justify-content:center;
+}
+.cb-recent-panel.open { display:flex; }
+.cb-recent-sheet {
+  background:#fff; width:100%; max-width:420px;
+  border-radius:24px 24px 0 0; padding:20px 20px 28px;
+  max-height:80vh; overflow-y:auto;
+}
+.cb-handle { width:40px; height:4px; background:#e0e0e0; border-radius:2px; margin:0 auto 16px; }
+.cb-recent-card {
+  border:1.5px solid #e9ecef; border-radius:14px;
+  padding:12px 14px; margin-bottom:10px; cursor:pointer;
+  transition:border-color .2s, box-shadow .2s;
+}
+.cb-recent-card:hover { border-color:#b2d8b3; box-shadow:0 4px 12px rgba(21,107,29,.08); }
+.cb-recent-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.cb-recent-id   { font-size:12px; font-weight:700; color:#156b1d; }
+.cb-recent-date { font-size:11px; color:#aaa; }
+.cb-recent-preview { font-size:13px; color:#444; margin-top:4px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.cb-recent-meta { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+.cb-recent-tag { font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:#e8f5e9; color:#2e7d32; text-transform:uppercase; }
+.cb-rtag-high   { background:#ffebee; color:#c62828; }
+.cb-rtag-normal { background:#e3f2fd; color:#1565c0; }
+.cb-rtag-low    { background:#e8f5e9; color:#2e7d32; }
+
+/* Sys field */
+.cb-sys-field {
+  width:100%; padding:10px 14px; background:#f0f4f0; border:1.5px solid #dce8dc;
+  border-radius:12px; font-size:13px; color:#888; font-style:italic;
+  display:flex; align-items:center; gap:8px;
+}
+.cb-sys-field i { color:#156b1d; }
+
+/* Upload */
+.cb-upload-btn {
+  display:inline-flex; align-items:center; gap:8px; padding:9px 16px;
+  border:1.5px dashed #b2d8b3; border-radius:12px; font-size:13px; color:#156b1d;
+  background:#f4fbf4; cursor:pointer; font-weight:600; position:relative; overflow:hidden;
+}
+.cb-upload-btn:hover { background:#e6f4e6; }
+.cb-upload-btn input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 </style>
 </head>
 <body>
@@ -811,12 +919,6 @@ input.input-valid,   select.input-valid   { border-color:#43a047 !important; bac
       <button class="grid-btn" onclick="subShow('set-prices')"><i class="fa-solid fa-tags"></i><span>Set Prices &amp; Stock</span></button>
       <button class="grid-btn" onclick="subShow('view-orders')"><i class="fa-solid fa-eye"></i><span>View Orders</span></button>
       <button class="grid-btn" onclick="subShow('manage-orders')"><i class="fa-solid fa-boxes-packing"></i><span>Manage Orders</span></button>
-    </div>
-    <!-- Payment shortcut -->
-    <div style="padding:0 20px 4px">
-      <button onclick="pmCallerPage='farmer';switchPage('payment');pmInitForm();pmResetForm()" style="width:100%;padding:12px;background:#FF7900;color:#fff;border:none;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 10px rgba(255,121,0,.3)">
-        <i class="fa-solid fa-mobile-screen-button"></i> Orange Money Payment
-      </button>
     </div>
     <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
   </div>
@@ -1299,6 +1401,17 @@ input.input-valid,   select.input-valid   { border-color:#43a047 !important; bac
       <button class="buyer-grid-btn order" onclick="bSubShow('checkout');bRenderCheckout()">
         <div class="buyer-icon-circle"><i class="fa-solid fa-truck-fast"></i></div>
         <span>Place Order</span>
+      </button>
+    </div>
+    <!-- Buyer Payment + Chat tabs -->
+    <div style="padding:0 20px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <button class="buyer-grid-btn" onclick="pmCallerPage='buyer';switchPage('payment');pmInitForm();pmResetForm()" style="background:linear-gradient(135deg,#FF7900,#e56c00);border-color:#FF7900;padding:20px 10px">
+        <div class="buyer-icon-circle" style="background:rgba(255,255,255,.2);color:#fff"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <span style="color:#fff">Payment</span>
+      </button>
+      <button class="buyer-grid-btn" onclick="switchToBuyerChat()" style="background:linear-gradient(135deg,#1a8a25,#156b1d);border-color:#156b1d;padding:20px 10px">
+        <div class="buyer-icon-circle" style="background:rgba(255,255,255,.2);color:#fff"><i class="fa-solid fa-robot"></i></div>
+        <span style="color:#fff">AI Chat</span>
       </button>
     </div>
     <div class="footer">&copy; 2026 Farmer Marketplace. All Rights Reserved.</div>
@@ -1893,8 +2006,16 @@ function doLogin() {
       `<span class="role-badge">🛡️ ${user.role}</span>`;
     switchPage('admin');
     aSubShow('dashboard');
+  } else if (user.page === 'chat') {
+    document.getElementById('cb-welcome').textContent = `Welcome, ${user.username}!`;
+    document.getElementById('cb-role-badge').innerHTML =
+      `<span class="role-badge">💬 ${user.role}</span>`;
+    cbCallerPage = 'login';
+    switchPage('chat');
+    cbInitSession();
+    cbUpdateBadge();
   } else {
-    // Chat & Payment roles → Orange Money payment portal
+    // Payment role → Orange Money payment portal
     pmCallerPage = 'login';
     switchPage('payment');
     pmInitForm();
@@ -2702,10 +2823,15 @@ function lAddDriver() {
 // Back from payment — return to caller portal
 let pmCallerPage = 'login';
 function pGoBack() {
-  switchPage(pmCallerPage);
-  if (pmCallerPage === 'farmer') subShow('dashboard');
-  else if (pmCallerPage === 'buyer') bSubShow('dashboard');
-  else if (pmCallerPage === 'logistics') lSubShow('dashboard');
+  if (pmCallerPage === 'buyer') {
+    // Buyer came from login, go back to login
+    switchPage('login');
+  } else {
+    switchPage(pmCallerPage);
+    if (pmCallerPage === 'farmer') subShow('dashboard');
+    else if (pmCallerPage === 'logistics') lSubShow('dashboard');
+    else if (pmCallerPage === 'admin') aSubShow('dashboard');
+  }
 }
 
 function pmValidate(input, errId, testFn, msg) {
@@ -3094,6 +3220,287 @@ function aSaveTxn(id) {
   showToast('💾 Transaction updated');
 }
 
+
+/* ══════════════════════════════════════════
+   AI CHATBOT PORTAL JS
+══════════════════════════════════════════ */
+let cbCat      = '';
+let cbPriority = 'Normal';
+let cbAnswered = '';
+let cbRating   = 0;
+let cbMsgs     = [];
+let cbSessionId = '';
+let cbRecentFilter = 'all';
+let cbCallerPage = 'login';
+
+let cbSessions = [
+  { id:'CHAT-20260001', name:'Aminata Kamara', username:'aminata_k', email:'aminata@mail.com', category:'Order Assistance', priority:'High', language:'English', date:'11 Jun 2026', time:'09:14:22', messages:[{role:'user',text:'Where is my order ORD-20260011?'},{role:'ai',text:"Track your order under 'View Orders'. Share your Order ID for specific help."}], aiResponse:"Track your order under 'View Orders'.", answered:'Yes', rating:4, comments:'Very helpful!' },
+  { id:'CHAT-20260002', name:'Ibrahim Sesay',  username:'ibrahim_s', email:'', category:'Payment Support', priority:'Normal', language:'Krio', date:'11 Jun 2026', time:'10:30:05', messages:[{role:'user',text:'How do I pay with Orange Money?'},{role:'ai',text:'We support Mobile Money (Orange Money), Cash on Delivery, and Bank Transfer — available at Checkout.'}], aiResponse:'We support Mobile Money, Cash on Delivery, and Bank Transfer.', answered:'Yes', rating:5, comments:'' },
+  { id:'CHAT-20260003', name:'Fatmata Conteh', username:'', email:'fatmata@mail.com', category:'Delivery & Logistics', priority:'Low', language:'Mende', date:'10 Jun 2026', time:'15:45:33', messages:[{role:'user',text:'When will my cassava leaves be delivered?'},{role:'ai',text:'Track your delivery status: Pending, Dispatched, In Transit, or Delivered on the Delivery screen.'}], aiResponse:'Check the Delivery screen for status updates.', answered:'Partially', rating:3, comments:'Could be more specific.' },
+];
+
+/* Back from chat */
+function cbGoBack() {
+  switchPage(cbCallerPage);
+  if (cbCallerPage === 'farmer')    subShow('dashboard');
+  else if (cbCallerPage === 'buyer')     bSubShow('dashboard');
+  else if (cbCallerPage === 'logistics') lSubShow('dashboard');
+  else if (cbCallerPage === 'admin')     aSubShow('dashboard');
+  else if (cbCallerPage === 'buyer') { switchPage('buyer'); bSubShow('dashboard'); }
+  else if (cbCallerPage === 'payment') { switchPage('payment'); pmInitForm(); pmResetForm(); }
+}
+
+/* Init session timestamps */
+function cbInitSession() {
+  const now = new Date();
+  cbSessionId = 'CHAT-' + Date.now().toString().slice(-8);
+  const ds = document.getElementById('cb-session-date'); if(ds) ds.textContent = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  const ts = document.getElementById('cb-session-time'); if(ts) ts.textContent = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const si = document.getElementById('cb-session-id');   if(si) si.textContent = cbSessionId;
+}
+setInterval(() => {
+  const ts = document.getElementById('cb-session-time');
+  if (ts) ts.textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}, 1000);
+
+/* Chip selections */
+function cbSelectCat(el, val) {
+  document.querySelectorAll('#cb-cat-chips .cb-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected'); cbCat = val;
+  const og = document.getElementById('cb-other-group');
+  if (og) og.style.display = val === 'Other' ? 'block' : 'none';
+}
+function cbSelectPri(el, val) {
+  document.querySelectorAll('#cb-priority-chips .cb-priority').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected'); cbPriority = val;
+}
+function cbSelectAnswered(el, val) {
+  el.parentElement.querySelectorAll('.cb-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected'); cbAnswered = val;
+}
+function cbSetRating(val) {
+  cbRating = val;
+  document.querySelectorAll('#cb-stars i').forEach(s => s.classList.toggle('active', parseInt(s.dataset.val) <= val));
+}
+function cbHandleFile(input) {
+  const d = document.getElementById('cb-file-display');
+  if (d) d.innerHTML = input.files.length ? `<i class="fa-solid fa-paperclip"></i> ${input.files[0].name}` : '';
+}
+
+/* Chat */
+function cbAppendBubble(text, role) {
+  const win = document.getElementById('cb-chat-window');
+  const emp = document.getElementById('cb-chat-empty');
+  if (emp) emp.remove();
+  const b = document.createElement('div');
+  b.className = 'chatbot-bubble ' + role;
+  if (role === 'ai') b.innerHTML = `<i class="fa-solid fa-robot"></i>${text}`;
+  else b.textContent = text;
+  win.appendChild(b);
+  win.scrollTop = win.scrollHeight;
+  return b;
+}
+
+function cbGenerateResponse(p) {
+  const l = p.toLowerCase();
+  if (l.includes('price') || l.includes('cost'))    return "Prices vary by product and season. Check 'Set Prices & Stock' on the Farmer Portal, or 'Browse Products' on the Buyer Portal.";
+  if (l.includes('order'))                           return "Track your order under 'View Orders' or 'Manage Orders'. Share your Order ID for specific help.";
+  if (l.includes('payment') || l.includes('pay'))   return 'We support Mobile Money (Orange Money), Cash on Delivery, and Bank Transfer — available at Checkout.';
+  if (l.includes('deliver'))                         return 'Deliveries show status updates: Pending, Dispatched, In Transit, and Delivered on the Delivery screen.';
+  if (l.includes('register') || l.includes('profile')) return "Create or update your profile from 'Create Profile' or 'Manage Profile' on the Farmer Portal.";
+  if (l.includes('crop') || l.includes('farm'))     return 'Manage crop listings from the Crops section — add crops, set prices, and track inventory.';
+  if (l.includes('market') || l.includes('sell'))   return 'Go to Market → New Listing to create a product listing with price and location details.';
+  if (l.includes('hello') || l.includes('hi'))      return `Hello! I'm your Farmer Marketplace AI assistant. How can I help you today?`;
+  return `Thank you for your question! Our AI assistant is here to help. Could you provide more details so I can assist you better?`;
+}
+
+function cbSend() {
+  const prompt = document.getElementById('cb-prompt').value.trim();
+  if (!prompt) { showToast('⚠️ Please type a question first'); return; }
+  cbMsgs.push({ role:'user', text:prompt });
+  cbAppendBubble(prompt, 'user');
+  document.getElementById('cb-prompt').value = '';
+  const btn = document.getElementById('cb-send-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…'; }
+  const typing = cbAppendBubble('<span class="chatbot-typing"><span></span><span></span><span></span></span>', 'ai');
+  setTimeout(() => {
+    const resp = cbGenerateResponse(prompt);
+    typing.innerHTML = `<i class="fa-solid fa-robot"></i>${resp}`;
+    cbMsgs.push({ role:'ai', text:resp });
+    const ar = document.getElementById('cb-ai-response'); if(ar) ar.value = resp;
+    const win = document.getElementById('cb-chat-window'); if(win) win.scrollTop = 9999;
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message'; }
+  }, 1100);
+}
+
+function cbClearChat() {
+  cbMsgs = [];
+  const win = document.getElementById('cb-chat-window');
+  if (win) win.innerHTML = '<div class="chatbot-empty" id="cb-chat-empty">No messages yet. Ask a question to get started!</div>';
+  const pr = document.getElementById('cb-prompt'); if(pr) pr.value = '';
+  const ar = document.getElementById('cb-ai-response'); if(ar) ar.value = '';
+  showToast('🗑️ Chat cleared');
+}
+
+function cbSubmitFeedback() {
+  const nm = document.getElementById('cb-full-name')?.value.trim();
+  if (!nm)           { showToast('⚠️ Please enter your full name'); return; }
+  if (!cbCat)        { showToast('⚠️ Please select a chat category'); return; }
+  if (!cbMsgs.length){ showToast('⚠️ Please send at least one message first'); return; }
+  if (!cbAnswered)   { showToast('⚠️ Please indicate whether your question was answered'); return; }
+  if (!cbRating)     { showToast('⚠️ Please rate the response'); return; }
+  const now = new Date();
+  cbSessions.unshift({
+    id:         cbSessionId,
+    name:       nm,
+    username:   document.getElementById('cb-username')?.value.trim() || '',
+    email:      document.getElementById('cb-email')?.value.trim() || '',
+    category:   cbCat,
+    priority:   cbPriority,
+    language:   document.getElementById('cb-language')?.value || 'English',
+    date:       now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    time:       now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+    messages:   [...cbMsgs],
+    aiResponse: document.getElementById('cb-ai-response')?.value.trim() || '',
+    answered:   cbAnswered,
+    rating:     cbRating,
+    comments:   document.getElementById('cb-comments')?.value.trim() || ''
+  });
+  cbUpdateBadge();
+  showToast(`✅ Session saved — thank you, ${nm}!`);
+}
+
+function cbUpdateBadge() {
+  const b = document.getElementById('cb-badge');
+  if (b) b.textContent = cbSessions.length;
+}
+
+/* Recent panel */
+function cbOpenRecent() {
+  cbRecentFilter = 'all';
+  document.querySelectorAll('.cb-filter').forEach(b => b.classList.remove('active'));
+  const ab = document.querySelector('.cb-filter[data-f="all"]');
+  if (ab) {
+    ab.classList.add('active');
+    ab.style.background = '#156b1d'; ab.style.color = '#fff'; ab.style.borderColor = '#156b1d';
+  }
+  cbRenderRecent();
+  const p = document.getElementById('cb-recent-panel'); if(p) p.classList.add('open');
+}
+function cbCloseRecent() {
+  const p = document.getElementById('cb-recent-panel'); if(p) p.classList.remove('open');
+}
+function cbSetFilter(btn, filter) {
+  document.querySelectorAll('.cb-filter').forEach(b => {
+    b.classList.remove('active');
+    b.style.background='#fff'; b.style.color='#555'; b.style.borderColor='#e0e0e0';
+  });
+  btn.classList.add('active');
+  btn.style.background='#156b1d'; btn.style.color='#fff'; btn.style.borderColor='#156b1d';
+  cbRecentFilter = filter;
+  cbRenderRecent();
+}
+function cbRenderRecent() {
+  const el = document.getElementById('cb-recent-list');
+  const kw = (document.getElementById('cb-recent-search')?.value||'').toLowerCase();
+  const list = cbSessions.filter(s => {
+    const mf = cbRecentFilter==='all' || s.category===cbRecentFilter || s.priority===cbRecentFilter;
+    const ms = !kw || s.name.toLowerCase().includes(kw) || s.id.toLowerCase().includes(kw) || s.category.toLowerCase().includes(kw) || (s.messages[0]?.text||'').toLowerCase().includes(kw);
+    return mf && ms;
+  });
+  if (!list.length) { el.innerHTML = '<div style="text-align:center;color:#bbb;padding:30px 10px;font-size:13px"><i class="fa-solid fa-comments" style="font-size:40px;display:block;margin-bottom:10px"></i>No chats found.</div>'; return; }
+  const stars = n => '⭐'.repeat(n);
+  const pc = p => p==='High'?'cb-rtag-high':p==='Low'?'cb-rtag-low':'cb-rtag-normal';
+  const ac = a => a==='Yes'?'#2e7d32':a==='No'?'#c62828':'#e65100';
+  el.innerHTML = list.map(s => `
+    <div class="cb-recent-card">
+      <div class="cb-recent-header">
+        <span class="cb-recent-id">${s.id}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="cb-recent-date">${s.date} · ${s.time}</span>
+          <span onclick="cbDeleteSession('${s.id}',event)" style="color:#ccc;font-size:14px;cursor:pointer;padding:4px" title="Delete"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:#222;margin-bottom:3px">${s.name}${s.username?` <span style="color:#888;font-weight:400">@${s.username}</span>`:''}</div>
+      <div class="cb-recent-preview"><span style="color:#999;font-size:11px"><i class="fa-solid fa-user" style="margin-right:3px"></i>Q:</span> ${s.messages.find(m=>m.role==='user')?.text||'—'}</div>
+      <div class="cb-recent-preview" style="margin-top:3px"><span style="color:#156b1d;font-size:11px"><i class="fa-solid fa-robot" style="margin-right:3px"></i>A:</span> ${s.aiResponse||'—'}</div>
+      <div class="cb-recent-meta">
+        <span class="cb-recent-tag">${s.category}</span>
+        <span class="cb-recent-tag ${pc(s.priority)}">${s.priority}</span>
+        <span class="cb-recent-tag" style="background:#f3e5f5;color:#6a1b9a">${s.language}</span>
+        <span class="cb-recent-tag" style="background:#fff8e1;color:#f57f17">${stars(s.rating)}</span>
+        <span class="cb-recent-tag" style="color:${ac(s.answered)};background:#f9f9f9">✔ ${s.answered}</span>
+      </div>
+      ${s.comments?`<div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">"${s.comments}"</div>`:''}
+      <button onclick="cbLoadSession('${s.id}')" style="margin-top:10px;width:100%;padding:9px;background:#f4fbf4;color:#156b1d;border:1.5px solid #b2d8b3;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">
+        <i class="fa-solid fa-rotate-left"></i> Load This Session
+      </button>
+    </div>`).join('');
+}
+function cbDeleteSession(id, e) {
+  e.stopPropagation();
+  cbSessions = cbSessions.filter(s => s.id !== id);
+  cbUpdateBadge(); cbRenderRecent();
+  showToast('🗑️ Session deleted');
+}
+function cbLoadSession(id) {
+  const s = cbSessions.find(x => x.id === id); if (!s) return;
+  cbCloseRecent();
+  const fn = document.getElementById('cb-full-name'); if(fn) fn.value = s.name;
+  const un = document.getElementById('cb-username'); if(un) un.value = s.username||'';
+  const em = document.getElementById('cb-email'); if(em) em.value = s.email||'';
+  document.querySelectorAll('#cb-cat-chips .cb-chip').forEach(c => c.classList.toggle('selected', c.textContent.trim()===s.category));
+  cbCat = s.category;
+  const og = document.getElementById('cb-other-group'); if(og) og.style.display = s.category==='Other'?'block':'none';
+  const lg = document.getElementById('cb-language'); if(lg) lg.value = s.language||'';
+  document.querySelectorAll('#cb-priority-chips .cb-priority').forEach(c => { c.classList.remove('selected'); if(c.textContent.trim()===s.priority) c.classList.add('selected'); });
+  cbPriority = s.priority;
+  cbMsgs = [...s.messages];
+  const win = document.getElementById('cb-chat-window');
+  if (win) {
+    win.innerHTML = '';
+    s.messages.forEach(m => {
+      const b = document.createElement('div');
+      b.className = 'chatbot-bubble ' + m.role;
+      b.innerHTML = m.role==='ai' ? `<i class="fa-solid fa-robot"></i>${m.text}` : '';
+      if (m.role!=='ai') b.textContent = m.text;
+      win.appendChild(b);
+    });
+    win.scrollTop = 9999;
+  }
+  const ar = document.getElementById('cb-ai-response'); if(ar) ar.value = s.aiResponse||'';
+  document.querySelectorAll('#cb-answered-chips .cb-chip').forEach(c => c.classList.toggle('selected', c.textContent.trim()===s.answered));
+  cbAnswered = s.answered;
+  cbSetRating(s.rating);
+  const cm = document.getElementById('cb-comments'); if(cm) cm.value = s.comments||'';
+  cbSessionId = s.id;
+  const sd = document.getElementById('cb-session-date'); if(sd) sd.textContent = s.date;
+  const si = document.getElementById('cb-session-id'); if(si) si.textContent = s.id;
+  window.scrollTo(0,0);
+  showToast(`📂 Session ${s.id} loaded`);
+}
+
+function cbResetAll() {
+  ['cb-full-name','cb-username','cb-email','cb-other-cat','cb-comments'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const og=document.getElementById('cb-other-group');if(og)og.style.display='none';
+  const lg=document.getElementById('cb-language');if(lg)lg.value='';
+  const fd=document.getElementById('cb-file-display');if(fd)fd.innerHTML='';
+  document.querySelectorAll('#cb-cat-chips .cb-chip').forEach(c=>c.classList.remove('selected')); cbCat='';
+  document.querySelectorAll('#cb-priority-chips .cb-priority').forEach(c=>c.classList.remove('selected'));
+  const nm=document.querySelector('.cb-priority.normal');if(nm)nm.classList.add('selected'); cbPriority='Normal';
+  document.querySelectorAll('#cb-answered-chips .cb-chip').forEach(c=>c.classList.remove('selected')); cbAnswered='';
+  cbSetRating(0); cbClearChat(); cbInitSession();
+  showToast('🔄 Form reset');
+}
+
+/* Close recent panel on backdrop click */
+document.addEventListener('DOMContentLoaded', function() {
+  const rp = document.getElementById('cb-recent-panel');
+  if (rp) rp.addEventListener('click', e => { if(e.target===rp) cbCloseRecent(); });
+  cbInitSession();
+  cbUpdateBadge();
+});
+
 /* Init */
 renderCrops(); renderListings(); renderDeliveries();
 </script>
@@ -3297,6 +3704,11 @@ renderCrops(); renderListings(); renderDeliveries();
   </div>
 
   <div class="footer" style="text-align:center;padding:14px 20px;margin:20px 20px 20px;color:#fff;font-weight:600;font-size:12px;background:#FF7900;border-radius:16px;box-shadow:0 4px 10px rgba(255,121,0,.3);flex-shrink:0">Secured by Orange Money SL</div>
+  <div style="padding:0 20px 12px">
+    <button onclick="switchToBuyerChat()" style="width:100%;padding:11px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+      <i class="fa-solid fa-robot"></i> Need Help? Chat with AI
+    </button>
+  </div>
 </div>
 </div><!-- end page-payment -->
 
@@ -3437,6 +3849,204 @@ renderCrops(); renderListings(); renderDeliveries();
     <div class="admin-sheet-title"><i class="fa-solid fa-receipt" style="margin-right:8px;color:#156b1d"></i>Transaction Detail</div>
     <div id="apanel-txn-body"></div>
     <div style="margin-top:18px" id="apanel-txn-actions"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PAGE: AI CHATBOT PORTAL
+     Accessible by ALL logged-in users (Chat role is primary)
+═══════════════════════════════════════ -->
+<div class="page" id="page-chat">
+
+  <!-- MAIN CHAT SCREEN -->
+  <div class="mobile chat-portal-screen active" id="cbsub-main">
+    <div class="header">
+      <button class="back-btn" onclick="cbGoBack()"><i class="fa-solid fa-arrow-left"></i></button>
+      <h1>🌾 Farmer Marketplace</h1>
+      <p>Connecting farmers, buyers, and logistics.</p>
+      <!-- Recent chats button -->
+      <button onclick="cbOpenRecent()" title="Recent Chats" style="position:absolute;top:18px;right:18px;color:#fff;font-size:16px;cursor:pointer;background:rgba(255,255,255,.18);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:.2s">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span id="cb-badge" style="position:absolute;top:-4px;right:-4px;background:#e53935;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff">0</span>
+      </button>
+    </div>
+    <div class="logo">🤖</div>
+    <div class="page-title">
+      <h2>AI Chatbot</h2>
+      <p id="cb-welcome">Get instant help with your questions</p>
+      <div id="cb-role-badge" style="margin-top:6px"></div>
+    </div>
+
+    <div class="form-body">
+
+      <!-- User Info -->
+      <div class="form-section-label"><i class="fa-solid fa-user"></i> User Information</div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="cb-full-name" placeholder="Enter your full name" oninput="this.value=this.value.replace(/[^a-zA-Z\s'-]/g,'')">
+        <div class="input-hint">Letters only</div>
+      </div>
+      <div class="form-group">
+        <label>Username <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="text" id="cb-username" placeholder="Enter your username">
+      </div>
+      <div class="form-group">
+        <label>Email Address <span style="color:#aaa;font-weight:400">(Optional)</span></label>
+        <input type="email" id="cb-email" placeholder="you@example.com">
+      </div>
+
+      <!-- Category -->
+      <div class="form-section-label"><i class="fa-solid fa-layer-group"></i> Chat Category</div>
+      <div class="cb-chip-grid" id="cb-cat-chips">
+        <span class="cb-chip" onclick="cbSelectCat(this,'Product Inquiry')">Product Inquiry</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'Order Assistance')">Order Assistance</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'Payment Support')">Payment Support</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'Delivery &amp; Logistics')">Delivery &amp; Logistics</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'Technical Support')">Technical Support</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'General Information')">General Information</span>
+        <span class="cb-chip" onclick="cbSelectCat(this,'Other')">Other</span>
+      </div>
+      <div class="form-group" id="cb-other-group" style="display:none;margin-top:10px">
+        <label>Specify Other Category</label>
+        <input type="text" id="cb-other-cat" placeholder="Describe category">
+      </div>
+
+      <!-- Language -->
+      <div class="form-section-label"><i class="fa-solid fa-language"></i> Preferred Language</div>
+      <div class="form-group">
+        <label>Language</label>
+        <select id="cb-language">
+          <option value="">Select language</option>
+          <option>English</option><option>Krio</option><option>Mende</option>
+          <option>Temne</option><option>Limba</option><option>French</option>
+        </select>
+      </div>
+
+      <!-- Priority -->
+      <div class="form-section-label"><i class="fa-solid fa-gauge-high"></i> Priority Level</div>
+      <div class="cb-priority-row" id="cb-priority-chips">
+        <span class="cb-priority low"    onclick="cbSelectPri(this,'Low')">Low</span>
+        <span class="cb-priority normal selected" onclick="cbSelectPri(this,'Normal')">Normal</span>
+        <span class="cb-priority high"   onclick="cbSelectPri(this,'High')">High</span>
+      </div>
+
+      <!-- Attachment -->
+      <div class="form-section-label"><i class="fa-solid fa-paperclip"></i> Attachment <span style="color:#aaa;font-weight:400;text-transform:none;font-size:11px">(Optional)</span></div>
+      <div class="form-group">
+        <label>Upload File / Image</label>
+        <div class="cb-upload-btn">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+          <input type="file" id="cb-attachment" onchange="cbHandleFile(this)">
+        </div>
+        <div id="cb-file-display" style="font-size:12px;color:#156b1d;margin-top:6px;font-weight:600"></div>
+      </div>
+
+      <!-- Chat Request -->
+      <div class="form-section-label"><i class="fa-solid fa-comments"></i> Chat Request</div>
+      <div class="chatbot-window" id="cb-chat-window">
+        <div class="chatbot-empty" id="cb-chat-empty">No messages yet. Ask a question to get started!</div>
+      </div>
+      <div class="form-group">
+        <label>Question or Prompt</label>
+        <textarea id="cb-prompt" placeholder="Type your question here…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cbSend()}"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="cb-send-btn" onclick="cbSend()"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        <button class="btn-secondary" onclick="cbClearChat()">Clear</button>
+      </div>
+
+      <!-- AI Response -->
+      <div class="form-section-label"><i class="fa-solid fa-robot"></i> AI Response</div>
+      <div class="form-group">
+        <label>Generated Response</label>
+        <textarea id="cb-ai-response" placeholder="The AI response will appear here…" readonly></textarea>
+      </div>
+
+      <!-- Feedback -->
+      <div class="form-section-label"><i class="fa-solid fa-star"></i> Feedback</div>
+      <div class="form-group">
+        <label>Was your question answered?</label>
+        <div class="cb-chip-grid" id="cb-answered-chips">
+          <span class="cb-chip" onclick="cbSelectAnswered(this,'Yes')">Yes</span>
+          <span class="cb-chip" onclick="cbSelectAnswered(this,'No')">No</span>
+          <span class="cb-chip" onclick="cbSelectAnswered(this,'Partially')">Partially</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Rate the response</label>
+        <div class="cb-star-row" id="cb-stars">
+          <i class="fa-solid fa-star" data-val="1" onclick="cbSetRating(1)"></i>
+          <i class="fa-solid fa-star" data-val="2" onclick="cbSetRating(2)"></i>
+          <i class="fa-solid fa-star" data-val="3" onclick="cbSetRating(3)"></i>
+          <i class="fa-solid fa-star" data-val="4" onclick="cbSetRating(4)"></i>
+          <i class="fa-solid fa-star" data-val="5" onclick="cbSetRating(5)"></i>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Additional Comments</label>
+        <textarea id="cb-comments" placeholder="Any other feedback…"></textarea>
+      </div>
+
+      <!-- Session Info -->
+      <div class="form-section-label"><i class="fa-solid fa-clock"></i> Session Information</div>
+      <div class="form-group">
+        <label>Date</label>
+        <div class="cb-sys-field"><i class="fa-solid fa-calendar-days"></i><span id="cb-session-date"></span></div>
+      </div>
+      <div class="form-group">
+        <label>Time</label>
+        <div class="cb-sys-field"><i class="fa-solid fa-clock"></i><span id="cb-session-time"></span></div>
+      </div>
+      <div class="form-group">
+        <label>Chat Session ID</label>
+        <div class="cb-sys-field"><i class="fa-solid fa-fingerprint"></i><span id="cb-session-id"></span></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="cbSubmitFeedback()"><i class="fa-solid fa-paper-plane"></i> Submit Feedback</button>
+        <button class="btn-secondary" onclick="cbResetAll()">Reset</button>
+      </div>
+
+      <!-- Orange Money payment shortcut (Payment role) -->
+      <div style="margin-top:16px">
+        <button onclick="pmCallerPage='chat';switchPage('payment');pmInitForm();pmResetForm()" style="width:100%;padding:12px;background:#FF7900;color:#fff;border:none;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 10px rgba(255,121,0,.3)">
+          <i class="fa-solid fa-mobile-screen-button"></i> Go to Orange Money Payment
+        </button>
+      </div>
+
+    </div>
+    <div class="footer">© 2026 Farmer Marketplace. All Rights Reserved.</div>
+  </div>
+
+</div><!-- end page-chat -->
+
+<!-- ── RECENT CHATS PANEL ── -->
+<div class="cb-recent-panel" id="cb-recent-panel">
+  <div class="cb-recent-sheet">
+    <div class="cb-handle"></div>
+    <div style="font-size:16px;font-weight:700;color:#156b1d;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+      <i class="fa-solid fa-clock-rotate-left"></i> Recent Chats
+    </div>
+    <!-- Search -->
+    <div style="display:flex;align-items:center;background:#fafafa;border:1.5px solid #e0e0e0;border-radius:12px;padding:0 12px;margin-bottom:10px;gap:8px">
+      <i class="fa-solid fa-magnifying-glass" style="color:#bbb;font-size:13px"></i>
+      <input type="text" id="cb-recent-search" placeholder="Search by name, ID or topic…" oninput="cbRenderRecent()" style="border:none;background:transparent;padding:11px 0;font-size:13px;width:100%;outline:none">
+    </div>
+    <!-- Filter chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+      <span class="cb-filter active" data-f="all" onclick="cbSetFilter(this,'all')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #156b1d;background:#156b1d;color:#fff">All</span>
+      <span class="cb-filter" data-f="High" onclick="cbSetFilter(this,'High')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🔴 High</span>
+      <span class="cb-filter" data-f="Normal" onclick="cbSetFilter(this,'Normal')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🔵 Normal</span>
+      <span class="cb-filter" data-f="Low" onclick="cbSetFilter(this,'Low')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">🟢 Low</span>
+      <span class="cb-filter" data-f="Order Assistance" onclick="cbSetFilter(this,'Order Assistance')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">Orders</span>
+      <span class="cb-filter" data-f="Payment Support" onclick="cbSetFilter(this,'Payment Support')" style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e0e0e0;background:#fff;color:#555">Payment</span>
+    </div>
+    <div id="cb-recent-list"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn-secondary" style="flex:1" onclick="cbCloseRecent()">Close</button>
+      <button onclick="if(cbSessions.length&&confirm('Delete all sessions?')){cbSessions=[];cbUpdateBadge();cbRenderRecent();showToast('🗑️ All sessions cleared')}" style="flex:1;padding:13px;background:#fff;color:#c62828;border:1.5px solid #c62828;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer">Clear All</button>
+    </div>
   </div>
 </div>
 
